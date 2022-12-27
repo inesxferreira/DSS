@@ -7,28 +7,22 @@ import java.util.Set;
 
 import SimuladorLN.SSCampeonato.SSCarro.Carro;
 
-public class CarroDAO implements Map<String,Carro>{
+public class CarroDAO implements Map<String, Carro> {
 
     private static CarroDAO singleton = null;
 
     private CarroDAO() {
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
-             Statement stm = conn.createStatement()) {
-            String sql = "CREATE TABLE IF NOT EXISTS salas (" +
-                    "Num varchar(10) NOT NULL PRIMARY KEY," +
-                    "Edificio varchar(45) DEFAULT NULL," +
+                Statement stm = conn.createStatement()) {
+            String sql = "CREATE TABLE IF NOT EXISTS carro (" +
+                    "IdCarro varchar(10) NOT NULL PRIMARY KEY," +
+                    "Marca varchar(15) DEFAULT NULL," +
+                    "Modelo varchar(15) DEFAULT NULL," +
+                    "Pac float(15) DEFAULT 0," +
+                    "Marca varchar(15) DEFAULT NULL," +
+                    "Marca varchar(15) DEFAULT NULL," +
+
                     "Capacidade int(4) DEFAULT 0)";
-            stm.executeUpdate(sql);
-            sql = "CREATE TABLE IF NOT EXISTS turmas (" +
-                    "Id varchar(10) NOT NULL PRIMARY KEY," +
-                    "Sala varchar(10) DEFAULT NULL," +
-                    "foreign key(Sala) references salas(Num))";
-            stm.executeUpdate(sql);
-            sql = "CREATE TABLE IF NOT EXISTS alunos (" +
-                    "Num varchar(10) NOT NULL PRIMARY KEY," +
-                    "Nome varchar(45) DEFAULT NULL," +
-                    "Email varchar(45) DEFAULT NULL," +
-                    "Turma varchar(10), foreign key(Turma) references turmas(Id))";
             stm.executeUpdate(sql);
         } catch (SQLException e) {
             // Erro a criar tabela...
@@ -52,7 +46,7 @@ public class CarroDAO implements Map<String,Carro>{
     @Override
     public void clear() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
@@ -100,7 +94,7 @@ public class CarroDAO implements Map<String,Carro>{
     @Override
     public void putAll(Map<? extends String, ? extends Carro> m) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override

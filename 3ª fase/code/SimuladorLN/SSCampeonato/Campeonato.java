@@ -8,8 +8,22 @@ public class Campeonato {
 
 	private Collection<CampeonatoDAO> campeonatoDAO;
 	private String idCampeonato;
-	private TreeSet<String, Int> scoreCamp;
+	Map<String, Integer> scoreCamp = new HashMap<String, Integer>();
 	private String nome;
+
+	public Campeonato() {
+		this.nome = "";
+		this.idCampeonato = "";
+
+	}
+
+	public Campeonato(Collection<CampeonatoDAO> campeonatoDAO, String idCampeonato, Map<String, Integer> scoreCamp,
+			String nome) {
+		this.campeonatoDAO = campeonatoDAO;
+		this.idCampeonato = idCampeonato;
+		this.scoreCamp = scoreCamp;
+		this.nome = nome;
+	}
 
 	public String getNome() {
 		return this.nome;
@@ -20,4 +34,57 @@ public class Campeonato {
 		throw new UnsupportedOperationException();
 	}
 
+	public void setCampeonatoDAO(Collection<CampeonatoDAO> campeonatoDAO) {
+		this.campeonatoDAO = campeonatoDAO;
+	}
+
+	public void setIdCampeonato(String idCampeonato) {
+		this.idCampeonato = idCampeonato;
+	}
+
+	public void setScoreCamp(Map<String, Integer> scoreCamp) {
+		this.scoreCamp = scoreCamp;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public Collection<CampeonatoDAO> getCampeonatoDAO() {
+		return campeonatoDAO;
+	}
+
+	public String getIdCampeonato() {
+		return idCampeonato;
+	}
+
+	public Map<String, Integer> getScoreCamp() {
+		return scoreCamp;
+	}
+
+	@Override
+	public String toString() {
+		return "Campeonato{" +
+				"campeonatoDAO=" + campeonatoDAO +
+				", idCampeonato='" + idCampeonato + '\'' +
+				", scoreCamp=" + scoreCamp +
+				", nome='" + nome + '\'' +
+				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		Campeonato that = (Campeonato) o;
+		return Objects.equals(campeonatoDAO, that.campeonatoDAO) && Objects.equals(idCampeonato, that.idCampeonato)
+				&& Objects.equals(scoreCamp, that.scoreCamp) && Objects.equals(nome, that.nome);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(campeonatoDAO, idCampeonato, scoreCamp, nome);
+	}
 }
