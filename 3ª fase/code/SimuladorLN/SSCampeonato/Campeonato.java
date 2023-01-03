@@ -8,7 +8,7 @@ public class Campeonato {
 
 	private Collection<CampeonatoDAO> campeonatoDAO;
 	private String idCampeonato;
-	Map<String, Integer> scoreCamp = new HashMap<String, Integer>();
+	TreeMap<String, Integer> scoreCamp = new TreeMap<String, Integer>();
 	private String nome;
 
 	public Campeonato() {
@@ -17,7 +17,7 @@ public class Campeonato {
 
 	}
 
-	public Campeonato(Collection<CampeonatoDAO> campeonatoDAO, String idCampeonato, Map<String, Integer> scoreCamp,
+	public Campeonato(Collection<CampeonatoDAO> campeonatoDAO, String idCampeonato, TreeMap<String, Integer> scoreCamp,
 			String nome) {
 		this.campeonatoDAO = campeonatoDAO;
 		this.idCampeonato = idCampeonato;
@@ -42,7 +42,7 @@ public class Campeonato {
 		this.idCampeonato = idCampeonato;
 	}
 
-	public void setScoreCamp(Map<String, Integer> scoreCamp) {
+	public void setScoreCamp(TreeMap<String, Integer> scoreCamp) {
 		this.scoreCamp = scoreCamp;
 	}
 

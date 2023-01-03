@@ -1,5 +1,7 @@
 package SimuladorLN.SSCampeonato;
 
+import java.util.TreeMap;
+
 public interface ICampeonato {
 
 	/**
@@ -26,6 +28,6 @@ public interface ICampeonato {
 	 * 
 	 * @param scoreCamp
 	 */
-	void setScoreCampeonato(TreeSet<String, Int> scoreCamp);
+	void setScoreCampeonato(TreeMap<String, Integer> scoreCamp);
 
 }

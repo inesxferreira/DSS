@@ -3,26 +3,25 @@ package SimuladorLN.SSConta;
 public class Conta {
 
 	private RankingGlobal posicao;
-	private Int score;
 	private String idConta;
 	private String password;
 	private Boolean versaoPremium;
+	private int score;
 
 	/**
 	 * 
 	 * @param nome
 	 * @param password
 	 */
-	private Boolean verificarCredenciais(String nome, String password) {
-		// TODO - implement Conta.verificarCredenciais
-		throw new UnsupportedOperationException();
+	private boolean verificarCredenciais(String nome, String pass) {
+		return nome.equals(this.idConta) && pass.equals(this.password);
 	}
 
 	/**
 	 * 
 	 * @param scoreDoCampeonato
 	 */
-	private void atualizaScore(Int scoreDoCampeonato) {
+	private void atualizaScore(int scoreDoCampeonato) {
 		// TODO - implement Conta.atualizaScore
 		throw new UnsupportedOperationException();
 	}
@@ -33,12 +32,12 @@ public class Conta {
 	 * @param password
 	 * @param modo
 	 */
-	public String criarConta(String username, String password, String modo) {
+	public String criarConta(String username, String password, String modo) implements Comparable<Conta> {
 		// TODO - implement Conta.criarConta
 		throw new UnsupportedOperationException();
 	}
 
-	public Int getScore() {
+	public int getScore() {
 		return this.score;
 	}
 
@@ -47,28 +46,31 @@ public class Conta {
 	 * @param nCorridas
 	 * @param nAfinacoes
 	 */
-	public void verificaAfinacao(Int nCorridas, Int nAfinacoes) {
-		// TODO - implement Conta.verificaAfinacao
-		throw new UnsupportedOperationException();
+	public boolean verificaAfinacao(int nCorridas, int nAfinacoes) {
+		if (nAfinacoes <= (2 / 3) * nCorridas)
+			return true;
+		return false;
 	}
 
 	/**
 	 * 
 	 * @param idParticipante
 	 */
-	public Int getVersao(String idParticipante) {
-		// TODO - implement Conta.getVersao
-		throw new UnsupportedOperationException();
+	public boolean getVersao(String idParticipante) {
+		return this.versaoPremium;
 	}
+
+	public int compareTo(Conta o) {
+        return this.score-o.getScore();
 
 	/**
 	 * 
 	 * @param nome
 	 * @param password
-	 */
+	 *
 	public void fazerLogin(String nome, String password) {
 		// TODO - implement Conta.fazerLogin
 		throw new UnsupportedOperationException();
-	}
+	}*/
 
 }

@@ -4,8 +4,6 @@ import java.sql.*;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
-
 import SimuladorLN.SSCampeonato.*;
 
 public class CampeonatoDAO implements Map<String, Campeonato> {
@@ -18,23 +16,25 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
                     "Nome varchar(45) NOT NULL PRIMARY KEY," +
                     "Score int(10) DEFAULT 0," +
                     "versaoPremium boolean DEFAULT false)";
-            stm.executeUpdate(sql);
-            sql = "CREATE TABLE IF NOT EXISTS ranking_global (" +
-                    "Id varchar(10) NOT NULL PRIMARY KEY," +
-                    "Conta varchar(10) DEFAULT NULL," +
-                    "foreign key(Conta) references contas(Identificador))";
-            stm.executeUpdate(sql);
-            sql = "CREATE TABLE IF NOT EXISTS participantes (" +
-                    "Num varchar(10) NOT NULL PRIMARY KEY," +
-                    "Nome varchar(45) DEFAULT NULL," +
-                    "Email varchar(45) DEFAULT NULL," +
-                    "Turma varchar(10), foreign key(Turma) references turmas(Id))";
+
             stm.executeUpdate(sql);
         } catch (SQLException e) {
             // Erro a criar tabela...
             e.printStackTrace();
             throw new NullPointerException(e.getMessage());
         }
+    }
+
+    /**
+     * Implementação do padrão Singleton
+     *
+     * @return devolve a instância única desta classe
+     */
+    public static CampeonatoDAO getInstance() {
+        if (CampeonatoDAO.singleton == null) {
+            CampeonatoDAO.singleton = new CampeonatoDAO();
+        }
+        return CampeonatoDAO.singleton;
     }
 
     @Override
@@ -45,14 +45,27 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
 
     @Override
     public boolean containsKey(Object key) {
-        // TODO Auto-generated method stub
-        return false;
+        boolean r;
+        try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
+                Statement stm = conn.createStatement();
+                ResultSet rs = stm.executeQuery("SELECT Id FROM Campeonatos WHERE Id='" + key.toString() + "'")) {
+            r = rs.next();
+            {
+                // falta
+            }
+
+        } catch (SQLException e) {
+            // erro no campeonato
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
+        }
+        return r;
     }
 
     @Override
     public boolean containsValue(Object value) {
-        // TODO Auto-generated method stub
-        return false;
+        Campeonato t = (Campeonato) value;
+        return false;// this.containsKey(t.get());
     }
 
     @Override
@@ -63,14 +76,14 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
 
     @Override
     public Campeonato get(Object key) {
-        // TODO Auto-generated method stub
+
         return null;
     }
 
     @Override
     public boolean isEmpty() {
-        // TODO Auto-generated method stub
-        return false;
+
+        return this.size() == 0;
     }
 
     @Override
@@ -81,8 +94,22 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
 
     @Override
     public Campeonato put(String arg0, Campeonato arg1) {
-        // TODO Auto-generated method stub
-        return null;
+        try (
+                Connection con = DAOconfig.getConnection();
+                PreparedStatement stm = con.prepareStatement(
+                        "INSERT INTO campeonato ()")) {
+
+            stm.executeUpdate();
+            if (con != null)
+                con.close();
+
+        } catch (SQLException e) {
+            // Erro no campeonato...
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
+        }
+        return campeonato;
+
     }
 
     @Override

@@ -2,20 +2,20 @@ package SimuladorLN.SSConta;
 
 public interface IConta {
 
-	Int getScore();
+	int getScore();
 
 	/**
 	 * 
 	 * @param nCorridas
 	 * @param nAfinacoes
 	 */
-	void verificaAfinacao(Int nCorridas, Int nAfinacoes);
+	void verificaAfinacao(int nCorridas, int nAfinacoes);
 
 	/**
 	 * 
 	 * @param idParticipante
 	 */
-	Int getVersao(String idParticipante);
+	int getVersao(String idParticipante);
 
 	/**
 	 * 

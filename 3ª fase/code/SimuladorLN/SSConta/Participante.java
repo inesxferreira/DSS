@@ -1,27 +1,27 @@
 package SimuladorLN.SSConta;
 
 import BaseDeDados.*;
+import SimuladorLN.SSCampeonato.SSCarro.Carro;
+import SimuladorLN.SSCampeonato.SSCarro.Piloto;
 
 public class Participante {
 
 	private PilotoDAO pilotoDAO;
 	private CarroDAO carroDAO;
 	private String idParticipante;
-	private Int scoreCampeonato;
-	private Int fatorOrd;
+	private int scoreCampeonato;
+	private int fatorOrd;
 
 	/**
 	 * 
 	 * @param c
 	 */
 	public void setCarro(Carro c) {
-		// TODO - implement Participante.setCarro
-		throw new UnsupportedOperationException();
+		this.carroDAO = new CarroDAO(c.clone());
 	}
 
 	public Carro getCarro() {
-		// TODO - implement Participante.getCarro
-		throw new UnsupportedOperationException();
+		return new Carro(this.carroDAO);
 	}
 
 	/**
@@ -29,13 +29,11 @@ public class Participante {
 	 * @param p
 	 */
 	public void setPiloto(Piloto p) {
-		// TODO - implement Participante.setPiloto
-		throw new UnsupportedOperationException();
+		this.pilotoDAO = new PilotoDAO(p.clone());
 	}
 
 	public Piloto getPiloto() {
-		// TODO - implement Participante.getPiloto
-		throw new UnsupportedOperationException();
+		return new Piloto(this.pilotoDAO);
 	}
 
 	public void configuraCampeonato() {
@@ -48,9 +46,10 @@ public class Participante {
 	 * @param nCorridas
 	 * @param nAfinacoes
 	 */
-	public void verificaAfinacao(Int nCorridas, Int nAfinacoes) {
-		// TODO - implement Participante.verificaAfinacao
-		throw new UnsupportedOperationException();
+	public boolean verificaAfinacao(int nCorridas, int nAfinacoes) {
+		if (nAfinacoes <= (2 / 3) * nCorridas)
+			return true;
+		return false;
 	}
 
 }

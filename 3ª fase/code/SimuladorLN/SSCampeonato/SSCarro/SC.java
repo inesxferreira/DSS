@@ -7,14 +7,16 @@ package SimuladorLN.SSCampeonato.SSCarro;
  * @version 26122022
  */
 
-public abstract class SC extends Carro {
+public class SC extends Carro {
     public SC() {
         super();
     }
 
-    public SC(String idCarro, String modelo, String marca, String categoria, Float pac, int tipoPneus, int modoMotor,
+    public SC(String idCarro, String modelo, String marca, String categoria, float pac, float fiabilidade,
+            int tipoPneus, int modoMotor,
             int potencia, int potenciaC, int cilindrada) {
-        super(idCarro, modelo, marca, categoria, pac, 0.0f, tipoPneus, modoMotor, potencia, potenciaC, cilindrada);
+        super(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor, potencia, potenciaC,
+                cilindrada);
     }
 
     public SC(SC p) {
@@ -32,9 +34,10 @@ public abstract class SC extends Carro {
         return (super.equals(c));
     }
 
-    /*public Carro clone() {
-        return new SC(this);                       // DA ERRO
-    }*/
+    @Override
+    public SC clone() {
+        return new SC(this);
+    }
 
     /*
      * public boolean DNF(int volta, int totalvoltas, int chuva) {
@@ -48,7 +51,7 @@ public abstract class SC extends Carro {
      * int qualidade;
      * if (chuva == 1)
      * qualidade = p.getQualidadeChuva();
-     * else
+     * elsed
      * qualidade = p.getQualidade();
      * // no maximo fiabilidade de 70%
      * int fiabilidade = (int) (qualidade * 0.75) + (int) ((super.getCilindrada() /

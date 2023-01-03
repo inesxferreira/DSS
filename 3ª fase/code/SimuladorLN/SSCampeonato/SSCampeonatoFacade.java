@@ -1,5 +1,7 @@
 package SimuladorLN.SSCampeonato;
 
+import java.util.TreeMap;
+
 import BaseDeDados.*;
 
 public class SSCampeonatoFacade implements ICampeonato {
@@ -42,7 +44,7 @@ public class SSCampeonatoFacade implements ICampeonato {
 	 * 
 	 * @param scoreCamp
 	 */
-	public void setScoreCampeonato(TreeSet<String, Int> scoreCamp) {
+	public void setScoreCampeonato(TreeMap<String, Integer> scoreCamp) {
 		// TODO - implement SSCampeonatoFacade.setScoreCampeonato
 		throw new UnsupportedOperationException();
 	}

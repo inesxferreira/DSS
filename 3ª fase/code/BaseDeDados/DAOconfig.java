@@ -1,10 +1,21 @@
 package BaseDeDados;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 public class DAOconfig {
-    static final String USERNAME = "root";                       // Actualizar
-    static final String PASSWORD = "rbs0284a";                       // Actualizar
-    private static final String DATABASE = "formula1";          // Actualizar
-    //private static final String DRIVER = "jdbc:mariadb";        // Usar para MariaDB
-    private static final String DRIVER = "jdbc:mysql";        // Usar para MySQL
-    static final String URL = DRIVER+"://localhost:3306/"+DATABASE;
+    static final String USERNAME = "root";
+    static final String PASSWORD = "rbs0284a";
+    private static final String DATABASE = "formula1";
+    private static final String DRIVER = "jdbc:mysql";
+    static final String URL = DRIVER + "://localhost:3306/" + DATABASE;
+
+    public static Connection getConnection() {
+        try {
+            return DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao obter conexão com a base de dados", e);
+        }
+    }
 }

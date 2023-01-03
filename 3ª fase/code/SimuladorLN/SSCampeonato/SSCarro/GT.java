@@ -7,21 +7,33 @@ package SimuladorLN.SSCampeonato.SSCarro;
  * @version 26122022
  */
 
-public abstract class GT extends Carro {
+public class GT extends Carro {
+    private float deterioracao;
+
     public GT() {
         super();
     }
 
-    public GT(String idCarro, String modelo, String marca, String categoria, Float pac, int tipoPneus, int modoMotor,
-            int potencia, int potenciaC, int cilindrada) {
-        super(idCarro, modelo, marca, categoria, pac, 0.0f, tipoPneus, modoMotor, potencia, potenciaC, cilindrada);
+    public GT(String idCarro, String modelo, String marca, String categoria, float pac, float fiabilidade,
+            int tipoPneus, int modoMotor,
+            int potencia, int potenciaC, int cilindrada, float deterioracao) {
+        super(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor, potencia, potenciaC,
+                cilindrada);
+        this.deterioracao = deterioracao;
     }
 
     public GT(GT p) {
         super(p);
+        this.deterioracao = p.getDeterioracao();
     }
 
-	
+    public float getDeterioracao() {
+        return this.deterioracao;
+    }
+
+    public void setDeterioracao(float taxa) {
+        this.deterioracao = taxa;
+    }
 
     public boolean equals(Object o) {
         if (this == o)
@@ -32,5 +44,9 @@ public abstract class GT extends Carro {
 
         GT c = (GT) o;
         return (super.equals(c));
+    }
+
+    public Carro clone() {
+        return new GT(this);
     }
 }

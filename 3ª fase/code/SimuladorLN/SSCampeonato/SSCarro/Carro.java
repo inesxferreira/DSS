@@ -27,7 +27,7 @@ public abstract class Carro {
 		this.marca = "";
 		this.categoria = "";
 		this.pac = 0.0f;
-	 	this.fiabilidade = 0.0f;
+		this.fiabilidade = 0.0f;
 		this.tipoPneus = 0;
 		this.modoMotor = 0;
 		this.potencia = 0;
@@ -35,7 +35,8 @@ public abstract class Carro {
 		this.cilindrada = 0;
 	}
 
-	public Carro(String idCarro, String modelo, String marca, String categoria, Float pac, Float fiabilidade, int tipoPneus, int modoMotor,
+	public Carro(String idCarro, String modelo, String marca, String categoria, Float pac, Float fiabilidade,
+			int tipoPneus, int modoMotor,
 			int potencia, int potenciaC, int cilindrada) {
 		this.idCarro = idCarro;
 		this.modelo = modelo;
@@ -171,8 +172,6 @@ public abstract class Carro {
 		this.cilindrada = cilindrada;
 	}
 
-
-
 	public double calculaFiabilidade(int n_voltas, int cts, int sva) {
 		double fiabilidade;
 		switch (this.categoria) {
@@ -186,7 +185,8 @@ public abstract class Carro {
 				fiabilidade = 0.7 * Math.pow(0.99, n_voltas) * (1 - 0.2 * (4000 - this.getCilindrada()) / 2000);
 				break;
 			case "SC":
-				fiabilidade = 0.75 * (1 - 0.2 * (2500 - this.getCilindrada()) / 500) * (1 - 0.2 * (100 - (cts + sva)) / 100);
+				fiabilidade = 0.75 * (1 - 0.2 * (2500 - this.getCilindrada()) / 500)
+						* (1 - 0.2 * (100 - (cts + sva)) / 100);
 				break;
 			default:
 				fiabilidade = 0;
@@ -194,7 +194,6 @@ public abstract class Carro {
 		}
 		return fiabilidade;
 	}
-
 
 	/* Metodos usuais */
 
@@ -244,7 +243,6 @@ public abstract class Carro {
 				this.cilindrada == c.getCilindrada());
 	}
 
-	@Override
 	public abstract Carro clone();
 
 }

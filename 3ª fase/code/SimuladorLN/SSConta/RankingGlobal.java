@@ -1,14 +1,16 @@
 package SimuladorLN.SSConta;
 
+import java.util.*;
+
 public class RankingGlobal {
 
-	private TreeSet<String, Int> contas;
+	private TreeMap<String, int> contas;
 
 	/**
 	 * 
 	 * @param idConta
 	 */
-	public Int getPosicao(String idConta) {
+	public int getPosicao(String idConta) {
 		// TODO - implement RankingGlobal.getPosicao
 		throw new UnsupportedOperationException();
 	}
