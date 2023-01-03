@@ -171,6 +171,31 @@ public abstract class Carro {
 		this.cilindrada = cilindrada;
 	}
 
+
+
+	public double calculaFiabilidade(int n_voltas, int cts, int sva) {
+		double fiabilidade;
+		switch (this.categoria) {
+			case "C1":
+				fiabilidade = 0.95;
+				break;
+			case "C2":
+				fiabilidade = 0.8 * (1 - 0.2 * (5000 - this.getCilindrada()) / 2000);
+				break;
+			case "GT":
+				fiabilidade = 0.7 * Math.pow(0.99, n_voltas) * (1 - 0.2 * (4000 - this.getCilindrada()) / 2000);
+				break;
+			case "SC":
+				fiabilidade = 0.75 * (1 - 0.2 * (2500 - this.getCilindrada()) / 500) * (1 - 0.2 * (100 - (cts + sva)) / 100);
+				break;
+			default:
+				fiabilidade = 0;
+				break;
+		}
+		return fiabilidade;
+	}
+
+
 	/* Metodos usuais */
 
 	public String toString() {

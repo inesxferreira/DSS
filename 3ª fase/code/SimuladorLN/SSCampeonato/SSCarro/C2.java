@@ -2,7 +2,7 @@ package SimuladorLN.SSCampeonato.SSCarro;
 
 public class C2 extends Carro {
 
-	private Int nAfinacoes;
+	private int nAfinacoes;
 
 	/**
 	 * 
@@ -17,9 +17,15 @@ public class C2 extends Carro {
 	 * 
 	 * @param modo
 	 */
-	public void setMotor(Int modo) {
+	public void setMotor(int modo) {
 		// TODO - implement C2.setMotor
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Carro clone() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

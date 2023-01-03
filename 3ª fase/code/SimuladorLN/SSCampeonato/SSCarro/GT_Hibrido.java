@@ -2,6 +2,12 @@ package SimuladorLN.SSCampeonato.SSCarro;
 
 public class GT_Hibrido extends GT {
 
-	private Int potenciaE;
+	private int potenciaE;
+
+	@Override
+	public Carro clone() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

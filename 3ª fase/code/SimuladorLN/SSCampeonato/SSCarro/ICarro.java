@@ -8,7 +8,7 @@ public interface ICarro {
 	 * 
 	 * @param tipoPneus
 	 */
-	void setPneus(Int tipoPneus);
+	void setPneus(int tipoPneus);
 
 	/**
 	 * 
@@ -20,7 +20,7 @@ public interface ICarro {
 	 * 
 	 * @param modo
 	 */
-	void setMotor(Int modo);
+	void setMotor(int modo);
 
 	void setHibrido();
 

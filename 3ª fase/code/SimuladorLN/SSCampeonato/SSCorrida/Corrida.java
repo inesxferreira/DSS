@@ -3,12 +3,12 @@ package SimuladorLN.SSCampeonato.SSCorrida;
 public class Corrida {
 
 	private Circuito circuito;
-	private Int voltas;
-	private Int meteorologia;
-	private TreeSet<String, Int> scoreCorr;
+	private int voltas;
+	private int meteorologia;
+	private TreeSet<String, int> scoreCorr;
 	private String idCorrida;
 
-	public Int getMeteorologia() {
+	public int getMeteorologia() {
 		return this.meteorologia;
 	}
 
@@ -39,11 +39,11 @@ public class Corrida {
 	 * 
 	 * @param voltas
 	 */
-	public void setVoltas(Int voltas) {
+	public void setVoltas(int voltas) {
 		this.voltas = voltas;
 	}
 
-	public Int getVoltas() {
+	public int getVoltas() {
 		return this.voltas;
 	}
 

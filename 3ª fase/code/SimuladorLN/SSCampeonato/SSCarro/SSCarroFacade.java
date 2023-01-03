@@ -25,7 +25,7 @@ public class SSCarroFacade implements ICarro {
 	 * 
 	 * @param modo
 	 */
-	public void setMotor(Int modo) {
+	public void setMotor(int modo) {
 		// TODO - implement SSCarroFacade.setMotor
 		throw new UnsupportedOperationException();
 	}
@@ -39,7 +39,7 @@ public class SSCarroFacade implements ICarro {
 	 * 
 	 * @param tipoPneus
 	 */
-	public void setPneus(Int tipoPneus) {
+	public void setPneus(int tipoPneus) {
 		// TODO - implement SSCarroFacade.setPneus
 		throw new UnsupportedOperationException();
 	}
