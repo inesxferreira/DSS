@@ -1,6 +1,6 @@
 package SimuladorLN.SSCampeonato.SSCarro;
 
-public abstract class C1 extends Carro {
+public class C1 extends Carro {
 	private int nAfinacoes;
 
 	public C1() {
@@ -51,6 +51,12 @@ public abstract class C1 extends Carro {
 
 		C1 c = (C1) o;
 		return (super.equals(c));
+	}
+
+	@Override
+	public Carro clone() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

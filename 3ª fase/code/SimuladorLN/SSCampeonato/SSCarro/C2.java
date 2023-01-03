@@ -4,7 +4,12 @@ public class C2 extends Carro {
 
 	private int nAfinacoes;
 
-	/**
+	public C2(String idCarro, String modelo, String marca, String categoria, float pac, float fiabilidade, int tipoPneus,
+            int modoMotor, int potencia, int potenciaC, int cilindrada) {
+				super(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor, potencia, potenciaC, cilindrada);
+    }
+
+    /**
 	 * 
 	 * @param valor
 	 */
