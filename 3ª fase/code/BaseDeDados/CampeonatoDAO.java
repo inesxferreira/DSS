@@ -15,6 +15,7 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
             String sql = "CREATE TABLE IF NOT EXISTS contas(" +
                     "Nome varchar(45) NOT NULL PRIMARY KEY," +
                     "Score int(10) DEFAULT 0," +
+                    "" +
                     "versaoPremium boolean DEFAULT false)";
 
             stm.executeUpdate(sql);

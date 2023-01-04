@@ -1,4 +1,7 @@
 package SimuladorLN.SSCampeonato.SSCorrida;
+import SimuladorLN.SSConta.Participante;
+import java.util.List;
+import java.util.Map;
 
 public interface ICorrida {
 
@@ -20,7 +23,7 @@ public interface ICorrida {
 	 * 
 	 * @param participantes
 	 */
-	List<Participante> calcularEventosPremium(Map<String, Participante> participantes);
+	Map<String, Participante> calcularEventosPremium(Map<String, Participante> participantes);
 
 	/**
 	 * 

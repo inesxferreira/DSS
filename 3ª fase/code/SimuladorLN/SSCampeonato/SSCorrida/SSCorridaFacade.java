@@ -1,11 +1,11 @@
 package SimuladorLN.SSCampeonato.SSCorrida;
-
-import BaseDeDados.*;
+import SimuladorLN.SSConta.Participante;
+import BaseDeDados.CircuitoDAO;
 import java.util.*;
 
 public class SSCorridaFacade implements ICorrida {
 
-	private CircuitoDAO todos_circuitos;
+	private Map<String, Circuito> todos_circuitos;
 	private Collection<Corrida> corrida;
 
 	public void simularCorrida() {

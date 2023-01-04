@@ -12,15 +12,20 @@ public class CircuitoDAO implements Map<String, Circuito> {
     private static CircuitoDAO singleton = null;
 
     private CircuitoDAO() {
-        try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
-                Statement stm = conn.createStatement()) {
-            String sql = "CREATE TABLE IF NOT EXISTS circuitos (" +
-                    "NomeCircuito varchar(45) NOT NULL PRIMARY KEY," +
+        try (Connection con = DAOconfig.getConnection();
+                Statement stm = con.createStatement()) {
+            String sql = "CREATE TABLE IF NOT EXISTS circuito (" +
+                    "IdCircuito varchar(45) NOT NULL PRIMARY KEY," +
+                    "NomeCircuito varchar(45) DEFAULT NULL," +
                     "Distancia float DEFAULT 0.0," +
                     "NCurvas int DEFAULT 0," +
                     "NChicanes int DEFAULT 0," +
                     "NRetas int DEFAULT 0)";
             stm.executeUpdate(sql);
+            
+            if (con != null)
+                con.close();
+
         } catch (SQLException e) {
             // Erro a criar tabela...
             e.printStackTrace();
@@ -80,44 +85,29 @@ public class CircuitoDAO implements Map<String, Circuito> {
 
 @Override
     public Circuito get(Object key) {
-        Circuito t = null;
-        
-        try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
-                Statement stm = conn.createStatement();
-                 /**
-                ResultSet rs = stm.executeQuery("SELECT * FROM circuito WHERE Id='" + key + "'")) {
-            if (rs.next()) { // A chave existe na tabela
-                // Reconstruir a colecção de alunos da turma
-                Collection<String> alunos = getAlunosTurma(key.toString(), stm);
+        String idCircuito = (String) key;
+        Circuito circuito = null;
+        String sql = "SELECT * FROM circuito WHERE IDCircuito = ?";
 
-                // Reconstruir a Sala
-                Sala s = null;
-                String sql = "SELECT * FROM salas WHERE Num='" + rs.getString("Sala") + "'";
-                try (ResultSet rsa = stm.executeQuery(sql)) {
-                    if (rsa.next()) { // Encontrou a sala
-                        s = new Sala(rs.getString("Sala"),
-                                rsa.getString("Edificio"),
-                                rsa.getInt("Capacidade"));
-                    } else {
-                        // BD inconsistente!! Sala não existe - tratar com excepções.
-                    } // catch é feito no try inicial - este try serve para fechar o ResultSet
-                      // automaticamente
-                      // Nota: abrir um novo ResultSet no mesmo Statement fecha o ResultSet anterior
+        try (
+                Connection con = DAOconfig.getConnection();
+                PreparedStatement stm = con.prepareStatement(sql)) {
+            stm.setString(1, idCircuito);
+            try (ResultSet rs = stm.executeQuery()) {
+                if (rs.next()) {
+                    String nomeCircuito = rs.getString("NomeCircuito");
+                    Float distancia = rs.getFloat("Distancia");
+                    int nCurvas = rs.getInt("NCurvas");
+                    int nChicanes = rs.getInt("NCurvas");
+                    int nRetas = rs.getInt("NCurvas");
+
                 }
-
-                // Reconstruir a turma cokm os dados obtidos da BD
-                t = new Turma(rs.getString("Id"), s, alunos);
-
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-            */
-        }catch(
-
-    SQLException e)
-    {
-        // Database error!
-        e.printStackTrace();
-        throw new NullPointerException(e.getMessage());
-    }return t;
+        } catch (SQLException e) {
+        }
+        return circuito;
     }
 
     @Override
@@ -139,24 +129,28 @@ public class CircuitoDAO implements Map<String, Circuito> {
     }
 
     @Override
-    public Circuito put(String key, Circuito value) {
-        Circuito res = null;
+    public Circuito put(String id, Circuito circuito) {
+        try (
+            Connection con = DAOconfig.getConnection();
+            PreparedStatement stm = con.prepareStatement(
+                        "INSERT INTO circuito (idCircuito, nomeCircuito, distancia, nCurvas, nChicanes, nRetas) VALUES (?,?,?,?,?,?)")) {
+            stm.setString(1, id);
+            stm.setString(2, circuito.getNomeCircuito());
+            stm.setFloat(3, circuito.getDistancia());
+            stm.setInt(4, circuito.getNCurvas());
+            stm.setInt(5, circuito.getNChicanes());
+            stm.setInt(6, circuito.getNRetas());
+            stm.executeUpdate();
+            if (con != null)
+                con.close();
 
-        try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD)) {
-            Statement stm = conn.createStatement();
-
-            String sql = "INSERT INTO circuito VALUES ('" + value.getNomeCircuito() + "', '" +
-                    value.getDistancia() + "', '" +
-                    value.getNCurvas() + "', '" +
-                    value.getNChicanes() + "', '" +
-                    value.getNRetas() + "')";
-            stm.executeUpdate(sql);
-        } catch (SQLException ex) {
-            // Database error!
-            ex.printStackTrace();
-            throw new NullPointerException(ex.getMessage());
+        } catch (SQLException e) {
+            // Erro a inserir circuito...
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
-        return res;
+        return circuito;
+            
     }
 
     @Override

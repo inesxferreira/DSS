@@ -12,9 +12,8 @@ public class SC extends Carro {
         super();
     }
 
-    public SC(String idCarro, String modelo, String marca, String categoria, float pac, float fiabilidade,
-            int tipoPneus, int modoMotor,
-            int potencia, int potenciaC, int cilindrada) {
+    public SC(String idCarro, String modelo, String marca, String categoria, float pac, double fiabilidade,
+            int tipoPneus, int modoMotor, int potencia, int potenciaC, int cilindrada) {
         super(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor, potencia, potenciaC,
                 cilindrada);
     }

@@ -8,6 +8,26 @@ import SimuladorLN.SSCampeonato.SSCarro.Piloto;
 
 public class PilotoDAO implements Map<String,Piloto> {
 
+    private static PilotoDAO singleton = null;
+
+
+
+
+    /**
+     * Implementação do padrão Singleton
+     *
+     * @return devolve a instância única desta classe
+     */
+    public static PilotoDAO getInstance() {
+        if (PilotoDAO.singleton == null) {
+            PilotoDAO.singleton = new PilotoDAO();
+        }
+        return PilotoDAO.singleton;
+    }
+
+
+
+    
     @Override
     public void clear() {
         // TODO Auto-generated method stub

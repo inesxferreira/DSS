@@ -1,45 +1,51 @@
 package SimuladorLN.SSCampeonato.SSCarro;
 
+/**
+ * Write a description of class SC here.
+ * 
+ * @author Marta Sa
+ * @version 26122022
+ */
+
 public class C1 extends Carro {
 	private int nAfinacoes;
 
 	public C1() {
 		super();
+		this.nAfinacoes = 0;
 	}
 
-	public C1(String idCarro, String modelo, String marca, String categoria, Float pac, int tipoPneus, int modoMotor,
+	public C1(String idCarro, String modelo, String marca, String categoria, float pac, double fiabilidade,
+			int tipoPneus, int modoMotor,
 			int potencia, int potenciaC, int cilindrada) {
-		super(idCarro, modelo, marca, categoria, pac, 0.95f, tipoPneus, modoMotor, potencia, potenciaC, cilindrada);
+		super(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor, potencia, potenciaC,
+				cilindrada);
+		// this.nAfinacoes = 0;
+	}
+
+	public C1(String idCarro, String modelo, String marca, String categoria, float pac, double fiabilidade,
+			int tipoPneus, int modoMotor,
+			int potencia, int potenciaC, int cilindrada, int nAfinacoes) {
+		super(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor, potencia, potenciaC,
+				cilindrada);
+		this.nAfinacoes = nAfinacoes;
 	}
 
 	public C1(C1 p) {
 		super(p);
+		this.nAfinacoes = p.getAfinacoes();
 	}
 
-	/**
-	 * 
-	 * @param valor
-	 */
-	public void setDownforce(Float valor) {
+	public int getAfinacoes() {
+		return this.nAfinacoes;
+	}
+
+	public void setAfinacoes(int nAfinacoes) {
+		this.nAfinacoes = nAfinacoes;
+	}
+
+	public void setDownforce(float valor) {
 		setPac(valor);
-	}
-
-	/**
-	 * 
-	 * @param modo
-	 */
-	/*
-	 * public void setMotor(int modo) {
-	 * setModoMotor(modo);;
-	 * }
-	 */
-
-	/**
-	 * 
-	 * @param f
-	 */
-	public void fiabilidade(Float f) {
-		setFiabilidade(f);
 	}
 
 	public boolean equals(Object o) {
@@ -53,10 +59,8 @@ public class C1 extends Carro {
 		return (super.equals(c));
 	}
 
-	@Override
 	public Carro clone() {
-		// TODO Auto-generated method stub
-		return null;
+		return new C1(this);
 	}
 
 }

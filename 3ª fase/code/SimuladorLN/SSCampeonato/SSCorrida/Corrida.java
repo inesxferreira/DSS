@@ -1,12 +1,21 @@
 package SimuladorLN.SSCampeonato.SSCorrida;
+import SimuladorLN.SSConta.Participante;
+import java.util.Map;
+import java.util.TreeMap;
+
 
 public class Corrida {
 
-	private Circuito circuito;
+	private String idCorrida;	
 	private int voltas;
 	private int meteorologia;
-	private TreeSet<String, int> scoreCorr;
-	private String idCorrida;
+	private Circuito circuito;
+	private TreeMap<String, Integer> scoreCorr = new TreeMap<>();
+
+
+	
+
+
 
 	public int getMeteorologia() {
 		return this.meteorologia;

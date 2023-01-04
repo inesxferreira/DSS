@@ -1,7 +1,14 @@
 package SimuladorLN.SSCampeonato.SSCarro;
 
-public class Piloto {
+/**
+ * Write a description of class SC here.
+ * 
+ * @author Marta Sa
+ * @version 26122022
+ */
 
+public class Piloto {
+    private String idPiloto;
 	private String nome;
 	private Float cts;
 	private Float sva;
@@ -9,13 +16,15 @@ public class Piloto {
     /*Construtores*/
     public Piloto()
     {
+        this.idPiloto = "";
         this.nome = "";
         this.cts = 0.0f;
         this.sva = 0.0f;
     }
     
-    public Piloto(String nome, Float cts, Float sva)
+    public Piloto(String idPiloto, String nome, Float cts, Float sva)
     {
+        this.idPiloto = idPiloto;
         this.nome = nome;
         this.cts = cts;
         this.sva = sva;
@@ -23,6 +32,7 @@ public class Piloto {
     
     public Piloto(Piloto p)
     {
+        this.idPiloto = p.getIdPiloto();
         this.nome = p.getNome();
         this.cts = p.getCTS();
         this.sva = p.getSVA();
@@ -30,6 +40,10 @@ public class Piloto {
 
 
 	/* Getters */
+	public String getIdPiloto() {
+		return this.idPiloto;
+	}
+
 	public String getNome() {
 		return this.nome;
 	}
@@ -43,7 +57,11 @@ public class Piloto {
 	}
 
 	/* Setters */
-	public void setNome(String nome) {
+	public void setidPiloto(String idPiloto) {
+		this.idPiloto = idPiloto;
+	}
+
+    public void setNome(String nome) {
 		this.nome = nome;
 	}
 

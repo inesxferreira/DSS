@@ -13,7 +13,7 @@ public abstract class Carro {
 	private String marca;
 	private String categoria;
 	private Float pac;
-	private Float fiabilidade;
+	private double fiabilidade;
 	private int tipoPneus;
 	private int modoMotor;
 	private int potencia;
@@ -35,9 +35,8 @@ public abstract class Carro {
 		this.cilindrada = 0;
 	}
 
-	public Carro(String idCarro, String modelo, String marca, String categoria, Float pac, Float fiabilidade,
-			int tipoPneus, int modoMotor,
-			int potencia, int potenciaC, int cilindrada) {
+	public Carro(String idCarro, String modelo, String marca, String categoria, float pac, double fiabilidade,
+			int tipoPneus, int modoMotor, int potencia, int potenciaC, int cilindrada) {
 		this.idCarro = idCarro;
 		this.modelo = modelo;
 		this.marca = marca;
@@ -86,7 +85,7 @@ public abstract class Carro {
 		return this.pac;
 	}
 
-	public Float getFiabilidade() {
+	public double getFiabilidade() {
 		return this.fiabilidade;
 	}
 
@@ -127,18 +126,14 @@ public abstract class Carro {
 		this.categoria = categoria;
 	}
 
-	public void setPac(Float pac) {
+	public void setPac(float pac) {
 		this.pac = pac;
 	}
 
-	public void setFiabilidade(Float fiabilidade) {
+	public void setFiabilidade(double fiabilidade) {
 		this.fiabilidade = fiabilidade;
 	}
 
-	/**
-	 * 
-	 * @param tipoPneus
-	 */
 	public void setPneus(int tipoPneus) {
 		this.tipoPneus = tipoPneus;
 	}
@@ -147,19 +142,10 @@ public abstract class Carro {
 		this.modoMotor = modoMotor;
 	}
 
-	/**
-	 * 
-	 * @param potenciaC
-	 * @param potenciaE
-	 */
 	public void setPotencia(int potenciaC, int potenciaE) {
 		this.potencia = potenciaC + potenciaE;
 	}
 
-	/**
-	 * 
-	 * @param pac
-	 */
 	public void setPotenciaC(int potenciaC) {
 		this.potenciaC = potenciaC;
 	}
@@ -170,29 +156,6 @@ public abstract class Carro {
 	 */
 	public void setCilindrada(int cilindrada) {
 		this.cilindrada = cilindrada;
-	}
-
-	public double calculaFiabilidade(int n_voltas, int cts, int sva) {
-		double fiabilidade;
-		switch (this.categoria) {
-			case "C1":
-				fiabilidade = 0.95;
-				break;
-			case "C2":
-				fiabilidade = 0.8 * (1 - 0.2 * (5000 - this.getCilindrada()) / 2000);
-				break;
-			case "GT":
-				fiabilidade = 0.7 * Math.pow(0.99, n_voltas) * (1 - 0.2 * (4000 - this.getCilindrada()) / 2000);
-				break;
-			case "SC":
-				fiabilidade = 0.75 * (1 - 0.2 * (2500 - this.getCilindrada()) / 500)
-						* (1 - 0.2 * (100 - (cts + sva)) / 100);
-				break;
-			default:
-				fiabilidade = 0;
-				break;
-		}
-		return fiabilidade;
 	}
 
 	/* Metodos usuais */

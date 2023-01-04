@@ -30,7 +30,7 @@ public class Campeonato {
 	}
 
 	public Map<String, Circuito> getCircuitos() {
-		// TODO - implement Campeonato.getCircuitos
+
 		throw new UnsupportedOperationException();
 	}
 
