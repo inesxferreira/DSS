@@ -12,10 +12,8 @@ public class SC extends Carro {
         super();
     }
 
-    public SC(String idCarro, String modelo, String marca, String categoria, float pac, double fiabilidade,
-            int tipoPneus, int modoMotor, int potencia, int potenciaC, int cilindrada) {
-        super(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor, potencia, potenciaC,
-                cilindrada);
+    public SC(String idCarro, String marca, String modelo, String categoria, int potenciaC, int cilindrada) {
+        super(idCarro, marca, modelo, categoria, potenciaC, cilindrada);
     }
 
     public SC(SC p) {
@@ -36,6 +34,12 @@ public class SC extends Carro {
     @Override
     public SC clone() {
         return new SC(this);
+    }
+
+    public void calculaFiabilidade(String idCarro, int n_voltas, int cts, int sva) {
+        double fiabilidade = 0.75 * (1 - 0.2 * (2500 - this.getCilindrada()) / 500)
+                * (1 - 0.2 * (100 - (cts + sva)) / 100);
+        this.setFiabilidade(fiabilidade);
     }
 
     /*

@@ -1,12 +1,19 @@
 package SimuladorLN.SSCampeonato.SSCorrida;
+
 import SimuladorLN.SSConta.Participante;
 import BaseDeDados.CircuitoDAO;
 import java.util.*;
 
-public class SSCorridaFacade implements ICorrida {
+public class SSCircuitoFacade implements ICircuito {
 
 	private Map<String, Circuito> todos_circuitos;
-	private Collection<Corrida> corrida;
+
+	/**
+	 * Construtor por omissão para objetos da classe SSCarroFacade.
+	 */
+	public SSCircuitoFacade() {
+		this.todos_circuitos = CircuitoDAO.getInstance();
+	}
 
 	public void simularCorrida() {
 		// TODO - implement SSCorridaFacade.simularCorrida

@@ -18,17 +18,12 @@ public class CarroDAO implements Map<String, Carro> {
                 Connection con = DAOconfig.getConnection();
                 Statement stm = con.createStatement()) {
             String sql = "CREATE TABLE IF NOT EXISTS carro (" +
-                    "IdCarro varchar(10) NOT NULL PRIMARY KEY," +
-                    "Categoria varchar(15) DEFAULT NULL," +
-                    "Marca varchar(15) DEFAULT NULL," +
-                    "Modelo varchar(15) DEFAULT NULL," +
-                    "Pac float(15) DEFAULT 0," +
-                    "Fiabilidade double(15) DEFAULT NULL," +
-                    "TipoPneus int(4) DEFAULT 0)," +
-                    "ModoMotor int(4) DEFAULT 0)," +
-                    "Cililndrada int(4) DEFAULT 0)," +
-                    "Potencia int(4) DEFAULT 0)," +
-                    "PotenciaC int(4) DEFAULT 0)";
+                    "IdCarro VARCHAR(10) NOT NULL PRIMARY KEY," +
+                    "Categoria VARCHAR(2) DEFAULT NULL," +
+                    "Marca VARCHAR(15) DEFAULT NULL," +
+                    "Modelo VARCHAR(15) DEFAULT NULL," +
+                    "Cililndrada int(4) DEFAULT 0," +
+                    "PotenciaC int(4) DEFAULT 0";
 
             stm.executeUpdate(sql);
 
@@ -59,18 +54,13 @@ public class CarroDAO implements Map<String, Carro> {
         try (
                 Connection con = DAOconfig.getConnection();
                 PreparedStatement stm = con.prepareStatement(
-                        "INSERT INTO carro (IdCarro, Categoria, Marca, Modelo, Pac, Fiabilidade, TipoPneus, ModoMotor, Cilindrada, Potencia, PotenciaC) VALUES (?,?,?,?,?,?,?,?,?,?,?)")) {
+                        "INSERT INTO carro (IdCarro, Categoria, Marca, Modelo, Cilindrada, PotenciaC) VALUES (?,?,?,?,?,?)")) {
             stm.setString(1, id);
             stm.setString(2, carro.getCategoria());
             stm.setString(3, carro.getMarca());
             stm.setString(4, carro.getModelo());
-            stm.setFloat(5, carro.getPac());
-            stm.setDouble(6, carro.getFiabilidade());
-            stm.setInt(7, carro.getTipoPneus());
-            stm.setInt(8, carro.getModoMotor());
-            stm.setInt(9, carro.getCilindrada());
-            stm.setInt(10, carro.getPotencia());
-            stm.setInt(11, carro.getPotenciaC());
+            stm.setInt(5, carro.getCilindrada());
+            stm.setInt(6, carro.getPotenciaC());
             stm.executeUpdate();
             if (con != null)
                 con.close();
@@ -98,30 +88,20 @@ public class CarroDAO implements Map<String, Carro> {
                     String categoria = rs.getString("Categoria");
                     String marca = rs.getString("Marca");
                     String modelo = rs.getString("Modelo");
-                    float pac = rs.getFloat("Pac");
-                    double fiabilidade = rs.getDouble("Fiabilidade");
-                    int tipoPneus = rs.getInt("TipoPneus");
-                    int modoMotor = rs.getInt("ModoMotor");
                     int cilindrada = rs.getInt("Cilindrada");
                     int potencia = rs.getInt("Potencia");
-                    int potenciaC = rs.getInt("PotenciaC");
                     switch (categoria) {
                         case "C1":
-                            carro = new C1(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor,
-                                    potencia,
-                                    potenciaC, cilindrada);
+                            carro = new C1(idCarro, marca, modelo, categoria, potencia, cilindrada);
                             break;
                         case "C2":
-                            carro = new C2(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor,
-                                    potencia, potenciaC, cilindrada);
+                            carro = new C2(idCarro, marca, modelo, categoria, potencia, cilindrada);
                             break;
                         case "GT":
-                            carro = new GT(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor,
-                                    potencia, potenciaC, cilindrada, 10.0f);
+                            carro = new GT(idCarro, marca, modelo, categoria, potencia, cilindrada);
                             break;
                         case "SC":
-                            carro = new SC(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor,
-                                    potencia, potenciaC, cilindrada);
+                            carro = new SC(idCarro, marca, modelo, categoria, potencia, cilindrada);
                             break;
                     }
                 }
@@ -221,30 +201,20 @@ public class CarroDAO implements Map<String, Carro> {
                 String categoria = rs.getString("Categoria");
                 String marca = rs.getString("Marca");
                 String modelo = rs.getString("Modelo");
-                float pac = rs.getFloat("Pac");
-                double fiabilidade = rs.getDouble("Fiabilidade");
-                int tipoPneus = rs.getInt("TipoPneus");
-                int modoMotor = rs.getInt("ModoMotor");
                 int cilindrada = rs.getInt("Cilindrada");
                 int potencia = rs.getInt("Potencia");
-                int potenciaC = rs.getInt("PotenciaC");
                 switch (categoria) {
                     case "C1":
-                        carro = new C1(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor,
-                                potencia,
-                                potenciaC, cilindrada);
+                        carro = new C1(idCarro, marca, modelo, categoria, potencia, cilindrada);
                         break;
                     case "C2":
-                        carro = new C2(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor,
-                                potencia, potenciaC, cilindrada);
+                        carro = new C2(idCarro, marca, modelo, categoria, potencia, cilindrada);
                         break;
                     case "GT":
-                        carro = new GT(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor,
-                                potencia, potenciaC, cilindrada, 10.0f);
+                        carro = new GT(idCarro, marca, modelo, categoria, potencia, cilindrada);
                         break;
                     case "SC":
-                        carro = new SC(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor,
-                                potencia, potenciaC, cilindrada);
+                        carro = new SC(idCarro, marca, modelo, categoria, potencia, cilindrada);
                         break;
                 }
                 values.add(carro);
@@ -302,31 +272,21 @@ public class CarroDAO implements Map<String, Carro> {
                 String categoria = rs.getString("Categoria");
                 String marca = rs.getString("Marca");
                 String modelo = rs.getString("Modelo");
-                float pac = rs.getFloat("Pac");
-                double fiabilidade = rs.getDouble("Fiabilidade");
-                int tipoPneus = rs.getInt("TipoPneus");
-                int modoMotor = rs.getInt("ModoMotor");
                 int cilindrada = rs.getInt("Cilindrada");
                 int potencia = rs.getInt("Potencia");
-                int potenciaC = rs.getInt("PotenciaC");
                 Carro carro = null;
                 switch (categoria) {
                     case "C1":
-                        carro = new C1(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor,
-                                potencia,
-                                potenciaC, cilindrada);
+                        carro = new C1(idCarro, marca, modelo, categoria, potencia, cilindrada);
                         break;
                     case "C2":
-                        carro = new C2(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor,
-                                potencia, potenciaC, cilindrada);
+                        carro = new C2(idCarro, marca, modelo, categoria, potencia, cilindrada);
                         break;
                     case "GT":
-                        carro = new GT(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor,
-                                potencia, potenciaC, cilindrada, 10.0f);
+                        carro = new GT(idCarro, marca, modelo, categoria, potencia, cilindrada);
                         break;
                     case "SC":
-                        carro = new SC(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor,
-                                potencia, potenciaC, cilindrada);
+                        carro = new SC(idCarro, marca, modelo, categoria, potencia, cilindrada);
                         break;
                 }
                 set.add(new AbstractMap.SimpleEntry<>(idCarro, carro));

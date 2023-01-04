@@ -4,7 +4,7 @@ import BaseDeDados.*;
 import SimuladorLN.SSCampeonato.SSCarro.Carro;
 import SimuladorLN.SSCampeonato.SSCarro.Piloto;
 
-public class Participante {
+public class Participante implements Comparable<Conta> {
 
 	private PilotoDAO pilotoDAO;
 	private CarroDAO carroDAO;
@@ -39,6 +39,9 @@ public class Participante {
 	public void configuraCampeonato() {
 		// TODO - implement Participante.configuraCampeonato
 		throw new UnsupportedOperationException();
+	}
+	public int compareTo(Participante o) {
+        return this.scoreCampeonato-o.getScoreCampeonato();
 	}
 
 	/**

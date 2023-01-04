@@ -25,8 +25,12 @@ public class Campeonato {
 		this.nome = nome;
 	}
 
-	public String getNome() {
+	public static String getNome() {
 		return this.nome;
+	}
+
+	public static String getCampeonato() {
+		return this.idCampeonato;
 	}
 
 	public Map<String, Circuito> getCircuitos() {

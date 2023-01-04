@@ -1,23 +1,33 @@
 package SimuladorLN.SSCampeonato;
 
+import java.util.Collection;
 import java.util.TreeMap;
 
 import BaseDeDados.*;
 
 public class SSCampeonatoFacade implements ICampeonato {
+	/* campeonatos existentes */
 
-	private CampeonatoDAO todos_campeonatos;
+	TreeMap<String, Integer> scoreCamp = new TreeMap<String, Integer>();
+	private CampeonatoDAO todos_campeonato;
 
 	/**
 	 * 
 	 * @param idCampeonato
 	 */
+
 	public String infoCampeonato(String idCampeonato) {
-		// TODO - implement SSCampeonatoFacade.infoCampeonato
 		throw new UnsupportedOperationException();
 	}
 
+	/* Constutor por omissão */
+	public SSCampeonatoFacade(String todos_campeonatos) {
+		this.todos_campeonato = CampeonatoDAO.getInstance();
+	}
+
+	// dar print de listar campeaonato
 	public void listarCampeonatos() {
+
 		// TODO - implement SSCampeonatoFacade.listarCampeonatos
 		throw new UnsupportedOperationException();
 	}
@@ -45,8 +55,7 @@ public class SSCampeonatoFacade implements ICampeonato {
 	 * @param scoreCamp
 	 */
 	public void setScoreCampeonato(TreeMap<String, Integer> scoreCamp) {
-		// TODO - implement SSCampeonatoFacade.setScoreCampeonato
-		throw new UnsupportedOperationException();
+
 	}
 
 }

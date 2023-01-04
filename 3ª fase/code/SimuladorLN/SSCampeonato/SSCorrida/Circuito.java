@@ -11,7 +11,7 @@ public class Circuito {
 	private int nCurvas;
 	private int nChicanes;
 	private int nRetas;
-	private Map<String,Caracteristica> caracteristicas;
+	private Map<String, Caracteristica> caracteristicas;
 
 	/* Construtores */
 	public Circuito() {
@@ -25,15 +25,15 @@ public class Circuito {
 	}
 
 	public Circuito(String idCircuito, String nomeCircuito, float distancia, int nCurvas, int nChicanes,
-			Map<String,Caracteristica> carac) {
+			Map<String, Caracteristica> carac) {
 		this.idCircuito = idCircuito;
 		this.nomeCircuito = nomeCircuito;
 		this.distancia = distancia;
 		this.nCurvas = nCurvas;
 		this.nChicanes = nChicanes;
-		for (Caracteristica c : carac.values()){
-            this.caracteristicas.put(c.getIdCaracteristica(), c.clone());
-        }
+		for (Caracteristica c : carac.values()) {
+			this.caracteristicas.put(c.getIdCaracteristica(), c.clone());
+		}
 	}
 
 	public Circuito(Circuito c) {
@@ -50,7 +50,7 @@ public class Circuito {
 	 * 
 	 * @return Id do circuito
 	 */
-	public String getIdCircuito() {
+	public static String getIdCircuito() {
 		return this.idCircuito;
 	}
 
@@ -100,10 +100,10 @@ public class Circuito {
 	 */
 	public Map<String, Caracteristica> getCaracteristicas() {
 		Map<String, Caracteristica> carac = new HashMap<>();
-        for(String id : this.caracteristicas.keySet()){
-            carac.put(id, this.caracteristicas.get(id).clone());
-        }
-        return carac;
+		for (String id : this.caracteristicas.keySet()) {
+			carac.put(id, this.caracteristicas.get(id).clone());
+		}
+		return carac;
 	}
 
 	/**
@@ -166,7 +166,12 @@ public class Circuito {
 	 * @param caracteristicas
 	 */
 	public void definirGDU(String idCaracteristica, float gdu) {
-		//this.caracteristicas.values().stream().forEach(c->c.setGDU(gdu));
+		// this.caracteristicas.values().stream().forEach(c->c.setGDU(gdu));
 		this.caracteristicas.get(idCaracteristica).setGDU(gdu);
 	}
+
+	public Circuito clone() {
+		return new Circuito(this);
+	}
+
 }

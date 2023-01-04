@@ -16,12 +16,9 @@ public class C2_Hibrido extends C2 implements Hibrido {
         this.potenciaE = 0;
     }
 
-    public C2_Hibrido(String idCarro, String modelo, String marca, String categoria, float pac, double fiabilidade,
-            int tipoPneus,
-            int modoMotor, int potencia, int potenciaC, int cilindrada, int nAfinacoes, int potenciaE) {
-        super(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor, potencia, potenciaC,
-                cilindrada,
-                nAfinacoes);
+    public C2_Hibrido(String idCarro, String marca, String modelo, String categoria, int potenciaC, int cilindrada,
+            int potenciaE) {
+        super(idCarro, marca, modelo, categoria, potenciaC, cilindrada);
         this.potenciaE = potenciaE;
     }
 

@@ -15,21 +15,23 @@ public class C1 extends Carro {
 		this.nAfinacoes = 0;
 	}
 
-	public C1(String idCarro, String modelo, String marca, String categoria, float pac, double fiabilidade,
-			int tipoPneus, int modoMotor,
-			int potencia, int potenciaC, int cilindrada) {
-		super(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor, potencia, potenciaC,
-				cilindrada);
+	public C1(String idCarro, String marca, String modelo, String categoria,
+			int potenciaC, int cilindrada) {
+		super(idCarro, marca, modelo, categoria, potenciaC, cilindrada);
 		// this.nAfinacoes = 0;
 	}
 
-	public C1(String idCarro, String modelo, String marca, String categoria, float pac, double fiabilidade,
-			int tipoPneus, int modoMotor,
-			int potencia, int potenciaC, int cilindrada, int nAfinacoes) {
-		super(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor, potencia, potenciaC,
-				cilindrada);
-		this.nAfinacoes = nAfinacoes;
-	}
+	/*
+	 * public C1(String idCarro, String modelo, String marca, String categoria,
+	 * float pac, double fiabilidade,
+	 * int tipoPneus, int modoMotor,
+	 * int potencia, int potenciaC, int cilindrada, int nAfinacoes) {
+	 * super(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus,
+	 * modoMotor, potencia, potenciaC,
+	 * cilindrada);
+	 * this.nAfinacoes = nAfinacoes;
+	 * }
+	 */
 
 	public C1(C1 p) {
 		super(p);
@@ -61,6 +63,11 @@ public class C1 extends Carro {
 
 	public Carro clone() {
 		return new C1(this);
+	}
+
+	public void calculaFiabilidade(String idCarro, int n_voltas, int cts, int sva) {
+		double fiabilidade = 0.95;
+		this.setFiabilidade(fiabilidade);
 	}
 
 }

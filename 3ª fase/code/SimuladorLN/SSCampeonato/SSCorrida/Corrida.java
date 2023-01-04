@@ -1,21 +1,57 @@
 package SimuladorLN.SSCampeonato.SSCorrida;
+
 import SimuladorLN.SSConta.Participante;
 import java.util.Map;
 import java.util.TreeMap;
 
-
 public class Corrida {
 
-	private String idCorrida;	
+	private String idCorrida;
 	private int voltas;
 	private int meteorologia;
 	private Circuito circuito;
-	private TreeMap<String, Integer> scoreCorr = new TreeMap<>();
+	private TreeMap<String, Integer> scoreCorrida;
 
+	/* Construtores */
+	public Corrida() {
+		this.idCorrida = "";
+		this.voltas = 0;
+		this.meteorologia = 0;
+		this.circuito = new Circuito();
+		this.scoreCorrida = new TreeMap<>();
+	}
 
-	
+	public Corrida(String idCorrida, int voltas, int meteorologia, Circuito circuito, TreeMap<String, Integer> score) {
+		this.idCorrida = idCorrida;
+		this.voltas = voltas;
+		this.meteorologia = meteorologia;
+		this.circuito = circuito.clone();
+		this.scoreCorrida = score;
+	}
 
+	public Corrida(Corrida c) {
+		this.idCorrida = c.getIdCorrida();
+		this.meteorologia = c.getMeteorologia();
+		this.voltas = c.getVoltas();
+		this.circuito = c.getCircuito();
+		this.scoreCorrida = c.getScoreCorrida();
+	}
 
+	public Circuito getCircuito() {
+		return this.circuito.clone();
+	}
+
+	public TreeMap<String, Integer> getScoreCorrida() {
+		return this.scoreCorrida;
+	}
+
+	public String getIdCorrida() {
+		return this.idCorrida;
+	}
+
+	public int getVoltas() {
+		return this.voltas;
+	}
 
 	public int getMeteorologia() {
 		return this.meteorologia;
@@ -23,25 +59,26 @@ public class Corrida {
 
 	/**
 	 * 
-	 * @param participantes
+	 * @param circuito
 	 */
-	public void calcularDespistes(Map<String, Participante> participantes) {
-		// TODO - implement Corrida.calcularDespistes
-		throw new UnsupportedOperationException();
+	public void setCircuito(Circuito circuito) {
+		this.circuito = circuito;
 	}
 
 	/**
 	 * 
-	 * @param participantes
+	 * @param voltas
 	 */
-	public void calcularAvarias(Map<String, Participante> participantes) {
-		// TODO - implement Corrida.calcularAvarias
-		throw new UnsupportedOperationException();
+	public void setIdCorrida(String idCorrida) {
+		this.idCorrida = idCorrida;
 	}
 
-	public Map<String, Participante> getParticipantes() {
-		// TODO - implement Corrida.getParticipantes
-		throw new UnsupportedOperationException();
+	/**
+	 * 
+	 * @param voltas
+	 */
+	public void setScoreCorrida(TreeMap<String, Integer> score) {
+		this.scoreCorrida = score;
 	}
 
 	/**
@@ -52,17 +89,28 @@ public class Corrida {
 		this.voltas = voltas;
 	}
 
-	public int getVoltas() {
-		return this.voltas;
+	/**
+	 * 
+	 * @param meteoeologia
+	 */
+	public void setMeteorologia(int meteorologia) {
+		this.meteorologia = meteorologia;
 	}
 
 	/**
 	 * 
-	 * @param participante
+	 * @param participantes
 	 */
-	public void registaParticipante(Participante participante) {
-		// TODO - implement Corrida.registaParticipante
-		throw new UnsupportedOperationException();
+	public void calcularDespistes(Map<String, Participante> participantes) {
+
+	}
+
+	/**
+	 * 
+	 * @param participantes
+	 */
+	public void calcularAvarias(Map<String, Participante> participantes) {
+
 	}
 
 }

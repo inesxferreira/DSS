@@ -1,9 +1,10 @@
 package SimuladorLN.SSCampeonato.SSCorrida;
+
 import SimuladorLN.SSConta.Participante;
 import java.util.List;
 import java.util.Map;
 
-public interface ICorrida {
+public interface ICircuito {
 
 	void simularCorrida();
 

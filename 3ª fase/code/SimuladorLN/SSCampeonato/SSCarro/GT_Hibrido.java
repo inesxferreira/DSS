@@ -16,11 +16,9 @@ public class GT_Hibrido extends GT implements Hibrido {
         this.potenciaE = 0;
     }
 
-    public GT_Hibrido(String idCarro, String modelo, String marca, String categoria, float pac, double fiabilidade,
-            int tipoPneus, int modoMotor, int potencia, int potenciaC, int cilindrada, float deterioracao,
+    public GT_Hibrido(String idCarro, String marca, String modelo, String categoria, int potenciaC, int cilindrada,
             int potenciaE) {
-        super(idCarro, modelo, marca, categoria, pac, fiabilidade, tipoPneus, modoMotor, potencia, potenciaC,
-                cilindrada, deterioracao);
+        super(idCarro, marca, modelo, categoria, potenciaC, cilindrada);
         this.potenciaE = potenciaE;
     }
 

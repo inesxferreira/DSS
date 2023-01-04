@@ -16,7 +16,6 @@ public abstract class Carro {
 	private double fiabilidade;
 	private int tipoPneus;
 	private int modoMotor;
-	private int potencia;
 	private int potenciaC;
 	private int cilindrada;
 
@@ -30,36 +29,29 @@ public abstract class Carro {
 		this.fiabilidade = 0.0f;
 		this.tipoPneus = 0;
 		this.modoMotor = 0;
-		this.potencia = 0;
 		this.potenciaC = 0;
 		this.cilindrada = 0;
 	}
 
-	public Carro(String idCarro, String modelo, String marca, String categoria, float pac, double fiabilidade,
-			int tipoPneus, int modoMotor, int potencia, int potenciaC, int cilindrada) {
+	public Carro(String idCarro, String marca, String modelo, String categoria, int potenciaC,
+			int cilindrada) {
 		this.idCarro = idCarro;
-		this.modelo = modelo;
 		this.marca = marca;
+		this.modelo = modelo;
 		this.categoria = categoria;
-		this.pac = pac;
-		this.fiabilidade = fiabilidade;
-		this.tipoPneus = tipoPneus;
-		this.modoMotor = modoMotor;
-		this.potencia = potencia;
 		this.potenciaC = potenciaC;
 		this.cilindrada = cilindrada;
 	}
 
 	public Carro(Carro c) {
 		this.idCarro = c.getIdCarro();
-		this.modelo = c.getModelo();
 		this.marca = c.getMarca();
+		this.modelo = c.getModelo();
 		this.categoria = c.getCategoria();
 		this.pac = c.getPac();
 		this.fiabilidade = c.getFiabilidade();
 		this.tipoPneus = c.getTipoPneus();
 		this.modoMotor = c.getModoMotor();
-		this.potencia = c.getPotencia();
 		this.potenciaC = c.getPotenciaC();
 		this.cilindrada = c.getCilindrada();
 	}
@@ -95,10 +87,6 @@ public abstract class Carro {
 
 	public int getModoMotor() {
 		return this.modoMotor;
-	}
-
-	public int getPotencia() {
-		return this.potencia;
 	}
 
 	public int getPotenciaC() {
@@ -142,10 +130,6 @@ public abstract class Carro {
 		this.modoMotor = modoMotor;
 	}
 
-	public void setPotencia(int potenciaC, int potenciaE) {
-		this.potencia = potenciaC + potenciaE;
-	}
-
 	public void setPotenciaC(int potenciaC) {
 		this.potenciaC = potenciaC;
 	}
@@ -178,8 +162,6 @@ public abstract class Carro {
 		sb.append(this.tipoPneus);
 		sb.append("\nModo do Motor: ");
 		sb.append(this.modoMotor);
-		sb.append("\nPotencia: ");
-		sb.append(this.potencia);
 		sb.append("\nCilindrada: ");
 		sb.append(this.cilindrada);
 		return sb.toString();
@@ -201,11 +183,20 @@ public abstract class Carro {
 				this.fiabilidade == c.getFiabilidade() &&
 				this.tipoPneus == c.getTipoPneus() &&
 				this.modoMotor == c.getModoMotor() &&
-				this.potencia == c.getPotencia() &&
 				this.potenciaC == c.getPotenciaC() &&
 				this.cilindrada == c.getCilindrada());
 	}
 
 	public abstract Carro clone();
+
+	/**
+	 * Método que calcula e atribui uma fiabilida a um carro.
+	 *
+	 * @param idCarro  identificador do carro.
+	 * @param n_voltas número de voltas da corrida.
+	 * @param cts      habilidade chuva vs tempo seco do piloto.
+	 * @param sva      agressividade do piloto.
+	 */
+	public abstract void calculaFiabilidade(String idCarro, int n_voltas, int cts, int sva);
 
 }

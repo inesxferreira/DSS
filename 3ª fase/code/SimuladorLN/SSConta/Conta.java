@@ -1,6 +1,6 @@
 package SimuladorLN.SSConta;
 
-public class Conta {
+public class Conta implements Comparable<Conta> {
 
 	private RankingGlobal posicao;
 	private String idConta;
@@ -21,9 +21,11 @@ public class Conta {
 	 * 
 	 * @param scoreDoCampeonato
 	 */
+	// PRECISO DE REVER ESTA MELHOR HA AQUI UMAS DUVIDAS !!!!! FALTA DEPOIS MUDAR A
+	// POSICAO
 	private void atualizaScore(int scoreDoCampeonato) {
-		// TODO - implement Conta.atualizaScore
-		throw new UnsupportedOperationException();
+		this.score += scoreDoCampeonato;
+		this.posicao.replace(idConta);
 	}
 
 	/**
@@ -32,7 +34,7 @@ public class Conta {
 	 * @param password
 	 * @param modo
 	 */
-	public String criarConta(String username, String password, String modo) implements Comparable<Conta> {
+	public String criarConta(String username, String password, String modo) {
 		// TODO - implement Conta.criarConta
 		throw new UnsupportedOperationException();
 	}
@@ -61,16 +63,18 @@ public class Conta {
 	}
 
 	public int compareTo(Conta o) {
-        return this.score-o.getScore();
-
-	/**
+		return this.score - o.getScore();
+	}
+	/*
 	 * 
 	 * @param nome
+	 * 
 	 * @param password
 	 *
-	public void fazerLogin(String nome, String password) {
-		// TODO - implement Conta.fazerLogin
-		throw new UnsupportedOperationException();
-	}*/
+	 * public void fazerLogin(String nome, String password) {
+	 * // TODO - implement Conta.fazerLogin
+	 * throw new UnsupportedOperationException();
+	 * }
+	 */
 
 }
