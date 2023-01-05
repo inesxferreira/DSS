@@ -1,15 +1,13 @@
 package SimuladorLN.SSCampeonato;
 
 import java.util.*;
-import BaseDeDados.*;
 import SimuladorLN.SSCampeonato.SSCorrida.*;
 
 public class Campeonato {
-
-	private Collection<CampeonatoDAO> campeonatoDAO;
 	private String idCampeonato;
-	TreeMap<String, Integer> scoreCamp = new TreeMap<String, Integer>();
 	private String nome;
+	TreeMap<String, Integer> scoreCamp = new TreeMap<String, Integer>();
+	private Map<String, Circuito> circuitos = new HashMap<String, Circuito>();
 
 	public Campeonato() {
 		this.nome = "";
@@ -17,29 +15,28 @@ public class Campeonato {
 
 	}
 
-	public Campeonato(Collection<CampeonatoDAO> campeonatoDAO, String idCampeonato, TreeMap<String, Integer> scoreCamp,
-			String nome) {
-		this.campeonatoDAO = campeonatoDAO;
+	public Campeonato(String idCampeonato, String nome) {
 		this.idCampeonato = idCampeonato;
-		this.scoreCamp = scoreCamp;
 		this.nome = nome;
 	}
 
-	public static String getNome() {
+	public Campeonato(String idCampeonato, String nome, Map<String,Circuito> circuitos) {
+		this.idCampeonato = idCampeonato;
+		this.nome = nome;
+		this.circuitos = circuitos;
+	}
+
+	public String getNome() {
 		return this.nome;
 	}
 
-	public static String getCampeonato() {
+	public String getCampeonato() {
 		return this.idCampeonato;
 	}
 
 	public Map<String, Circuito> getCircuitos() {
 
-		throw new UnsupportedOperationException();
-	}
-
-	public void setCampeonatoDAO(Collection<CampeonatoDAO> campeonatoDAO) {
-		this.campeonatoDAO = campeonatoDAO;
+		return this.circuitos;
 	}
 
 	public void setIdCampeonato(String idCampeonato) {
@@ -54,10 +51,6 @@ public class Campeonato {
 		this.nome = nome;
 	}
 
-	public Collection<CampeonatoDAO> getCampeonatoDAO() {
-		return campeonatoDAO;
-	}
-
 	public String getIdCampeonato() {
 		return idCampeonato;
 	}
@@ -68,9 +61,7 @@ public class Campeonato {
 
 	@Override
 	public String toString() {
-		return "Campeonato{" +
-				"campeonatoDAO=" + campeonatoDAO +
-				", idCampeonato='" + idCampeonato + '\'' +
+		return "Campeonato{idCampeonato='" + idCampeonato + '\'' +
 				", scoreCamp=" + scoreCamp +
 				", nome='" + nome + '\'' +
 				'}';
@@ -83,12 +74,12 @@ public class Campeonato {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		Campeonato that = (Campeonato) o;
-		return Objects.equals(campeonatoDAO, that.campeonatoDAO) && Objects.equals(idCampeonato, that.idCampeonato)
+		return Objects.equals(idCampeonato, that.idCampeonato)
 				&& Objects.equals(scoreCamp, that.scoreCamp) && Objects.equals(nome, that.nome);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(campeonatoDAO, idCampeonato, scoreCamp, nome);
+		return Objects.hash(idCampeonato, scoreCamp, nome);
 	}
 }

@@ -1,7 +1,11 @@
 package BaseDeDados;
 
 import java.sql.*;
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import SimuladorLN.SSCampeonato.*;
@@ -14,12 +18,12 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
         try (Connection conn = DAOconfig.getConnection();
                 Statement stm = conn.createStatement()) {
             String sql = "CREATE TABLE Campeonato (" +
-                    "idCampeonato INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "nome VARCHAR(255) NOT NULL);";
+                    "idCampeonato VARCHAR(10) PRIMARY KEY AUTOINCREMENT, " +
+                    "nome VARCHAR(30) NOT NULL);";
             stm.executeUpdate(sql);
             sql = "CREATE TABLE circuito_campeonato (" +
-                    "idCampeonato INTEGER NOT NULL," +
-                    "idCircuito INTEGER NOT NULL," +
+                    "idCampeonato VARCHAR(10) NOT NULL," +
+                    "idCircuito VARCHAR(10) NOT NULL," +
                     "PRIMARY KEY (idCampeonato, idCircuito)," +
                     "FOREIGN KEY (idCampeonato) REFERENCES Campeonato(idCampeonato)," +
                     "FOREIGN KEY (idCircuito) REFERENCES Circuito(idCircuito));";
@@ -44,49 +48,51 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
     }
 
     @Override
-    public Campeonato put(String idCampeonato, String nome) {
-        try (
-                Connection con = DAOconfig.getConnection();
-                PreparedStatement stm = con.prepareStatement(
-                        "INSERT INTO Campeonato (idCampeonato, ) VALUES (?,?)")) {
-            stm.setString(1, Campeonato.getCampeonato());
-            stm.setString(2, Campeonato.getNome());
+    public Campeonato put(String id, Campeonato campeonato) {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DAOconfig.getConnection();
+            stm = con.prepareStatement(
+                    "INSERT INTO Campeonato (idCampeonato, nome) VALUES (?,?)");
+            stm.setString(1, id);
+            stm.setString(2, campeonato.getNome());
             stm.executeUpdate();
-            if (con != null)
-                con.close();
+            for (Circuito circuito : campeonato.getCircuitos().values()) {
+                stm = con.prepareStatement(
+                        "INSERT INTO circuito_campeonato (idCampeonato, idCircuito) VALUES (?,?)");
+                stm.setString(1, id);
+                stm.setString(2, circuito.getIdCircuito());
+                stm.executeUpdate();
+            }
         } catch (SQLException e) {
             // Erro a inserir campeonato...
             e.printStackTrace();
             throw new NullPointerException(e.getMessage());
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        return;
-    }
-
-    @Override
-    public Campeonato put(String idCampeonato, String idCircuito) {
-        try (
-                Connection con = DAOconfig.getConnection();
-                PreparedStatement stm = con.prepareStatement(
-                        "INSERT INTO circuito_campeonato(idCircuito, idCampeonato) VALUES (?,?)")) {
-            stm.setString(1, Campeonato.getCampeonato());
-            stm.setString(2, Circuito.getIdCircuito());
-            stm.executeUpdate();
-            if (con != null)
-                con.close();
-
-        } catch (SQLException e) {
-            // Erro a inserir carro...
-            e.printStackTrace();
-            throw new NullPointerException(e.getMessage());
-        }
-        return;
+        return campeonato;
     }
 
     @Override
     public Campeonato get(Object key) {
         String idCampeonato = (String) key;
-        Campeonato carro = null;
-        String sql = "SELECT * FROM campeonato WHERE IdCampeonato = ?";
+        Campeonato campeonato = null;
+        String sql = "SELECT * FROM Campeonato WHERE idCampeonato = ?";
 
         try (
                 Connection con = DAOconfig.getConnection();
@@ -94,261 +100,237 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
             stm.setString(1, idCampeonato);
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    String categoria = rs.getString("Categoria");
-                    String marca = rs.getString("Marca");
-                    String modelo = rs.getString("Modelo");
-                    int cilindrada = rs.getInt("Cilindrada");
-                    int potencia = rs.getInt("Potencia");
-                    switch (categoria) {
-                        case "C1":
-                            carro = new C1(idCarro, marca, modelo, categoria, potencia, cilindrada);
-                            break;
-                        case "C2":
-                            carro = new C2(idCarro, marca, modelo, categoria, potencia, cilindrada);
-                            break;
-                        case "GT":
-                            carro = new GT(idCarro, marca, modelo, categoria, potencia, cilindrada);
-                            break;
-                        case "SC":
-                            carro = new SC(idCarro, marca, modelo, categoria, potencia, cilindrada);
-                            break;
-                    }
+                    String nome = rs.getString("nome");
+                    campeonato = new Campeonato(idCampeonato, nome);
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
         } catch (SQLException e) {
+            // Erro a obter campeonato...
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
-        return carro;
+
+        try (
+                Connection con = DAOconfig.getConnection();
+                Statement stm = con.createStatement()) {
+            sql = "SELECT idCircuito FROM circuito_campeonato WHERE idCampeonato = '" + idCampeonato + "'";
+            try (ResultSet rs = stm.executeQuery(sql)) {
+                while (rs.next()) {
+                    String idCircuito = rs.getString("idCircuito");
+                    Circuito circuito = CircuitoDAO.getInstance().get(idCircuito);
+                    campeonato.getCircuitos().put(idCircuito, circuito);
+                }
+            }
+        } catch (SQLException e) {
+            // Erro a obter circuitos do campeonato...
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
+        }
+        return campeonato;
     }
 
     @Override
     public boolean containsKey(Object key) {
-        String idCarro = (String) key;
+        String idCampeonato = (String) key;
         boolean res = false;
-        String sql = "SELECT * FROM carro WHERE IdCarro = ?";
+        String sql = "SELECT * FROM Campeonato WHERE idCampeonato = ?";
         try (
                 Connection con = DAOconfig.getConnection();
                 PreparedStatement stm = con.prepareStatement(sql)) {
-            stm.setString(1, idCarro);
+            stm.setString(1, idCampeonato);
             try (ResultSet rs = stm.executeQuery()) {
                 res = rs.next();
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
         } catch (SQLException e) {
+            // Erro a verificar existência do campeonato...
             e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
         return res;
     }
 
     @Override
     public Set<String> keySet() {
-        Set<String> set = new HashSet<>();
-        String sql = "SELECT IdCarro FROM carro";
+        Set<String> campeonatos = new HashSet<>();
         try (
                 Connection con = DAOconfig.getConnection();
-                PreparedStatement stm = con.prepareStatement(sql);
+                PreparedStatement stm = con.prepareStatement(
+                        "SELECT idCampeonato FROM Campeonato");
                 ResultSet rs = stm.executeQuery()) {
             while (rs.next()) {
-                set.add(rs.getString("IdCarro"));
+                campeonatos.add(rs.getString("idCampeonato"));
             }
         } catch (SQLException e) {
+            // Erro a obter campeonatos...
             e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
-        return set;
+        return campeonatos;
     }
 
     @Override
-    public Carro remove(Object key) {
-        String idCarro = (String) key;
-        Carro carro = get(idCarro);
-        String sql = "DELETE FROM carro WHERE IdCarro = ?";
-
+    public Campeonato remove(Object key) {
+        String idCampeonato = (String) key;
+        Campeonato campeonato = this.get(idCampeonato);
+        if (campeonato == null) {
+            return null;
+        }
         try (
                 Connection con = DAOconfig.getConnection();
-                PreparedStatement stm = con.prepareStatement(sql)) {
-            stm.setString(1, idCarro);
+                PreparedStatement stm = con.prepareStatement(
+                        "DELETE FROM Campeonato WHERE idCampeonato = ?")) {
+            stm.setString(1, idCampeonato);
             stm.executeUpdate();
+            PreparedStatement pstm = con.prepareStatement(
+                    "DELETE FROM circuito_campeonato WHERE idCampeonato = ?");
+            pstm.setString(1, idCampeonato);
+            pstm.executeUpdate();
         } catch (SQLException e) {
+            // Erro a remover campeonato...
             e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
-        return carro;
+        return campeonato;
     }
 
     @Override
     public int size() {
         int size = 0;
-        String sql = "SELECT COUNT(*) FROM carro";
-
-        try (
-                Connection con = DAOconfig.getConnection();
-                Statement stm = con.createStatement();
-                ResultSet rs = stm.executeQuery(sql)) {
-            if (rs.next()) {
-                size = rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return size;
-    }
-
-    @Override
-    public Collection<Carro> values() {
-        Collection<Carro> values = new ArrayList<>();
-        Carro carro = null;
-        String sql = "SELECT * FROM carro WHERE IdCarro = ?";
-
+        String sql = "SELECT COUNT(*) FROM Campeonato";
         try (
                 Connection con = DAOconfig.getConnection();
                 PreparedStatement stm = con.prepareStatement(sql);
                 ResultSet rs = stm.executeQuery()) {
-            while (rs.next()) {
-                String idCarro = rs.getString("IdCarro");
-                String categoria = rs.getString("Categoria");
-                String marca = rs.getString("Marca");
-                String modelo = rs.getString("Modelo");
-                int cilindrada = rs.getInt("Cilindrada");
-                int potencia = rs.getInt("Potencia");
-                switch (categoria) {
-                    case "C1":
-                        carro = new C1(idCarro, marca, modelo, categoria, potencia, cilindrada);
-                        break;
-                    case "C2":
-                        carro = new C2(idCarro, marca, modelo, categoria, potencia, cilindrada);
-                        break;
-                    case "GT":
-                        carro = new GT(idCarro, marca, modelo, categoria, potencia, cilindrada);
-                        break;
-                    case "SC":
-                        carro = new SC(idCarro, marca, modelo, categoria, potencia, cilindrada);
-                        break;
-                }
-                values.add(carro);
+            if (rs.next()) {
+                size = rs.getInt(1);
             }
         } catch (SQLException e) {
+            // Erro a contar campeonatos...
             e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
-        return values;
+        return size;
+    }
+
+    @Override
+    public Collection<Campeonato> values() {
+        Collection<Campeonato> campeonatos = new ArrayList<>();
+        try (
+                Connection con = DAOconfig.getConnection();
+                Statement stm = con.createStatement()) {
+            String sql = "SELECT * FROM Campeonato";
+            try (ResultSet rs = stm.executeQuery(sql)) {
+                while (rs.next()) {
+                    String idCampeonato = rs.getString("idCampeonato");
+                    String nome = rs.getString("nome");
+                    Map<String, Circuito> circuitos = getCircuitos(idCampeonato);
+                    Campeonato campeonato = new Campeonato(idCampeonato, nome, circuitos);
+                    campeonatos.add(campeonato);
+                }
+            }
+        } catch (SQLException e) {
+            // Erro a selecionar campeonatos...
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
+        }
+        return campeonatos;
+    }
+
+    private Map<String, Circuito> getCircuitos(String idCampeonato) {
+        Map<String, Circuito> circuitos = new HashMap<>();
+        try (
+                Connection con = DAOconfig.getConnection();
+                PreparedStatement stm = con.prepareStatement(
+                        "SELECT idCircuito FROM circuito_campeonato WHERE idCampeonato = ?")) {
+            stm.setString(1, idCampeonato);
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    String idCircuito = rs.getString("idCircuito");
+                    Circuito circuito = CircuitoDAO.getInstance().get(idCircuito);
+                    circuitos.put(idCircuito, circuito);
+                }
+            }
+        } catch (SQLException e) {
+            // Erro a selecionar circuitos...
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
+        }
+        return circuitos;
     }
 
     @Override
     public void clear() {
-        String sql = "DELETE FROM carro";
         try (
                 Connection con = DAOconfig.getConnection();
-                PreparedStatement stm = con.prepareStatement(sql)) {
-            stm.executeUpdate();
+                PreparedStatement stm = con.prepareStatement(
+                        "DELETE FROM Campeonato WHERE idCampeonato = ?")) {
+            for (String id : this.keySet()) {
+                stm.setString(1, id);
+                stm.executeUpdate();
+                PreparedStatement pstm = con.prepareStatement("DELETE FROM circuito_campeonato WHERE idCampeonato = ?");
+                pstm.setString(1, id);
+                pstm.executeUpdate();
+            }
         } catch (SQLException e) {
+            // Erro ao remover campeonato...
             e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
     }
 
     @Override
     public boolean containsValue(Object value) {
-        if (!(value instanceof Carro))
-            return false;
-        Carro carro = (Carro) value;
-
-        String sql = "SELECT * FROM carro WHERE IdCarro = ?";
+        Campeonato campeonato = (Campeonato) value;
+        boolean resultado = false;
         try (
                 Connection con = DAOconfig.getConnection();
-                PreparedStatement stm = con.prepareStatement(sql)) {
-            stm.setString(1, carro.getIdCarro());
+                PreparedStatement stm = con.prepareStatement(
+                        "SELECT * FROM Campeonato WHERE nome = ?")) {
+            stm.setString(1, campeonato.getNome());
             try (ResultSet rs = stm.executeQuery()) {
-                return rs.next();
-            } catch (SQLException e) {
-                e.printStackTrace();
+                if (rs.next()) {
+                    resultado = true;
+                }
             }
         } catch (SQLException e) {
+            // Erro a verificar se campeonato existe...
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
-        return false;
+        return resultado;
     }
 
     @Override
-    public Set<Entry<String, Carro>> entrySet() {
-        Set<Map.Entry<String, Carro>> set = new HashSet<>();
-        String sql = "SELECT * FROM carro";
-
+    public Set<Map.Entry<String, Campeonato>> entrySet() {
+        Set<Map.Entry<String, Campeonato>> set = new HashSet<>();
         try (
                 Connection con = DAOconfig.getConnection();
-                Statement stm = con.createStatement();
-                ResultSet rs = stm.executeQuery(sql)) {
-            while (rs.next()) {
-                String idCarro = rs.getString("IdCarro");
-                String categoria = rs.getString("Categoria");
-                String marca = rs.getString("Marca");
-                String modelo = rs.getString("Modelo");
-                int cilindrada = rs.getInt("Cilindrada");
-                int potencia = rs.getInt("Potencia");
-                Carro carro = null;
-                switch (categoria) {
-                    case "C1":
-                        carro = new C1(idCarro, marca, modelo, categoria, potencia, cilindrada);
-                        break;
-                    case "C2":
-                        carro = new C2(idCarro, marca, modelo, categoria, potencia, cilindrada);
-                        break;
-                    case "GT":
-                        carro = new GT(idCarro, marca, modelo, categoria, potencia, cilindrada);
-                        break;
-                    case "SC":
-                        carro = new SC(idCarro, marca, modelo, categoria, potencia, cilindrada);
-                        break;
+                PreparedStatement stm = con.prepareStatement(
+                        "SELECT idCampeonato FROM Campeonato")) {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    String id = rs.getString("idCampeonato");
+                    Campeonato campeonato = this.get(id);
+                    set.add(new AbstractMap.SimpleEntry<>(id, campeonato));
                 }
-                set.add(new AbstractMap.SimpleEntry<>(idCarro, carro));
             }
         } catch (SQLException e) {
+            // Erro a selecionar campeonatos...
             e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
         return set;
     }
 
     @Override
     public boolean isEmpty() {
-        String sql = "SELECT COUNT(*) FROM carro";
-        try (
-                Connection con = DAOconfig.getConnection();
-                PreparedStatement stm = con.prepareStatement(sql)) {
-            try (ResultSet rs = stm.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1) == 0;
-                } else {
-                    return true;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return true;
-    }
-
-    @Override
-    public void putAll(Map<? extends String, ? extends Carro> m) {
-        for (Map.Entry<? extends String, ? extends Carro> entry : m.entrySet()) {
-            put(entry.getKey(), entry.getValue());
-        }
-    }
-
-    @Override
-    public Campeonato put(String arg0, Campeonato arg1) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void putAll(Map<? extends String, ? extends Campeonato> arg0) {
-        // TODO Auto-generated method stub
-
+        return this.size() == 0;
     }
 
     @Override
     public void putAll(Map<? extends String, ? extends Campeonato> m) {
-        // TODO Auto-generated method stub
-
+        for (Map.Entry<? extends String, ? extends Campeonato> entry : m.entrySet()) {
+            put(entry.getKey(), entry.getValue());
+        }
     }
 }

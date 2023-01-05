@@ -50,7 +50,7 @@ public class Circuito {
 	 * 
 	 * @return Id do circuito
 	 */
-	public static String getIdCircuito() {
+	public String getIdCircuito() {
 		return this.idCircuito;
 	}
 
