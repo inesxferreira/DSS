@@ -10,11 +10,13 @@ public class RankingGlobal {
 	 * 
 	 * @param idConta
 	 */
-	public int getPosicao(String idConta) {
+	public int getPosicaoRanking(String idConta) {
 		int count = 1;
 		for (String conta : contas.keySet()) {
-			if (conta.equals(idConta))
+			if (conta.equals(idConta)){
+				contas.get(idConta).setPosicao(count);
 				return count;
+			}
 			count++;
 		}
 		if (count > 1)
@@ -22,11 +24,20 @@ public class RankingGlobal {
 		return count;
 	}
 
-	/*
-	 * private void atualizaScoreGlobal() {
-	 * // TODO - implement RankingGlobal.atualizaScoreGlobal
-	 * throw new UnsupportedOperationException();
-	 * }
+	/**
+	 * 
+	 * @param scoreDoCampeonato
 	 */
+	// PRECISO DE REVER ESTA MELHOR HA AQUI UMAS DUVIDAS !!!!! FALTA DEPOIS MUDAR A
+	// POSICAO
+	public void atualizaScore(String idConta,int scoreDoCampeonato) {
+		contas.get(idConta).setScore(contas.get(idConta).getScore()+scoreDoCampeonato);
+		for(Conta c : contas.values())
+			c.get(c.getIdConta()).setPosicao(getPosicaoRanking(id));
+	}
+
+	public int totalDeContas(){
+		return contas.size();
+	}
 
 }

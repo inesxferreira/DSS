@@ -1,6 +1,5 @@
 package SimuladorLN.SSCampeonato;
 
-import java.util.Collection;
 import java.util.TreeMap;
 
 import BaseDeDados.*;
@@ -9,7 +8,7 @@ public class SSCampeonatoFacade implements ICampeonato {
 	/* campeonatos existentes */
 
 	TreeMap<String, Integer> scoreCamp = new TreeMap<String, Integer>();
-	private CampeonatoDAO todos_campeonato;
+	private CampeonatoDAO todos_campeonatos;
 
 	/**
 	 * 
@@ -22,7 +21,7 @@ public class SSCampeonatoFacade implements ICampeonato {
 
 	/* Constutor por omissão */
 	public SSCampeonatoFacade(String todos_campeonatos) {
-		this.todos_campeonato = CampeonatoDAO.getInstance();
+		this.todos_campeonatos = CampeonatoDAO.getInstance();
 	}
 
 	// dar print de listar campeaonato

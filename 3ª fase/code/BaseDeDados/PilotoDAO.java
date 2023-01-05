@@ -192,7 +192,7 @@ public class PilotoDAO implements Map<String, Piloto> {
 
     @Override
     public void clear() {
-        String sql = "DELETE FROM carro";
+        String sql = "DELETE FROM piloto";
         try (
                 Connection con = DAOconfig.getConnection();
                 PreparedStatement stm = con.prepareStatement(sql)) {

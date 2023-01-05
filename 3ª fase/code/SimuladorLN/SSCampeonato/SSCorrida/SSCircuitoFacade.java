@@ -15,18 +15,28 @@ public class SSCircuitoFacade implements ICircuito {
 		this.todos_circuitos = CircuitoDAO.getInstance();
 	}
 
-	public void simularCorrida() {
-		// TODO - implement SSCorridaFacade.simularCorrida
-		throw new UnsupportedOperationException();
-	}
+    /**
+     * Método que devolve um carro dado o seu identificador.
+     *
+     * @param idCircuito id do circuito.
+     * @return Circuito.
+     */
+    public Circuito getCircuito(String idCircuito) {
+        return this.todos_circuitos.get(idCircuito);
+    }
 
-	/**
-	 * 
-	 * @param participantes
-	 */
-	public void setScoreCorrida(Map<String, Participante> participantes) {
-		// TODO - implement SSCorridaFacade.setScoreCorrida
-		throw new UnsupportedOperationException();
+    /**
+     * Método que permite adicionar um carro.
+     *
+     * @param c Carro a adicionar.
+     */
+    public void putCircuito(Circuito c) {
+        this.todos_circuitos.put(c.getIdCircuito(), c);
+    }
+
+	public void simularCorrida(Map<String, Participante> participantes) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	/**
@@ -49,20 +59,31 @@ public class SSCircuitoFacade implements ICircuito {
 
 	/**
 	 * 
-	 * @param idParticipante
+	 * @param participantes
 	 */
-	public void desclassifica(String idParticipante) {
-		// TODO - implement SSCorridaFacade.desclassifica
-		throw new UnsupportedOperationException();
+	public void setScoreCorrida(Map<String, Participante> participantes, Corrida corrida) {
+		// Atribuir um score de acordo com a ordem dos participantes
+		int score = 5;
+		int i = 0;
+
+		Object [] parti = participantes.keySet().toArray();
+
+		while(score != 0){
+			String id = parti[i].toString();
+			corrida.getScoreCorrida().put(id, score);
+			score--;
+			i++;
+		}
+		//participantes.keySet().forEach(id->corrida.getScoreCorrida().put(id, score));
 	}
 
 	/**
 	 * 
-	 * @param participante
+	 * @param idParticipante ID do participante
+	 * @param corrida Corrida em que o participante é desclassificado
 	 */
-	public void registaParticipante(Participante participante) {
-		// TODO - implement SSCorridaFacade.registaParticipante
-		throw new UnsupportedOperationException();
+	public void desclassifica(String idParticipante, Corrida corrida) {
+		corrida.getScoreCorrida().put(idParticipante, 0);
 	}
 
 }

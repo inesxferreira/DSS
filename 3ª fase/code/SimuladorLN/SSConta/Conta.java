@@ -1,31 +1,40 @@
 package SimuladorLN.SSConta;
 
+
 public class Conta implements Comparable<Conta> {
 
-	private RankingGlobal posicao;
+	private int posicao;
 	private String idConta;
 	private String password;
 	private Boolean versaoPremium;
 	private int score;
+
+
+	private String getIdConta() {
+		return this.idConta;
+	}
 
 	/**
 	 * 
 	 * @param nome
 	 * @param password
 	 */
-	private boolean verificarCredenciais(String nome, String pass) {
+	public boolean verificarCredenciais(String nome, String pass) {
 		return nome.equals(this.idConta) && pass.equals(this.password);
+	}
+
+
+	public int getPosicao() {
+		return this.posicao;
 	}
 
 	/**
 	 * 
-	 * @param scoreDoCampeonato
+	 * @param posicao
+	 * 
 	 */
-	// PRECISO DE REVER ESTA MELHOR HA AQUI UMAS DUVIDAS !!!!! FALTA DEPOIS MUDAR A
-	// POSICAO
-	private void atualizaScore(int scoreDoCampeonato) {
-		this.score += scoreDoCampeonato;
-		this.posicao.replace(idConta);
+	public void setPosicao(int pos) {
+		this.posicao = pos;
 	}
 
 	/**
@@ -34,13 +43,25 @@ public class Conta implements Comparable<Conta> {
 	 * @param password
 	 * @param modo
 	 */
-	public String criarConta(String username, String password, String modo) {
-		// TODO - implement Conta.criarConta
-		throw new UnsupportedOperationException();
+	public void criarConta(String username, String password, boolean modo, int ultima_pos) {
+		this.idConta = username;
+		this.password = password;
+		this.posicao = ultima_pos+1;
+		this.versaoPremium = modo;
+		this.score = 0;
 	}
 
 	public int getScore() {
 		return this.score;
+	}
+
+	/**
+	 * 
+	 * @param posicao
+	 * 
+	 */
+	private void setScore(int score) {
+		this.score = score;
 	}
 
 	/**
@@ -65,16 +86,5 @@ public class Conta implements Comparable<Conta> {
 	public int compareTo(Conta o) {
 		return this.score - o.getScore();
 	}
-	/*
-	 * 
-	 * @param nome
-	 * 
-	 * @param password
-	 *
-	 * public void fazerLogin(String nome, String password) {
-	 * // TODO - implement Conta.fazerLogin
-	 * throw new UnsupportedOperationException();
-	 * }
-	 */
 
 }

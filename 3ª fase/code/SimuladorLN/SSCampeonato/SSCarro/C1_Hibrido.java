@@ -7,7 +7,7 @@ package SimuladorLN.SSCampeonato.SSCarro;
  * @version 26122022
  */
 
-public class C1_Hibrido extends C1 implements Hibrido {
+public class C1_Hibrido extends C1 {
     private int potenciaE;
 
     public C1_Hibrido() {
@@ -26,12 +26,10 @@ public class C1_Hibrido extends C1 implements Hibrido {
         this.potenciaE = p.getPotenciaE();
     }
 
-    @Override
     public int getPotenciaE() {
         return this.potenciaE;
     }
 
-    @Override
     public void setPotenciaE(int potenciaE) {
         this.potenciaE = potenciaE;
     }

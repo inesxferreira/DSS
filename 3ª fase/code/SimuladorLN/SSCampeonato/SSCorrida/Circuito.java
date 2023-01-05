@@ -24,8 +24,7 @@ public class Circuito {
 		this.caracteristicas = new HashMap<>();
 	}
 
-	public Circuito(String idCircuito, String nomeCircuito, float distancia, int nCurvas, int nChicanes,
-			Map<String, Caracteristica> carac) {
+	public Circuito(String idCircuito, String nomeCircuito, float distancia, int nCurvas, int nChicanes, Map<String, Caracteristica> carac) {
 		this.idCircuito = idCircuito;
 		this.nomeCircuito = nomeCircuito;
 		this.distancia = distancia;

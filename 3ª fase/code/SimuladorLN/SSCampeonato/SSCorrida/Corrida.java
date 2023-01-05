@@ -10,7 +10,7 @@ public class Corrida {
 	private int voltas;
 	private int meteorologia;
 	private Circuito circuito;
-	private TreeMap<String, Integer> scoreCorrida;
+	private TreeMap<String, Integer> scoreCorrida;  // IdParticipante, ScoreCorrida
 
 	/* Construtores */
 	public Corrida() {
@@ -110,7 +110,7 @@ public class Corrida {
 	 * @param participantes
 	 */
 	public void calcularAvarias(Map<String, Participante> participantes) {
-
+			
 	}
 
 }

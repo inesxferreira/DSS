@@ -1,5 +1,7 @@
 package SimuladorLN.SSConta;
 
+import SimuladorLN.SSCampeonato.SSCarro.Carro;
+
 public interface IConta {
 
 	int getScore();

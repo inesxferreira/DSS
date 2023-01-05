@@ -1,18 +1,17 @@
 package SimuladorLN.SSCampeonato.SSCorrida;
 
 import SimuladorLN.SSConta.Participante;
-import java.util.List;
 import java.util.Map;
 
 public interface ICircuito {
 
-	void simularCorrida();
+	void simularCorrida(Map<String, Participante> participantes);
 
 	/**
 	 * 
 	 * @param participantes
 	 */
-	void setScoreCorrida(Map<String, Participante> participantes);
+	void setScoreCorrida(Map<String, Participante> participantes, Corrida corrida);
 
 	/**
 	 * 
@@ -30,12 +29,6 @@ public interface ICircuito {
 	 * 
 	 * @param idParticipante
 	 */
-	void desclassifica(String idParticipante);
-
-	/**
-	 * 
-	 * @param participante
-	 */
-	void registaParticipante(Participante participante);
+	void desclassifica(String idParticipante, Corrida corrida);
 
 }

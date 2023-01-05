@@ -6,9 +6,9 @@ import SimuladorLN.SSCampeonato.SSCarro.Piloto;
 
 public class Participante implements Comparable<Conta> {
 
+	private String idParticipante;
 	private PilotoDAO pilotoDAO;
 	private CarroDAO carroDAO;
-	private String idParticipante;
 	private int scoreCampeonato;
 	private int fatorOrd;
 

@@ -7,7 +7,7 @@ package SimuladorLN.SSCampeonato.SSCarro;
  * @version 26122022
  */
 
-public class GT_Hibrido extends GT implements Hibrido {
+public class GT_Hibrido extends GT {
 
     private int potenciaE;
 
@@ -27,12 +27,10 @@ public class GT_Hibrido extends GT implements Hibrido {
         this.potenciaE = p.getPotenciaE();
     }
 
-    @Override
     public int getPotenciaE() {
         return this.potenciaE;
     }
 
-    @Override
     public void setPotenciaE(int potenciaE) {
         this.potenciaE = potenciaE;
     }
