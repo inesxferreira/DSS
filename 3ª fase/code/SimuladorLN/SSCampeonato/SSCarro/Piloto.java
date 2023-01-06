@@ -57,7 +57,7 @@ public class Piloto {
 	}
 
 	/* Setters */
-	public void setidPiloto(String idPiloto) {
+	public void setIdPiloto(String idPiloto) {
 		this.idPiloto = idPiloto;
 	}
 
@@ -65,11 +65,11 @@ public class Piloto {
 		this.nome = nome;
 	}
 
-	public void getCTS(Float cts) {
+	public void setCTS(Float cts) {
 		this.cts = cts;
 	}
 
-	public void getSVA(Float sva) {
+	public void setSVA(Float sva) {
 		this.sva = sva;
 	}
 

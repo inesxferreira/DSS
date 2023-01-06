@@ -1,14 +1,41 @@
 package SimuladorLN.SSCampeonato;
 
+import java.util.Map;
 import java.util.TreeMap;
-
-import BaseDeDados.*;
+import BaseDeDados.CampeonatoDAO;
 
 public class SSCampeonatoFacade implements ICampeonato {
 	/* campeonatos existentes */
 
-	TreeMap<String, Integer> scoreCamp = new TreeMap<String, Integer>();
-	private CampeonatoDAO todos_campeonatos;
+	//TreeMap<String, Integer> scoreCamp = new TreeMap<String, Integer>();
+	// private CampeonatoDAO todos_campeonatos;
+	private Map<String, Campeonato> todos_campeonatos;
+
+	/**
+	 * Construtor por omissão para objetos da classe SSCarroFacade.
+	 */
+	public SSCampeonatoFacade() {
+		this.todos_campeonatos = CampeonatoDAO.getInstance();
+	}
+
+	/**
+	 * Método que devolve um campeonato dado o seu identificador.
+	 *
+	 * @param idCamp id do campeonato.
+	 * @return Campeonato.
+	 */
+	public Campeonato getCampeonato(String idCamp) {
+		return this.todos_campeonatos.get(idCamp);
+	}
+
+	/**
+	 * Método que permite adicionar um carro.
+	 *
+	 * @param c Carro a adicionar.
+	 */
+	public void putCampeonato(Campeonato c) {
+		this.todos_campeonatos.put(c.getIdCampeonato(), c.clone());
+	}
 
 	/**
 	 * 
@@ -49,11 +76,9 @@ public class SSCampeonatoFacade implements ICampeonato {
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * 
-	 * @param scoreCamp
-	 */
+	@Override
 	public void setScoreCampeonato(TreeMap<String, Integer> scoreCamp) {
+		// TODO Auto-generated method stub
 
 	}
 

@@ -1,17 +1,47 @@
 package SimuladorLN.SSConta;
 
-
 public class Conta implements Comparable<Conta> {
 
-	private int posicao;
 	private String idConta;
 	private String password;
 	private Boolean versaoPremium;
 	private int score;
 
+	public Conta() {
+		this.idConta = "";
+		this.password = "";
+		this.versaoPremium = false;
+		this.score = 0;
+	}
 
-	private String getIdConta() {
+	public Conta(String idConta, String pass, Boolean premium, int score) {
+		this.idConta = idConta;
+		this.password = pass;
+		this.versaoPremium = premium;
+		this.score = score;
+	}
+
+	public Conta(Conta c) {
+		this.idConta = c.getIdConta();
+		this.password = c.getPassword();
+		this.versaoPremium = c.getVersaoPremium();
+		this.score = c.getScore();
+	}
+
+	String getIdConta() {
 		return this.idConta;
+	}
+
+	private String getPassword() {
+		return this.password;
+	}
+
+	private boolean getVersaoPremium() {
+		return this.versaoPremium;
+	}
+
+	int getScore() {
+		return this.score;
 	}
 
 	/**
@@ -23,19 +53,21 @@ public class Conta implements Comparable<Conta> {
 		return nome.equals(this.idConta) && pass.equals(this.password);
 	}
 
-
-	public int getPosicao() {
-		return this.posicao;
-	}
+	/*
+	 * public int getPosicao() {
+	 * return this.posicao;
+	 * }
+	 */
 
 	/**
 	 * 
 	 * @param posicao
 	 * 
+	 * 
+	 *                public void setPosicao(int pos) {
+	 *                this.posicao = pos;
+	 *                }
 	 */
-	public void setPosicao(int pos) {
-		this.posicao = pos;
-	}
 
 	/**
 	 * 
@@ -43,26 +75,16 @@ public class Conta implements Comparable<Conta> {
 	 * @param password
 	 * @param modo
 	 */
-	public void criarConta(String username, String password, boolean modo, int ultima_pos) {
-		this.idConta = username;
-		this.password = password;
-		this.posicao = ultima_pos+1;
-		this.versaoPremium = modo;
-		this.score = 0;
-	}
-
-	public int getScore() {
-		return this.score;
-	}
-
-	/**
-	 * 
-	 * @param posicao
-	 * 
+	/*
+	 * public Conta(String username, String password, boolean modo, int ultima_pos)
+	 * {
+	 * this.idConta = username;
+	 * this.password = password;
+	 * this.posicao = ultima_pos + 1;
+	 * this.versaoPremium = modo;
+	 * this.score = 0;
+	 * }
 	 */
-	private void setScore(int score) {
-		this.score = score;
-	}
 
 	/**
 	 * 
@@ -75,16 +97,11 @@ public class Conta implements Comparable<Conta> {
 		return false;
 	}
 
-	/**
-	 * 
-	 * @param idParticipante
-	 */
-	public boolean getVersao(String idParticipante) {
-		return this.versaoPremium;
-	}
-
 	public int compareTo(Conta o) {
 		return this.score - o.getScore();
+	}
+
+	public void setScore(int i) {
 	}
 
 }

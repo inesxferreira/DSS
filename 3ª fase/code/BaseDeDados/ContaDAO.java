@@ -13,25 +13,11 @@ public class ContaDAO implements Map<String, Conta> {
     private static ContaDAO singleton = null;
 
     private ContaDAO() {
-        try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
+        try (Connection conn = DAOconfig.getConnection();
                 Statement stm = conn.createStatement()) {
             String sql = "CREATE TABLE IF NOT EXISTS contas(" +
-                    "identificador varchar(45) NOT NULL PRIMARY KEY," +
-                    "score int(10) DEFAULT 0," +
-                    "versaoPremium boolean DEFAULT false)";
-            stm.executeUpdate(sql);
-
-            sql = "CREATE TABLE IF NOT EXISTS ranking_global (" +
-                    "conta_id varchar(10) DEFAULT NULL," +
-                    "foreign key(conta_id) references contas(Identificador))" +
-                    stm.executeUpdate(sql);
-                    
-            sql = "CREATE TABLE IF NOT EXISTS participantes(" +
-                    "id varchar(10) NOT NULL PRIMARY KEY," +
-                    "score_campeonato int(10) DEFAULT 0," +
-                    "posicao int(3) DEFAULT 0," +
-                    "id_conta varchar(45) DEFAULT NULL," +
-                    "foreign key(id_conta) references contas(identificador))";
+                    "IdConta varchar(15) NOT NULL PRIMARY KEY," +
+                    "Password varchar(15) DEFAULT 0)";
             stm.executeUpdate(sql);
         } catch (SQLException e) {
             // Erro a criar tabela...
@@ -50,6 +36,78 @@ public class ContaDAO implements Map<String, Conta> {
             ContaDAO.singleton = new ContaDAO();
         }
         return ContaDAO.singleton;
+    }
+
+    @Override
+    public void clear() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public boolean containsKey(Object key) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean containsValue(Object value) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public Set<Entry<String, Conta>> entrySet() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Conta get(Object key) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public Set<String> keySet() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Conta put(String arg0, Conta arg1) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void putAll(Map<? extends String, ? extends Conta> m) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public Conta remove(Object key) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public int size() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public Collection<Conta> values() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

@@ -75,4 +75,39 @@ public class SSContaFacade implements IConta {
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * 
+	 * @param idConta
+	 */
+	public int getPosicaoRanking(String idConta) {
+		boolean primeiro = true;
+		int count = 1;
+		for (String conta : todas_contas.keySet()) {
+			if (conta.equals(idConta)) {
+				// contas.get(idConta).setPosicao(count);
+				return count;
+			}
+			if (count == 1 && !conta.equals(idConta))
+				primeiro = false;
+			count++;
+		}
+		if (count == 1 && !flag)
+			return -1;
+		return count;
+	}
+
+	/**
+	 * 
+	 * @param scoreDoCampeonato
+	 */
+	// PRECISO DE REVER ESTA MELHOR HA AQUI UMAS DUVIDAS !!!!! FALTA DEPOIS MUDAR A
+	// POSICAO
+	public void atualizaScore(String idConta, int scoreDoCampeonato) {
+		// todas_contas.get(idConta).setScore(todas_contas.get(idConta).getScore() +
+		// scoreDoCampeonato);
+		for (Conta c : todas_contas.values())
+			if (c.getIdConta().equals(idConta))
+				todas_contas.get(idConta).setScore(todas_contas.get(idConta).getScore() + scoreDoCampeonato);
+
+	}
 }

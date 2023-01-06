@@ -24,7 +24,8 @@ public class Circuito {
 		this.caracteristicas = new HashMap<>();
 	}
 
-	public Circuito(String idCircuito, String nomeCircuito, float distancia, int nCurvas, int nChicanes, Map<String, Caracteristica> carac) {
+	public Circuito(String idCircuito, String nomeCircuito, float distancia, int nCurvas, int nChicanes,
+			Map<String, Caracteristica> carac) {
 		this.idCircuito = idCircuito;
 		this.nomeCircuito = nomeCircuito;
 		this.distancia = distancia;
@@ -35,13 +36,22 @@ public class Circuito {
 		}
 	}
 
+	public Circuito(String idCircuito, String nomeCircuito, float distancia, int nCurvas, int nChicanes, int nRetas) {
+		this.idCircuito = idCircuito;
+		this.nomeCircuito = nomeCircuito;
+		this.distancia = distancia;
+		this.nCurvas = nCurvas;
+		this.nChicanes = nChicanes;
+		this.nRetas = nRetas;
+	}
+
 	public Circuito(Circuito c) {
 		this.idCircuito = c.getIdCircuito();
 		this.nomeCircuito = c.getNomeCircuito();
 		this.distancia = c.getDistancia();
-		this.nCurvas = c.getNCurvas();
-		this.nChicanes = c.getNChicanes();
-		this.nRetas = c.getNRetas();
+		this.nCurvas = c.getnCurvas();
+		this.nChicanes = c.getnChicanes();
+		this.nRetas = c.getnRetas();
 		this.caracteristicas = c.getCaracteristicas();
 	}
 
@@ -73,7 +83,7 @@ public class Circuito {
 	 * 
 	 * @return nCurvas
 	 */
-	public int getNCurvas() {
+	public int getnCurvas() {
 		return this.nCurvas;
 	}
 
@@ -81,7 +91,7 @@ public class Circuito {
 	 * 
 	 * @return nChicanes
 	 */
-	public int getNChicanes() {
+	public int getnChicanes() {
 		return this.nChicanes;
 	}
 
@@ -89,7 +99,7 @@ public class Circuito {
 	 * 
 	 * @return nRetas
 	 */
-	public int getNRetas() {
+	public int getnRetas() {
 		return this.nRetas;
 	}
 
@@ -133,7 +143,7 @@ public class Circuito {
 	 * 
 	 * @param nCurvas
 	 */
-	public void setNCurvas(int nCurvas) {
+	public void setnCurvas(int nCurvas) {
 		this.nCurvas = nCurvas;
 	}
 
@@ -141,7 +151,7 @@ public class Circuito {
 	 * 
 	 * @param nChicanes
 	 */
-	public void setNChicanes(int nChicanes) {
+	public void setnChicanes(int nChicanes) {
 		this.nChicanes = nChicanes;
 	}
 
@@ -149,25 +159,27 @@ public class Circuito {
 	 * 
 	 * @param nRetas
 	 */
-	public void setNRetas(int nRetas) {
+	public void setnRetas(int nRetas) {
 		this.nRetas = nRetas;
 	}
 
 	public void calcularNRetas() {
-		nCurvas = getNCurvas();
-		nChicanes = getNChicanes();
+		nCurvas = getnCurvas();
+		nChicanes = getnChicanes();
 		nRetas = (nCurvas + nChicanes) * 2;
-		setNRetas(nRetas);
+		setnRetas(nRetas);
 	}
 
 	/**
 	 * 
 	 * @param caracteristicas
 	 */
-	public void definirGDU(String idCaracteristica, float gdu) {
-		// this.caracteristicas.values().stream().forEach(c->c.setGDU(gdu));
-		this.caracteristicas.get(idCaracteristica).setGDU(gdu);
-	}
+	/*
+	 * public void definirGDU(String idCaracteristica, float gdu) {
+	 * // this.caracteristicas.values().stream().forEach(c->c.setGDU(gdu));
+	 * this.caracteristicas.get(idCaracteristica).setGDU(gdu);
+	 * }
+	 */
 
 	public Circuito clone() {
 		return new Circuito(this);

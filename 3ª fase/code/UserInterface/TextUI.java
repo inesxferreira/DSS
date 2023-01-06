@@ -2,6 +2,7 @@ package UserInterface;
 
 import SimuladorLN.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -16,71 +17,58 @@ public class TextUI {
     // Leitura
     private Scanner scin;
 
+    public void run() throws IOException {
+        Menu.Logo();
+
+        System.out.println("\n\033[1;35mBem vindo ao Sistema da Loja!\033[0m\n");
+        this.menuInicial();
+
+        System.out.println("Saindo!...");
+    }
+
     public TextUI() {
-        // Criar o menu
-        this.menu = new Menu(new String[] {
-                // "Listar Campeonatos",
-                "Configurar Campeonato",
+        Menu menuInicial = new Menu(new String[] { "Jogador", "Guest" });
 
-                "Configurar Corrida",
-                "Listar Circuitos",
-                "Consultar Circuito",
+        Menu menuJogador = new Menu(new String[] { "Criar conta", "Fazer login" });
+        // se entrar no "Criar conta" fazer "inserir username, password e versão
+        // se entrar no "Fazer login" pedir username e password
 
-                "Adicionar Carro",
-                "Consultar Carro",
-                "Listar Carros",
-                "Remover Carro",
-                "Adicionar Piloto",
-                "Consultar Piloto",
-                "Listar Pilotos",
-                "Remover Piloto",
-                "Adicionar Participante",
-                "Consultar Participante",
-                "Listar Participante",
-                "Remover Participante"
+        Menu menuCampeonato = new Menu(new String[] {"Consultar Campeonatos","Ver Ranking global"}); // listar campeonatos existentes
+        Menu menuCircuito = new Menu(new String[] {}); // listar circuitos existentes
+        Menu menuCorrida = new Menu(new String[] {}); // listar corridas existentes
+        Menu menuCarro = new Menu(new String[] {}); // listar carros existentes
+        Menu menuPiloto = new Menu(new String[] {}); // listar pilotos existentes
+
+        // simular corrida .. "Visualizar Ranking Global"
+        Menu menuRanking = new Menu(new String[] {}); // listar ranking global
+
+
+
+        menuInicial.setHandler(1, () -> menuJogador.runOnce());
+        menuInicial.setHandler(2, () -> menuCampeonato.runOnce());
+        menuJogador.setHandler(1, () -> criarConta.runOnce());
+        menuJogador.setHandler(2, () -> fazerLogin.runOnce());
+
+
+        menuCampeonato.setHandler(1, () -> {
+            System.out.println("Lista de Campeonatos");
+            for (int i = 0; i < campeonatos.size(); i++) {
+                System.out.println((i + 1) + " - " + campeonatos.get(i).getNome());
+            }
+
+            System.out.print("Selecione um campeonato: ");
+            int op = is.nextInt();
+            if (op > 0 && op <= campeonatos.size());
         });
-        this.menu.setHandler(1, this::adicionarCampeonato);
-        this.menu.setHandler(2, this::consultarCampeonato);
-        this.menu.setHandler(3, this::listarCampeonatos);
-        this.menu.setHandler(4, this::removerCampeonato);
-
-        this.menu.setHandler(5, this::adicionarCircuito);
-        this.menu.setHandler(6, this::consultarCircuito);
-        this.menu.setHandler(7, this::listarCircuitos);
-        this.menu.setHandler(8, this::removerCircuito);
-
-        this.menu.setHandler(9, this::adicionarCarro);
-        this.menu.setHandler(10, this::consultarCarro);
-        this.menu.setHandler(11, this::listarCarros);
-        this.menu.setHandler(12, this::removerCarro);
-
-        this.menu.setHandler(13, this::adicionarPiloto);
-        this.menu.setHandler(14, this::consultarPiloto);
-        this.menu.setHandler(15, this::listarPilotos);
-        this.menu.setHandler(16, this::removerPiloto);
-
-        this.menu.setHandler(17, this::adicionarParticipante);
-        this.menu.setHandler(18, this::consultarParticipante);
-        this.menu.setHandler(19, this::listarParticipantes);
-        this.menu.setHandler(20, this::removerParticipante);
+        menuCampeonato.setHandler(2, () -> menuRanking.runOnce());
 
         this.model = new TurmasFacade();
-
-        // pré-condições
-        this.menu.setPreCondition(7,
-                () -> this.model.haAlunos() && this.model.haTurmas());
-
-        scin = new Scanner(System.in);
-    }
 
     /**
      * Executa o menu principal e invoca o método correspondente à opção
      * selecionada.
      */
-    public void run() {
-        this.menu.run();
-        System.out.println("Saindo!...");
-    }
+    
 
     // Métodos auxiliares
     private void trataAdicionarAluno() {
@@ -232,4 +220,5 @@ public class TextUI {
             System.out.println(e.getMessage());
         }
     }
+}
 }

@@ -19,7 +19,7 @@ public class PilotoDAO implements Map<String, Piloto> {
                 Statement stm = con.createStatement()) {
             String sql = "CREATE TABLE IF NOT EXISTS piloto (" +
                     "IdPiloto varchar(10) NOT NULL PRIMARY KEY," +
-                    "Nome varchar(15) DEFAULT NULL," +
+                    "Nome varchar(20) DEFAULT NULL," +
                     "CTS float(15) DEFAULT 0.0," +
                     "SVA float(15) DEFAULT 0.0)";
 
@@ -58,8 +58,6 @@ public class PilotoDAO implements Map<String, Piloto> {
             stm.setFloat(3, piloto.getCTS());
             stm.setFloat(4, piloto.getSVA());
             stm.executeUpdate();
-            if (con != null)
-                con.close();
 
         } catch (SQLException e) {
             // Erro a inserir carro...
@@ -84,6 +82,7 @@ public class PilotoDAO implements Map<String, Piloto> {
                     String nome = rs.getString("Nome");
                     Float cts = rs.getFloat("CTS");
                     Float sva = rs.getFloat("SVA");
+                    piloto = new Piloto(idPiloto, nome, cts, sva);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -95,110 +94,104 @@ public class PilotoDAO implements Map<String, Piloto> {
 
     @Override
     public boolean containsKey(Object key) {
-        String idPiloto = (String) key;
-        boolean res = false;
-        String sql = "SELECT * FROM piloto WHERE IdPiloto = ?";
         try (
                 Connection con = DAOconfig.getConnection();
-                PreparedStatement stm = con.prepareStatement(sql)) {
-            stm.setString(1, idPiloto);
+                PreparedStatement stm = con.prepareStatement(
+                        "SELECT IdPiloto FROM piloto WHERE IdPiloto = ?")) {
+            stm.setString(1, (String) key);
             try (ResultSet rs = stm.executeQuery()) {
-                res = rs.next();
-            } catch (SQLException e) {
-                e.printStackTrace();
+                return rs.next();
             }
         } catch (SQLException e) {
+            // Erro ao verificar se chave existe...
             e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
-        return res;
     }
 
     @Override
     public Set<String> keySet() {
-        Set<String> set = new HashSet<>();
-        String sql = "SELECT IdPiloto FROM piloto";
+        Set<String> keys = new HashSet<>();
         try (
                 Connection con = DAOconfig.getConnection();
-                PreparedStatement stm = con.prepareStatement(sql);
-                ResultSet rs = stm.executeQuery()) {
-            while (rs.next()) {
-                set.add(rs.getString("IdPiloto"));
+                PreparedStatement stm = con.prepareStatement(
+                        "SELECT IdPiloto FROM piloto")) {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    String idPiloto = rs.getString("IdPiloto");
+                    keys.add(idPiloto);
+                }
             }
         } catch (SQLException e) {
+            // Erro a obter chaves...
             e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
-        return set;
+        return keys;
     }
 
     @Override
     public Piloto remove(Object key) {
-        String idPiloto = (String) key;
-        Piloto piloto = get(idPiloto);
-        String sql = "DELETE FROM piloto WHERE IdPiloto = ?";
-
-        try (
-                Connection con = DAOconfig.getConnection();
-                PreparedStatement stm = con.prepareStatement(sql)) {
-            stm.setString(1, idPiloto);
+        Piloto p = null;
+        String id = (String) key;
+        try (Connection con = DAOconfig.getConnection();
+                PreparedStatement stm = con.prepareStatement("DELETE FROM piloto WHERE IdPiloto = ?")) {
+            stm.setString(1, id);
             stm.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
-        return piloto;
+        return p;
     }
 
     @Override
     public int size() {
-        int size = 0;
-        String sql = "SELECT COUNT(*) FROM piloto";
-
-        try (
-                Connection con = DAOconfig.getConnection();
-                Statement stm = con.createStatement();
-                ResultSet rs = stm.executeQuery(sql)) {
+        try (Connection con = DAOconfig.getConnection();
+                Statement stm = con.createStatement()) {
+            String sql = "SELECT COUNT(*) FROM piloto";
+            ResultSet rs = stm.executeQuery(sql);
             if (rs.next()) {
-                size = rs.getInt(1);
+                return rs.getInt(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Erro ao contar o número de registros na tabela Piloto", e);
         }
-
-        return size;
+        return 0;
     }
 
     @Override
     public Collection<Piloto> values() {
         Collection<Piloto> values = new ArrayList<>();
-        Piloto piloto = null;
-        String sql = "SELECT * FROM piloto WHERE IdPiloto = ?";
-
         try (
                 Connection con = DAOconfig.getConnection();
-                PreparedStatement stm = con.prepareStatement(sql);
+                PreparedStatement stm = con.prepareStatement(
+                        "SELECT * FROM piloto");
                 ResultSet rs = stm.executeQuery()) {
             while (rs.next()) {
-                String idPiloto = rs.getString("IdPiloto");
-                String nome = rs.getString("Nome");
-                Float cts = rs.getFloat("CTS");
-                Float sva = rs.getFloat("SVA");
-
-                values.add(piloto);
+                Piloto p = new Piloto();
+                p.setIdPiloto(rs.getString("IdPiloto"));
+                p.setNome(rs.getString("Nome"));
+                p.setCTS(rs.getFloat("CTS"));
+                p.setSVA(rs.getFloat("SVA"));
+                values.add(p);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
         return values;
     }
 
     @Override
     public void clear() {
-        String sql = "DELETE FROM piloto";
-        try (
-                Connection con = DAOconfig.getConnection();
-                PreparedStatement stm = con.prepareStatement(sql)) {
-            stm.executeUpdate();
+        try (Connection con = DAOconfig.getConnection();
+                Statement stm = con.createStatement()) {
+            String sql = "DELETE FROM piloto";
+            stm.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
     }
 
@@ -226,53 +219,57 @@ public class PilotoDAO implements Map<String, Piloto> {
     @Override
     public Set<Entry<String, Piloto>> entrySet() {
         Set<Map.Entry<String, Piloto>> set = new HashSet<>();
-        String sql = "SELECT * FROM piloto";
-
         try (
                 Connection con = DAOconfig.getConnection();
                 Statement stm = con.createStatement();
-                ResultSet rs = stm.executeQuery(sql)) {
+                ResultSet rs = stm.executeQuery("SELECT * FROM piloto")) {
+
             while (rs.next()) {
-                String idPiloto = rs.getString("IdPiloto");
-                String nome = rs.getString("Nome");
-                Float cts = rs.getFloat("CTS");
-                Float sva = rs.getFloat("SVA");
+                Piloto p = new Piloto();
+                p.setIdPiloto(rs.getString("IdPiloto"));
+                p.setNome(rs.getString("Nome"));
+                p.setCTS(rs.getFloat("CTS"));
+                p.setSVA(rs.getFloat("SVA"));
 
-                Piloto piloto = null;
-
-                set.add(new AbstractMap.SimpleEntry<>(idPiloto, piloto));
+                set.add(new AbstractMap.SimpleEntry<>(p.getIdPiloto(), p));
             }
+
+            if (con != null)
+                con.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
         return set;
     }
 
     @Override
     public boolean isEmpty() {
-        String sql = "SELECT COUNT(*) FROM piloto";
-        try (
-                Connection con = DAOconfig.getConnection();
-                PreparedStatement stm = con.prepareStatement(sql)) {
-            try (ResultSet rs = stm.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1) == 0;
-                } else {
-                    return true;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        try (Connection con = DAOconfig.getConnection();
+                Statement stm = con.createStatement()) {
+            String sql = "SELECT COUNT(*) FROM piloto";
+            ResultSet rs = stm.executeQuery(sql);
+            return rs.getInt(1) == 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Erro ao verificar se a tabela está vazia", e);
         }
-        return true;
     }
 
     @Override
     public void putAll(Map<? extends String, ? extends Piloto> m) {
-        for (Map.Entry<? extends String, ? extends Piloto> entry : m.entrySet()) {
-            put(entry.getKey(), entry.getValue());
+        try (Connection con = DAOconfig.getConnection();
+                PreparedStatement stm = con.prepareStatement("INSERT INTO piloto (IdPiloto, Nome, CTS, SVA) VALUES (?,?,?,?)")) {
+            for (Map.Entry<? extends String, ? extends Piloto> entry : m.entrySet()) {
+                stm.setString(1, entry.getKey());
+                stm.setString(2, entry.getValue().getNome());
+                stm.setFloat(3, entry.getValue().getCTS());
+                stm.setFloat(4, entry.getValue().getSVA());
+                stm.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
     }
 }

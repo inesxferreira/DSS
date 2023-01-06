@@ -1,6 +1,7 @@
 package SimuladorLN.SSConta;
 
 import SimuladorLN.SSCampeonato.SSCarro.Carro;
+import SimuladorLN.SSCampeonato.SSCarro.Piloto;
 
 public interface IConta {
 

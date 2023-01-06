@@ -15,28 +15,28 @@ public class SSCircuitoFacade implements ICircuito {
 		this.todos_circuitos = CircuitoDAO.getInstance();
 	}
 
-    /**
-     * Método que devolve um carro dado o seu identificador.
-     *
-     * @param idCircuito id do circuito.
-     * @return Circuito.
-     */
-    public Circuito getCircuito(String idCircuito) {
-        return this.todos_circuitos.get(idCircuito);
-    }
+	/**
+	 * Método que devolve um carro dado o seu identificador.
+	 *
+	 * @param idCircuito id do circuito.
+	 * @return Circuito.
+	 */
+	public Circuito getCircuito(String idCircuito) {
+		return this.todos_circuitos.get(idCircuito);
+	}
 
-    /**
-     * Método que permite adicionar um carro.
-     *
-     * @param c Carro a adicionar.
-     */
-    public void putCircuito(Circuito c) {
-        this.todos_circuitos.put(c.getIdCircuito(), c);
-    }
+	/**
+	 * Método que permite adicionar um carro.
+	 *
+	 * @param c Carro a adicionar.
+	 */
+	public void putCircuito(Circuito c) {
+		this.todos_circuitos.put(c.getIdCircuito(), c.clone());
+	}
 
 	public void simularCorrida(Map<String, Participante> participantes) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/**
@@ -66,21 +66,21 @@ public class SSCircuitoFacade implements ICircuito {
 		int score = 5;
 		int i = 0;
 
-		Object [] parti = participantes.keySet().toArray();
+		Object[] parti = participantes.keySet().toArray();
 
-		while(score != 0){
+		while (score != 0) {
 			String id = parti[i].toString();
 			corrida.getScoreCorrida().put(id, score);
 			score--;
 			i++;
 		}
-		//participantes.keySet().forEach(id->corrida.getScoreCorrida().put(id, score));
+		// participantes.keySet().forEach(id->corrida.getScoreCorrida().put(id, score));
 	}
 
 	/**
 	 * 
 	 * @param idParticipante ID do participante
-	 * @param corrida Corrida em que o participante é desclassificado
+	 * @param corrida        Corrida em que o participante é desclassificado
 	 */
 	public void desclassifica(String idParticipante, Corrida corrida) {
 		corrida.getScoreCorrida().put(idParticipante, 0);

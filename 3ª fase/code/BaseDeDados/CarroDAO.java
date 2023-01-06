@@ -26,10 +26,6 @@ public class CarroDAO implements Map<String, Carro> {
                     "PotenciaC int(4) DEFAULT 0";
 
             stm.executeUpdate(sql);
-
-            if (con != null)
-                con.close();
-
         } catch (SQLException e) {
             // Erro a criar tabela...
             e.printStackTrace();

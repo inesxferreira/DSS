@@ -3,6 +3,7 @@ package BaseDeDados;
 import java.sql.*;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.AbstractMap;
@@ -46,146 +47,135 @@ public class CircuitoDAO implements Map<String, Circuito> {
     @Override
     public int size() {
         int size = 0;
-        String sql = "SELECT COUNT(*) FROM circuito";
-
         try (
                 Connection con = DAOconfig.getConnection();
-                Statement stm = con.createStatement();
-                ResultSet rs = stm.executeQuery(sql)) {
-            if (rs.next()) {
-                size = rs.getInt(1);
+                Statement stm = con.createStatement()) {
+            String sql = "SELECT COUNT(*) AS size FROM circuito";
+            try (ResultSet rs = stm.executeQuery(sql)) {
+                if (rs.next())
+                    size = rs.getInt("size");
             }
         } catch (SQLException e) {
+            // Erro ao contar elementos da tabela...
             e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
-
         return size;
     }
 
     @Override
     public boolean isEmpty() {
-        String sql = "SELECT COUNT(*) FROM circuito";
-        try (
-                Connection con = DAOconfig.getConnection();
-                PreparedStatement stm = con.prepareStatement(sql)) {
-            try (ResultSet rs = stm.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1) == 0;
-                } else {
-                    return true;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return true;
+        return this.size() == 0;
     }
 
     @Override
     public boolean containsKey(Object key) {
-        String idCircuito = (String) key;
-        boolean res = false;
-        String sql = "SELECT * FROM circuito WHERE IdCircuito = ?";
+        boolean containsKey = false;
         try (
                 Connection con = DAOconfig.getConnection();
-                PreparedStatement stm = con.prepareStatement(sql)) {
-            stm.setString(1, idCircuito);
+                PreparedStatement stm = con.prepareStatement(
+                        "SELECT idCircuito FROM circuito WHERE idCircuito = ?")) {
+            stm.setString(1, key.toString());
             try (ResultSet rs = stm.executeQuery()) {
-                res = rs.next();
-            } catch (SQLException e) {
-                e.printStackTrace();
+                if (rs.next()) {
+                    containsKey = true;
+                }
             }
         } catch (SQLException e) {
+            // Erro ao verificar se existe circuito com o id especificado...
             e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
-        return res;
+        return containsKey;
     }
 
     @Override
     public boolean containsValue(Object value) {
-        if (!(value instanceof Circuito))
-            return false;
-        Circuito circuito = (Circuito) value;
-
-        String sql = "SELECT * FROM circuito WHERE IdCircuito = ?";
-        try (
-                Connection con = DAOconfig.getConnection();
-                PreparedStatement stm = con.prepareStatement(sql)) {
-            stm.setString(1, circuito.getIdCircuito());
-            try (ResultSet rs = stm.executeQuery()) {
-                return rs.next();
-            } catch (SQLException e) {
-                e.printStackTrace();
+        if (value instanceof Circuito) {
+            Circuito circuito = (Circuito) value;
+            for (Circuito c : this.values()) {
+                if (circuito.getIdCircuito().equals(c.getIdCircuito())
+                        && circuito.getNomeCircuito().equals(c.getNomeCircuito())
+                        && circuito.getDistancia() == c.getDistancia()
+                        && circuito.getnCurvas() == c.getnCurvas()
+                        && circuito.getnChicanes() == c.getnChicanes()
+                        && circuito.getnRetas() == c.getnRetas()) {
+                    return true;
+                }
             }
-        } catch (SQLException e) {
         }
         return false;
     }
 
     @Override
     public Circuito get(Object key) {
-        String idCircuito = (String) key;
         Circuito circuito = null;
-        String sql = "SELECT * FROM circuito WHERE IDCircuito = ?";
-
         try (
                 Connection con = DAOconfig.getConnection();
-                PreparedStatement stm = con.prepareStatement(sql)) {
-            stm.setString(1, idCircuito);
+                PreparedStatement stm = con.prepareStatement(
+                    "SELECT * FROM circuito WHERE IdCircuito = ?")) {
+            stm.setString(1, (String) key);
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
+                    String idCircuito = rs.getString("IdCircuito");
                     String nomeCircuito = rs.getString("NomeCircuito");
-                    Float distancia = rs.getFloat("Distancia");
+                    float distancia = rs.getFloat("Distancia");
                     int nCurvas = rs.getInt("NCurvas");
                     int nChicanes = rs.getInt("NChicanes");
                     int nRetas = rs.getInt("NRetas");
-
+                    circuito = new Circuito(idCircuito, nomeCircuito, distancia, nCurvas, nChicanes, nRetas);
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
         } catch (SQLException e) {
+            // Erro ao selecionar circuito...
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
         return circuito;
     }
 
     @Override
     public void clear() {
-        String sql = "DELETE FROM circuito";
         try (
                 Connection con = DAOconfig.getConnection();
-                PreparedStatement stm = con.prepareStatement(sql)) {
-            stm.executeUpdate();
+                PreparedStatement stm = con.prepareStatement(
+                    "DELETE FROM circuito WHERE idCircuito = ?")) {
+            for (String id : this.keySet()) {
+                stm.setString(1, id);
+                stm.executeUpdate();
+            }
         } catch (SQLException e) {
+            // Erro ao remover circuito...
             e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
     }
 
     @Override
-    public Set<Entry<String, Circuito>> entrySet() {
-        Set<Map.Entry<String, Circuito>> set = new HashSet<>();
-        String sql = "SELECT * FROM circuito";
-
+    public Set<Map.Entry<String, Circuito>> entrySet() {
+        Set<Map.Entry<String, Circuito>> entries = new HashSet<>();
         try (
                 Connection con = DAOconfig.getConnection();
-                Statement stm = con.createStatement();
-                ResultSet rs = stm.executeQuery(sql)) {
+                PreparedStatement stm = con.prepareStatement(
+                        "SELECT * FROM circuito");
+                ResultSet rs = stm.executeQuery()) {
             while (rs.next()) {
-                String idCircuito = rs.getString("IdCircuito");
-                float distancia = rs.getFloat("Distancia");
-                int nCurvas = rs.getInt("NCurvas");
-                int nChicanes = rs.getInt("NChicanes");
-                int nRetas = rs.getInt("NRetas");
-                Circuito circuito = null;
+                String idCircuito = rs.getString("idCircuito");
+                String nomeCircuito = rs.getString("nomeCircuito");
+                float distancia = rs.getFloat("distancia");
+                int nCurvas = rs.getInt("nCurvas");
+                int nChicanes = rs.getInt("nChicanes");
+                int nRetas = rs.getInt("nRetas");
 
-                set.add(new AbstractMap.SimpleEntry<>(idCircuito, circuito));
+                Circuito circuito = new Circuito(idCircuito, nomeCircuito, distancia, nCurvas, nChicanes, nRetas);
+                entries.add(new AbstractMap.SimpleEntry<>(idCircuito, circuito));
             }
         } catch (SQLException e) {
+            // Erro ao selecionar circuitos...
             e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
-        return set;
+        return entries;
     }
 
     @Override
@@ -207,75 +197,94 @@ public class CircuitoDAO implements Map<String, Circuito> {
 
     @Override
     public Circuito put(String id, Circuito circuito) {
+        Circuito circuitoAntigo = get(id);
         try (
                 Connection con = DAOconfig.getConnection();
                 PreparedStatement stm = con.prepareStatement(
-                        "INSERT INTO circuito (idCircuito, nomeCircuito, distancia, nCurvas, nChicanes, nRetas) VALUES (?,?,?,?,?,?)")) {
+                        "INSERT INTO circuito (IdCircuito, NomeCircuito, Distancia, NCurvas, NChicanes, NRetas) VALUES (?,?,?,?,?,?) ON DUPLICATE KEY UPDATE NomeCircuito=VALUES(NomeCircuito), Distancia=VALUES(Distancia), NCurvas=VALUES(NCurvas), NChicanes=VALUES(NChicanes), NRetas=VALUES(NRetas)")) {
             stm.setString(1, id);
             stm.setString(2, circuito.getNomeCircuito());
             stm.setFloat(3, circuito.getDistancia());
-            stm.setInt(4, circuito.getNCurvas());
-            stm.setInt(5, circuito.getNChicanes());
-            stm.setInt(6, circuito.getNRetas());
+            stm.setInt(4, circuito.getnCurvas());
+            stm.setInt(5, circuito.getnChicanes());
+            stm.setInt(6, circuito.getnRetas());
             stm.executeUpdate();
-            if (con != null)
-                con.close();
-
         } catch (SQLException e) {
-            // Erro a inserir circuito...
+            // Erro ao inserir circuito...
             e.printStackTrace();
             throw new NullPointerException(e.getMessage());
         }
-        return circuito;
-
+        return circuitoAntigo;
     }
 
     @Override
     public void putAll(Map<? extends String, ? extends Circuito> m) {
-        for (Map.Entry<? extends String, ? extends Circuito> entry : m.entrySet()) {
-            put(entry.getKey(), entry.getValue());
+        try (Connection con = DAOconfig.getConnection()) {
+            for (Entry<? extends String, ? extends Circuito> entry : m.entrySet()) {
+                Circuito circuito = entry.getValue();
+                String sql = "INSERT INTO circuito (IdCircuito, NomeCircuito, Distancia, NCurvas, NChicanes, NRetas) "
+                        + "VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE "
+                        + "NomeCircuito = VALUES(NomeCircuito), "
+                        + "Distancia = VALUES(Distancia), "
+                        + "NCurvas = VALUES(NCurvas), "
+                        + "NChicanes = VALUES(NChicanes), "
+                        + "NRetas = VALUES(NRetas)";
+                PreparedStatement pstm = con.prepareStatement(sql);
+                pstm.setString(1, circuito.getIdCircuito());
+                pstm.setString(2, circuito.getNomeCircuito());
+                pstm.setFloat(3, circuito.getDistancia());
+                pstm.setInt(4, circuito.getnCurvas());
+                pstm.setInt(5, circuito.getnChicanes());
+                pstm.setInt(6, circuito.getnRetas());
+                pstm.executeUpdate();
+                pstm.close();
+            }
+        } catch (SQLException e) {
+            // Erro ao inserir dados na tabela...
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
     }
 
     @Override
     public Circuito remove(Object key) {
-        String idCircuito = (String) key;
-        Circuito circuito = get(idCircuito);
-        String sql = "DELETE FROM circuito WHERE IdCircuito = ?";
-
+        Circuito circuito = this.get(key);
         try (
                 Connection con = DAOconfig.getConnection();
-                PreparedStatement stm = con.prepareStatement(sql)) {
-            stm.setString(1, idCircuito);
+                PreparedStatement stm = con.prepareStatement(
+                        "DELETE FROM circuito WHERE idCircuito = ?")) {
+            stm.setString(1, (String) key);
             stm.executeUpdate();
         } catch (SQLException e) {
+            // Erro ao remover circuito...
             e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
         return circuito;
     }
 
     @Override
     public Collection<Circuito> values() {
-        Collection<Circuito> values = new ArrayList<>();
-        Circuito circuito = null;
-        String sql = "SELECT * FROM circuito WHERE IdCircuito = ?";
-
+        List<Circuito> circuitos = new ArrayList<>();
         try (
                 Connection con = DAOconfig.getConnection();
-                PreparedStatement stm = con.prepareStatement(sql);
-                ResultSet rs = stm.executeQuery()) {
+                Statement stm = con.createStatement();
+                ResultSet rs = stm.executeQuery("SELECT * FROM circuito")) {
             while (rs.next()) {
-                String idCircuito = rs.getString("IdCircuito");
-                Float distancia = rs.getFloat("Distancia");
-                int nCurvas = rs.getInt("NCurvas");
-                int nChicanes = rs.getInt("NChicanes");
-                int nRetas = rs.getInt("NRetas");
-
-                values.add(circuito);
+                String id = rs.getString("idCircuito");
+                String nome = rs.getString("nomeCircuito");
+                float distancia = rs.getFloat("distancia");
+                int nCurvas = rs.getInt("nCurvas");
+                int nChicanes = rs.getInt("nChicanes");
+                int nRetas = rs.getInt("nRetas");
+                Circuito circuito = new Circuito(id, nome, distancia, nCurvas, nChicanes, nRetas);
+                circuitos.add(circuito);
             }
         } catch (SQLException e) {
+            // Erro ao selecionar circuitos...
             e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
         }
-        return values;
+        return circuitos;
     }
 }

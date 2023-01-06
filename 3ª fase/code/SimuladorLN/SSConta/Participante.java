@@ -1,27 +1,63 @@
 package SimuladorLN.SSConta;
 
-import BaseDeDados.*;
 import SimuladorLN.SSCampeonato.SSCarro.Carro;
 import SimuladorLN.SSCampeonato.SSCarro.Piloto;
 
-public class Participante implements Comparable<Conta> {
+public class Participante implements Comparable<Participante> {
 
 	private String idParticipante;
-	private PilotoDAO pilotoDAO;
-	private CarroDAO carroDAO;
+	private Piloto piloto;
+	private Carro carro;
 	private int scoreCampeonato;
 	private int fatorOrd;
 
-	/**
-	 * 
-	 * @param c
-	 */
-	public void setCarro(Carro c) {
-		this.carroDAO = new CarroDAO(c.clone());
+	public Participante() {
+		this.idParticipante = "";
+		this.piloto = null;
+		this.carro = null;
+		this.scoreCampeonato = 0;
+		this.fatorOrd = 0;
+	}
+
+	public Participante(String idParticipante, Piloto p, Carro c, int score, int fator) {
+		this.idParticipante = idParticipante;
+		this.piloto = p.clone();
+		this.carro = c.clone();
+		this.scoreCampeonato = score;
+		this.fatorOrd = fator;
+	}
+
+	public Participante(Participante c) {
+		this.idParticipante = c.getIdParticipante();
+		this.piloto = c.getPiloto();
+		this.carro = c.getCarro();
+		this.scoreCampeonato = c.getScoreCampeonato();
+		this.fatorOrd = c.getFatorOrd();
+	}
+
+
+	public String getIdParticipante() {
+		return this.idParticipante;
+	}
+
+	public Piloto getPiloto() {
+		return this.piloto.clone();
 	}
 
 	public Carro getCarro() {
-		return new Carro(this.carroDAO);
+		return this.carro.clone();
+	}
+
+	public int getScoreCampeonato() {
+		return this.scoreCampeonato;
+	}
+
+	public int getFatorOrd() {
+		return this.fatorOrd;
+	}
+
+	public void setIdParticipante(String id) {
+		this.idParticipante = id;
 	}
 
 	/**
@@ -29,12 +65,25 @@ public class Participante implements Comparable<Conta> {
 	 * @param p
 	 */
 	public void setPiloto(Piloto p) {
-		this.pilotoDAO = new PilotoDAO(p.clone());
+		this.piloto = p.clone();
 	}
 
-	public Piloto getPiloto() {
-		return new Piloto(this.pilotoDAO);
+	/**
+	 * 
+	 * @param c
+	 */
+	public void setCarro(Carro c) {
+		this.carro = c.clone();
 	}
+
+	public void setScoreCampeonato(int score) {
+		this.scoreCampeonato = score;
+	}
+
+	public void setFatorOrd(int fatorOrd) {
+		this.fatorOrd = fatorOrd;
+	}
+
 
 	public void configuraCampeonato() {
 		// TODO - implement Participante.configuraCampeonato
@@ -55,4 +104,7 @@ public class Participante implements Comparable<Conta> {
 		return false;
 	}
 
+	public Participante clone() {
+		return new Participante(this);
+	}
 }

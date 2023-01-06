@@ -20,10 +20,19 @@ public class Campeonato {
 		this.nome = nome;
 	}
 
-	public Campeonato(String idCampeonato, String nome, Map<String,Circuito> circuitos) {
+	public Campeonato(String idCampeonato, String nome, Map<String, Circuito> circuitos) {
 		this.idCampeonato = idCampeonato;
 		this.nome = nome;
-		this.circuitos = circuitos;
+		for (Circuito c : circuitos.values()) {
+			this.circuitos.put(c.getIdCircuito(), c.clone());
+		}
+	}
+
+	public Campeonato(Campeonato c) {
+		this.idCampeonato = c.getIdCampeonato();
+		this.nome = c.getNome();
+		this.scoreCamp = c.getScoreCamp();
+		this.circuitos = c.getCircuitos();
 	}
 
 	public String getNome() {
@@ -34,9 +43,16 @@ public class Campeonato {
 		return this.idCampeonato;
 	}
 
-	public Map<String, Circuito> getCircuitos() {
+	public TreeMap<String, Integer> getScoreCamp() {
+		return this.scoreCamp;
+	}
 
-		return this.circuitos;
+	public Map<String, Circuito> getCircuitos() {
+		Map<String, Circuito> circ = new HashMap<>();
+		for (String id : this.circuitos.keySet()) {
+			circ.put(id, this.circuitos.get(id).clone());
+		}
+		return circ;
 	}
 
 	public void setIdCampeonato(String idCampeonato) {
@@ -53,10 +69,6 @@ public class Campeonato {
 
 	public String getIdCampeonato() {
 		return idCampeonato;
-	}
-
-	public Map<String, Integer> getScoreCamp() {
-		return scoreCamp;
 	}
 
 	@Override
@@ -82,4 +94,9 @@ public class Campeonato {
 	public int hashCode() {
 		return Objects.hash(idCampeonato, scoreCamp, nome);
 	}
+
+	public Campeonato clone() {
+		return new Campeonato(this);
+	}
+
 }

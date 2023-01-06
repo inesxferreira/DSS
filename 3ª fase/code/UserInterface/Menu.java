@@ -8,6 +8,7 @@ public class Menu {
     public interface Handler {
         void execute();
     }
+
     public interface PreCondition {
         boolean validate();
     }
@@ -62,7 +63,7 @@ public class Menu {
         int op;
         show();
         op = readOption();
-        //verificar pré-condição
+        // verificar pré-condição
         if (op > 0 && !this.disponivel.get(op - 1).validate()) {
             System.out.println("Opção não existe!");
         } else if (op > 0) {
@@ -76,7 +77,7 @@ public class Menu {
         do {
             show();
             op = readOption();
-            //verificar pré-condição
+            // verificar pré-condição
             if (op > 0 && !this.disponivel.get(op - 1).validate()) {
                 System.out.println("Opção impossível! Tente outra vez.");
             } else if (op > 0) {
@@ -121,5 +122,18 @@ public class Menu {
             op = -1;
         }
         return op;
+
     }
+
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_RESET = "\u001B[0m";
+
+    public static void Logo() {
+        System.out.print("\n\033[H\033[2J");
+        System.out.flush();
+        System.out.println(
+                ANSI_RED + "        UMFormula1       " + ANSI_GREEN
+                        + ANSI_RESET);
+    };
 }
