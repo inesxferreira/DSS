@@ -12,7 +12,7 @@ public class SC extends Carro {
         super();
     }
 
-    public SC(String idCarro, String marca, String modelo, String categoria, int potenciaC, int cilindrada) {
+    public SC(Integer idCarro, String marca, String modelo, String categoria, int potenciaC, int cilindrada) {
         super(idCarro, marca, modelo, categoria, potenciaC, cilindrada);
     }
 

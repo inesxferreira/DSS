@@ -15,7 +15,7 @@ public class GT extends Carro {
         this.deterioracao = 0.0f;
     }
 
-    public GT(String idCarro, String marca, String modelo,  String categoria, int potenciaC,
+    public GT(Integer idCarro, String marca, String modelo,  String categoria, int potenciaC,
             int cilindrada) {
         super(idCarro, marca, modelo,  categoria, potenciaC, cilindrada);
         // this.deterioracao = deterioracao;

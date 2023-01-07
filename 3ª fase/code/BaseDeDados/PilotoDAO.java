@@ -18,7 +18,7 @@ public class PilotoDAO implements Map<String, Piloto> {
                 Connection con = DAOconfig.getConnection();
                 Statement stm = con.createStatement()) {
             String sql = "CREATE TABLE IF NOT EXISTS piloto (" +
-                    "IdPiloto varchar(10) NOT NULL PRIMARY KEY," +
+                    "IdPiloto INT NOT NULL PRIMARY KEY AUTO_INCREMENT," +
                     "Nome varchar(20) DEFAULT NULL," +
                     "CTS float(15) DEFAULT 0.0," +
                     "SVA float(15) DEFAULT 0.0)";
@@ -53,7 +53,7 @@ public class PilotoDAO implements Map<String, Piloto> {
                 Connection con = DAOconfig.getConnection();
                 PreparedStatement stm = con.prepareStatement(
                         "INSERT INTO piloto (IdPiloto, Nome, CTS, SVA) VALUES (?,?,?,?)")) {
-            stm.setString(1, id);
+            stm.setInt(1, Integer.valueOf(id));
             stm.setString(2, piloto.getNome());
             stm.setFloat(3, piloto.getCTS());
             stm.setFloat(4, piloto.getSVA());
@@ -69,14 +69,14 @@ public class PilotoDAO implements Map<String, Piloto> {
 
     @Override
     public Piloto get(Object key) {
-        String idPiloto = (String) key;
+        Integer idPiloto = (int) key;
         Piloto piloto = null;
         String sql = "SELECT * FROM piloto WHERE IdPiloto = ?";
 
         try (
                 Connection con = DAOconfig.getConnection();
                 PreparedStatement stm = con.prepareStatement(sql)) {
-            stm.setString(1, idPiloto);
+            stm.setInt(1, idPiloto);
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
                     String nome = rs.getString("Nome");
@@ -170,7 +170,7 @@ public class PilotoDAO implements Map<String, Piloto> {
                 ResultSet rs = stm.executeQuery()) {
             while (rs.next()) {
                 Piloto p = new Piloto();
-                p.setIdPiloto(rs.getString("IdPiloto"));
+                p.setIdPiloto(rs.getInt("IdPiloto"));
                 p.setNome(rs.getString("Nome"));
                 p.setCTS(rs.getFloat("CTS"));
                 p.setSVA(rs.getFloat("SVA"));
@@ -205,7 +205,7 @@ public class PilotoDAO implements Map<String, Piloto> {
         try (
                 Connection con = DAOconfig.getConnection();
                 PreparedStatement stm = con.prepareStatement(sql)) {
-            stm.setString(1, piloto.getIdPiloto());
+            stm.setInt(1, piloto.getIdPiloto());
             try (ResultSet rs = stm.executeQuery()) {
                 return rs.next();
             } catch (SQLException e) {
@@ -226,12 +226,12 @@ public class PilotoDAO implements Map<String, Piloto> {
 
             while (rs.next()) {
                 Piloto p = new Piloto();
-                p.setIdPiloto(rs.getString("IdPiloto"));
+                p.setIdPiloto(rs.getInt("IdPiloto"));
                 p.setNome(rs.getString("Nome"));
                 p.setCTS(rs.getFloat("CTS"));
                 p.setSVA(rs.getFloat("SVA"));
 
-                set.add(new AbstractMap.SimpleEntry<>(p.getIdPiloto(), p));
+                set.add(new AbstractMap.SimpleEntry<>(p.getIdPiloto().toString(), p));
             }
 
             if (con != null)

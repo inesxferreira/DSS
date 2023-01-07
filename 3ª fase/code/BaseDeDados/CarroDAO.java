@@ -13,12 +13,12 @@ public class CarroDAO implements Map<String, Carro> {
                 Connection con = DAOconfig.getConnection();
                 Statement stm = con.createStatement()) {
             String sql = "CREATE TABLE IF NOT EXISTS carro (" +
-                    "IdCarro VARCHAR(10) NOT NULL PRIMARY KEY," +
+                    "IdCarro INT NOT NULL PRIMARY KEY AUTO_INCREMENT," +
                     "Categoria VARCHAR(2) DEFAULT NULL," +
                     "Marca VARCHAR(15) DEFAULT NULL," +
                     "Modelo VARCHAR(15) DEFAULT NULL," +
-                    "Cililndrada int(4) DEFAULT 0," +
-                    "PotenciaC int(4) DEFAULT 0";
+                    "Cilindrada int(4) DEFAULT 0," +
+                    "PotenciaC int(4) DEFAULT 0)";
 
             stm.executeUpdate(sql);
         } catch (SQLException e) {
@@ -46,7 +46,7 @@ public class CarroDAO implements Map<String, Carro> {
                 Connection con = DAOconfig.getConnection();
                 PreparedStatement stm = con.prepareStatement(
                         "INSERT INTO carro (IdCarro, Categoria, Marca, Modelo, Cilindrada, PotenciaC) VALUES (?,?,?,?,?,?)")) {
-            stm.setString(1, id);
+            stm.setInt(1, Integer.valueOf(id));
             stm.setString(2, carro.getCategoria());
             stm.setString(3, carro.getMarca());
             stm.setString(4, carro.getModelo());
@@ -66,14 +66,14 @@ public class CarroDAO implements Map<String, Carro> {
 
     @Override
     public Carro get(Object key) {
-        String idCarro = (String) key;
+        Integer idCarro = (Integer) key;
         Carro carro = null;
         String sql = "SELECT * FROM carro WHERE IdCarro = ?";
 
         try (
                 Connection con = DAOconfig.getConnection();
                 PreparedStatement stm = con.prepareStatement(sql)) {
-            stm.setString(1, idCarro);
+            stm.setInt(1, idCarro);
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
                     String categoria = rs.getString("Categoria");
@@ -188,7 +188,7 @@ public class CarroDAO implements Map<String, Carro> {
                 PreparedStatement stm = con.prepareStatement(sql);
                 ResultSet rs = stm.executeQuery()) {
             while (rs.next()) {
-                String idCarro = rs.getString("IdCarro");
+                Integer idCarro = rs.getInt("IdCarro");
                 String categoria = rs.getString("Categoria");
                 String marca = rs.getString("Marca");
                 String modelo = rs.getString("Modelo");
@@ -238,7 +238,7 @@ public class CarroDAO implements Map<String, Carro> {
         try (
                 Connection con = DAOconfig.getConnection();
                 PreparedStatement stm = con.prepareStatement(sql)) {
-            stm.setString(1, carro.getIdCarro());
+            stm.setInt(1, carro.getIdCarro());
             try (ResultSet rs = stm.executeQuery()) {
                 return rs.next();
             } catch (SQLException e) {
@@ -259,7 +259,7 @@ public class CarroDAO implements Map<String, Carro> {
                 Statement stm = con.createStatement();
                 ResultSet rs = stm.executeQuery(sql)) {
             while (rs.next()) {
-                String idCarro = rs.getString("IdCarro");
+                Integer idCarro = rs.getInt("IdCarro");
                 String categoria = rs.getString("Categoria");
                 String marca = rs.getString("Marca");
                 String modelo = rs.getString("Modelo");
@@ -280,7 +280,7 @@ public class CarroDAO implements Map<String, Carro> {
                         carro = new SC(idCarro, marca, modelo, categoria, potencia, cilindrada);
                         break;
                 }
-                set.add(new AbstractMap.SimpleEntry<>(idCarro, carro));
+                set.add(new AbstractMap.SimpleEntry<>(idCarro.toString(), carro));
             }
         } catch (SQLException e) {
             e.printStackTrace();

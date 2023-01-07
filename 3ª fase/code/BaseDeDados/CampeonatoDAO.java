@@ -17,16 +17,16 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
     private CampeonatoDAO() {
         try (Connection conn = DAOconfig.getConnection();
                 Statement stm = conn.createStatement()) {
-            String sql = "CREATE TABLE Campeonato (" +
-                    "idCampeonato VARCHAR(10) PRIMARY KEY AUTOINCREMENT, " +
-                    "nome VARCHAR(30) NOT NULL);";
+            String sql = "CREATE TABLE campeonato (" +
+                    "idCampeonato INT PRIMARY KEY AUTO_INCREMENT, " +
+                    "nome VARCHAR(30) NOT NULL)";
             stm.executeUpdate(sql);
             sql = "CREATE TABLE circuito_campeonato (" +
-                    "idCampeonato VARCHAR(10) NOT NULL," +
-                    "idCircuito VARCHAR(10) NOT NULL," +
+                    "idCampeonato INTEGER NOT NULL," +
+                    "idCircuito INT NOT NULL," +
                     "PRIMARY KEY (idCampeonato, idCircuito)," +
-                    "FOREIGN KEY (idCampeonato) REFERENCES Campeonato(idCampeonato)," +
-                    "FOREIGN KEY (idCircuito) REFERENCES Circuito(idCircuito));";
+                    "FOREIGN KEY (idCampeonato) REFERENCES campeonato(idCampeonato)," +
+                    "FOREIGN KEY (idCircuito) REFERENCES circuito(idCircuito))";
             stm.executeUpdate(sql);
         } catch (SQLException e) {
             // Erro a criar tabela...
@@ -55,14 +55,14 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
             con = DAOconfig.getConnection();
             stm = con.prepareStatement(
                     "INSERT INTO Campeonato (idCampeonato, nome) VALUES (?,?)");
-            stm.setString(1, id);
+            stm.setInt(1, Integer.valueOf(id));
             stm.setString(2, campeonato.getNome());
             stm.executeUpdate();
             for (Circuito circuito : campeonato.getCircuitos().values()) {
                 stm = con.prepareStatement(
                         "INSERT INTO circuito_campeonato (idCampeonato, idCircuito) VALUES (?,?)");
-                stm.setString(1, id);
-                stm.setString(2, circuito.getIdCircuito());
+                stm.setInt(1, Integer.valueOf(id));
+                stm.setInt(2, circuito.getIdCircuito());
                 stm.executeUpdate();
             }
         } catch (SQLException e) {

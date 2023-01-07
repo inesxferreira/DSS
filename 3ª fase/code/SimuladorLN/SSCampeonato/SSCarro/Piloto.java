@@ -8,7 +8,7 @@ package SimuladorLN.SSCampeonato.SSCarro;
  */
 
 public class Piloto {
-    private String idPiloto;
+    private Integer idPiloto;
 	private String nome;
 	private Float cts;
 	private Float sva;
@@ -16,13 +16,13 @@ public class Piloto {
     /*Construtores*/
     public Piloto()
     {
-        this.idPiloto = "";
+        this.idPiloto = 0;
         this.nome = "";
         this.cts = 0.0f;
         this.sva = 0.0f;
     }
     
-    public Piloto(String idPiloto, String nome, Float cts, Float sva)
+    public Piloto(Integer idPiloto, String nome, Float cts, Float sva)
     {
         this.idPiloto = idPiloto;
         this.nome = nome;
@@ -40,7 +40,7 @@ public class Piloto {
 
 
 	/* Getters */
-	public String getIdPiloto() {
+	public Integer getIdPiloto() {
 		return this.idPiloto;
 	}
 
@@ -57,7 +57,7 @@ public class Piloto {
 	}
 
 	/* Setters */
-	public void setIdPiloto(String idPiloto) {
+	public void setIdPiloto(Integer idPiloto) {
 		this.idPiloto = idPiloto;
 	}
 

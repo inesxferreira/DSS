@@ -16,7 +16,7 @@ public class GT_Hibrido extends GT {
         this.potenciaE = 0;
     }
 
-    public GT_Hibrido(String idCarro, String marca, String modelo, String categoria, int potenciaC, int cilindrada,
+    public GT_Hibrido(Integer idCarro, String marca, String modelo, String categoria, int potenciaC, int cilindrada,
             int potenciaE) {
         super(idCarro, marca, modelo, categoria, potenciaC, cilindrada);
         this.potenciaE = potenciaE;

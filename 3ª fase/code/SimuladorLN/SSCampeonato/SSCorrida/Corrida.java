@@ -10,7 +10,7 @@ import java.util.TreeMap;
 
 public class Corrida {
 
-	private String idCorrida;
+	private Integer idCorrida;
 	private int voltas;
 	private int meteorologia;
 	private Circuito circuito;
@@ -18,14 +18,14 @@ public class Corrida {
 
 	/* Construtores */
 	public Corrida() {
-		this.idCorrida = "";
+		this.idCorrida = 0;
 		this.voltas = 0;
 		this.meteorologia = 0;
 		this.circuito = null;
 		this.scoreCorrida = new TreeMap<>();
 	}
 
-	public Corrida(String idCorrida, int voltas, int meteorologia, Circuito circuito, TreeMap<String, Integer> score) {
+	public Corrida(Integer idCorrida, int voltas, int meteorologia, Circuito circuito, TreeMap<String, Integer> score) {
 		this.idCorrida = idCorrida;
 		this.voltas = voltas;
 		this.meteorologia = meteorologia;
@@ -54,7 +54,7 @@ public class Corrida {
 		return this.scoreCorrida;
 	}
 
-	public String getIdCorrida() {
+	public Integer getIdCorrida() {
 		return this.idCorrida;
 	}
 
@@ -78,7 +78,7 @@ public class Corrida {
 	 * 
 	 * @param voltas
 	 */
-	public void setIdCorrida(String idCorrida) {
+	public void setIdCorrida(Integer idCorrida) {
 		this.idCorrida = idCorrida;
 	}
 

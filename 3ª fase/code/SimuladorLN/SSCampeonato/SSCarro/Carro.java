@@ -8,7 +8,7 @@ package SimuladorLN.SSCampeonato.SSCarro;
  */
 
 public abstract class Carro {
-	private String idCarro;
+	private int idCarro;
 	private String modelo;
 	private String marca;
 	private String categoria;
@@ -21,7 +21,7 @@ public abstract class Carro {
 
 	/* Construtores */
 	public Carro() {
-		this.idCarro = "";
+		this.idCarro = 0;
 		this.modelo = "";
 		this.marca = "";
 		this.categoria = "";
@@ -33,7 +33,7 @@ public abstract class Carro {
 		this.cilindrada = 0;
 	}
 
-	public Carro(String idCarro, String marca, String modelo, String categoria, int potenciaC,
+	public Carro(Integer idCarro, String marca, String modelo, String categoria, int potenciaC,
 			int cilindrada) {
 		this.idCarro = idCarro;
 		this.marca = marca;
@@ -57,7 +57,7 @@ public abstract class Carro {
 	}
 
 	/* Getters */
-	public String getIdCarro() {
+	public Integer getIdCarro() {
 		return this.idCarro;
 	}
 
@@ -98,7 +98,7 @@ public abstract class Carro {
 	}
 
 	/* Setters */
-	public void setIdCarro(String idCarro) {
+	public void setIdCarro(Integer idCarro) {
 		this.idCarro = idCarro;
 	}
 
@@ -175,7 +175,7 @@ public abstract class Carro {
 			return false;
 
 		Carro c = (Carro) o;
-		return (this.idCarro.equals(c.getIdCarro()) &&
+		return ((this.idCarro == c.getIdCarro()) &&
 				this.modelo.equals(c.getModelo()) &&
 				this.marca.equals(c.getMarca()) &&
 				this.categoria.equals(c.getCategoria()) &&

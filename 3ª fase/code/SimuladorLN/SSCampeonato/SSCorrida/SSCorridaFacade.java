@@ -31,7 +31,7 @@ public class SSCorridaFacade implements ICorrida {
 	 * @param c Carro a adicionar.
 	 */
 	public void putCircuito(Circuito c) {
-		this.todos_circuitos.put(c.getIdCircuito(), c.clone());
+		this.todos_circuitos.put(c.getIdCircuito().toString(), c.clone());
 	}
 
 	public static void simularCorrida(Map<String, Participante> participantes, Corrida c) {

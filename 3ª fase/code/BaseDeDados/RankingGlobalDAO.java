@@ -18,7 +18,7 @@ public class RankingGlobalDAO implements Map<String, RankingGlobal> {
         try (Connection conn = DAOconfig.getConnection();
                 Statement stm = conn.createStatement()) {
             String sql = "CREATE TABLE IF NOT EXISTS ranking_global (" +
-                    "IdConta VARCHAR(15) DEFAULT NULL," +
+                    "IdConta INT DEFAULT NOT NULL," +
                     "Score INT(10) DEFAULT 0," +
                     "FOREIGN KEY(IdConta) REFERENCES contas(IdConta))";
             stm.executeUpdate(sql);

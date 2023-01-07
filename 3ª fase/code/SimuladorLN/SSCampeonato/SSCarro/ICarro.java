@@ -8,7 +8,7 @@ package SimuladorLN.SSCampeonato.SSCarro;
  */
 
 public interface ICarro {
-	public Carro getCarro(String idCarro);
+	public Carro getCarro(Integer idCarro);
 
 	public void putCarro(Carro c);
 

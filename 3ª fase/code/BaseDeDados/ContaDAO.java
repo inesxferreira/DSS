@@ -12,7 +12,7 @@ public class ContaDAO implements Map<String, Conta> {
         try (Connection conn = DAOconfig.getConnection();
                 Statement stm = conn.createStatement()) {
             String sql = "CREATE TABLE IF NOT EXISTS contas(" +
-                    "IdConta VARCHAR(15) NOT NULL PRIMARY KEY," +
+                    "IdConta INT NOT NULL PRIMARY KEY AUTO_INCREMENT," +
                     "Username VARCHAR(15) NOT NULL," +
                     "Password VARCHAR(15) NOT NULL," +
                     "VersaoPremium BOOLEAN DEFAULT false)";

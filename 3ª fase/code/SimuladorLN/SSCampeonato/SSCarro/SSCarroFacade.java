@@ -35,7 +35,7 @@ public class SSCarroFacade implements ICarro {
      * @param idCarro Código do carro.
      * @return Carro.
      */
-    public Carro getCarro(String idCarro) {
+    public Carro getCarro(Integer idCarro) {
         return this.todos_carros.get(idCarro);
     }
 
@@ -45,7 +45,7 @@ public class SSCarroFacade implements ICarro {
      * @param c Carro a adicionar.
      */
     public void putCarro(Carro c) {
-        this.todos_carros.put(c.getIdCarro(), c);
+        this.todos_carros.put(c.getIdCarro().toString(), c);
     }
 
     /**
@@ -64,6 +64,8 @@ public class SSCarroFacade implements ICarro {
      * @param c Piloto a adicionar.
      */
     public void putPiloto(Piloto p) {
-        this.todos_pilotos.put(p.getIdPiloto(), p);
+        this.todos_pilotos.put(p.getIdPiloto().toString(), p);
     }
+
+
 }

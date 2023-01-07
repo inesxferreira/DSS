@@ -15,7 +15,7 @@ public class C1 extends Carro {
 		this.nAfinacoes = 0;
 	}
 
-	public C1(String idCarro, String marca, String modelo, String categoria,
+	public C1(Integer idCarro, String marca, String modelo, String categoria,
 			int potenciaC, int cilindrada) {
 		super(idCarro, marca, modelo, categoria, potenciaC, cilindrada);
 		// this.nAfinacoes = 0;

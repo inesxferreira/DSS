@@ -11,13 +11,10 @@ public class TextUI {
     private ISimuladorLN model;
 
     // Menus da aplicação
-    private Menu menu;
     private Scanner scan;
     private int nJog;
     private Boolean admin;
 
-    // Leitura
-    private Scanner scin;
 
     public TextUI() throws IOException {
         this.model = new SimuladorLNFacade();
@@ -94,6 +91,7 @@ public class TextUI {
             // menuJogador();
             Conta c = new Conta();
             c.setIdConta(id.toString());
+            c.setUsername(usern);
             c.setPassword(pass);
             c.setVersao(vs);
 

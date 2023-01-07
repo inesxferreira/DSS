@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Circuito {
 
-	private String idCircuito;
+	private Integer idCircuito;
 	private String nomeCircuito;
 	private float distancia;
 	private int nCurvas;
@@ -15,7 +15,7 @@ public class Circuito {
 
 	/* Construtores */
 	public Circuito() {
-		this.idCircuito = "";
+		this.idCircuito = 0;
 		this.nomeCircuito = "";
 		this.distancia = 0.0f;
 		this.nCurvas = 0;
@@ -24,7 +24,7 @@ public class Circuito {
 		this.caracteristicas = new ArrayList<>();
 	}
 
-	public Circuito(String idCircuito, String nomeCircuito, float distancia, int nCurvas, int nChicanes,
+	public Circuito(Integer idCircuito, String nomeCircuito, float distancia, int nCurvas, int nChicanes,
 			List<Caracteristica> carac) {
 		this.idCircuito = idCircuito;
 		this.nomeCircuito = nomeCircuito;
@@ -36,7 +36,7 @@ public class Circuito {
 		}
 	}
 
-	public Circuito(String idCircuito, String nomeCircuito, float distancia, int nCurvas, int nChicanes, int nRetas) {
+	public Circuito(Integer idCircuito, String nomeCircuito, float distancia, int nCurvas, int nChicanes, int nRetas) {
 		this.idCircuito = idCircuito;
 		this.nomeCircuito = nomeCircuito;
 		this.distancia = distancia;
@@ -59,7 +59,7 @@ public class Circuito {
 	 * 
 	 * @return Id do circuito
 	 */
-	public String getIdCircuito() {
+	public Integer getIdCircuito() {
 		return this.idCircuito;
 	}
 
@@ -119,7 +119,7 @@ public class Circuito {
 	 * 
 	 * @param distancia
 	 */
-	public void setIdCircuito(String id) {
+	public void setIdCircuito(Integer id) {
 		this.idCircuito = id;
 	}
 

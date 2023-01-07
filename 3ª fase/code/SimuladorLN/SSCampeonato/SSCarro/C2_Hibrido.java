@@ -16,7 +16,7 @@ public class C2_Hibrido extends C2 {
         this.potenciaE = 0;
     }
 
-    public C2_Hibrido(String idCarro, String marca, String modelo, String categoria, int potenciaC, int cilindrada,
+    public C2_Hibrido(Integer idCarro, String marca, String modelo, String categoria, int potenciaC, int cilindrada,
             int potenciaE) {
         super(idCarro, marca, modelo, categoria, potenciaC, cilindrada);
         this.potenciaE = potenciaE;

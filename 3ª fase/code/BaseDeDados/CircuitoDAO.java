@@ -19,7 +19,7 @@ public class CircuitoDAO implements Map<String, Circuito> {
         try (Connection con = DAOconfig.getConnection();
                 Statement stm = con.createStatement()) {
             String sql = "CREATE TABLE IF NOT EXISTS circuito (" +
-                    "IdCircuito varchar(45) NOT NULL PRIMARY KEY," +
+                    "IdCircuito INT NOT NULL PRIMARY KEY AUTO_INCREMENT," +
                     "NomeCircuito varchar(45) DEFAULT NULL," +
                     "Distancia float DEFAULT 0.0," +
                     "NCurvas int DEFAULT 0," +
@@ -117,7 +117,7 @@ public class CircuitoDAO implements Map<String, Circuito> {
             stm.setString(1, (String) key);
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    String idCircuito = rs.getString("IdCircuito");
+                    Integer idCircuito = rs.getInt("IdCircuito");
                     String nomeCircuito = rs.getString("NomeCircuito");
                     float distancia = rs.getFloat("Distancia");
                     int nCurvas = rs.getInt("NCurvas");
@@ -160,7 +160,7 @@ public class CircuitoDAO implements Map<String, Circuito> {
                         "SELECT * FROM circuito");
                 ResultSet rs = stm.executeQuery()) {
             while (rs.next()) {
-                String idCircuito = rs.getString("idCircuito");
+                Integer idCircuito = rs.getInt("idCircuito");
                 String nomeCircuito = rs.getString("nomeCircuito");
                 float distancia = rs.getFloat("distancia");
                 int nCurvas = rs.getInt("nCurvas");
@@ -168,7 +168,7 @@ public class CircuitoDAO implements Map<String, Circuito> {
                 int nRetas = rs.getInt("nRetas");
 
                 Circuito circuito = new Circuito(idCircuito, nomeCircuito, distancia, nCurvas, nChicanes, nRetas);
-                entries.add(new AbstractMap.SimpleEntry<>(idCircuito, circuito));
+                entries.add(new AbstractMap.SimpleEntry<>(idCircuito.toString(), circuito));
             }
         } catch (SQLException e) {
             // Erro ao selecionar circuitos...
@@ -230,7 +230,7 @@ public class CircuitoDAO implements Map<String, Circuito> {
                         + "NChicanes = VALUES(NChicanes), "
                         + "NRetas = VALUES(NRetas)";
                 PreparedStatement pstm = con.prepareStatement(sql);
-                pstm.setString(1, circuito.getIdCircuito());
+                pstm.setInt(1, circuito.getIdCircuito());
                 pstm.setString(2, circuito.getNomeCircuito());
                 pstm.setFloat(3, circuito.getDistancia());
                 pstm.setInt(4, circuito.getnCurvas());
@@ -271,7 +271,7 @@ public class CircuitoDAO implements Map<String, Circuito> {
                 Statement stm = con.createStatement();
                 ResultSet rs = stm.executeQuery("SELECT * FROM circuito")) {
             while (rs.next()) {
-                String id = rs.getString("idCircuito");
+                Integer id = rs.getInt("idCircuito");
                 String nome = rs.getString("nomeCircuito");
                 float distancia = rs.getFloat("distancia");
                 int nCurvas = rs.getInt("nCurvas");

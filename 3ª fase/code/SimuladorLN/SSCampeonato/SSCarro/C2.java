@@ -15,13 +15,13 @@ public class C2 extends Carro {
 		this.nAfinacoes = 0;
 	}
 
-	public C2(String idCarro, String marca, String modelo, String categoria, int potenciaC, int cilindrada) {
+	public C2(Integer idCarro, String marca, String modelo, String categoria, int potenciaC, int cilindrada) {
 		super(idCarro, marca, modelo, categoria, potenciaC,
 				cilindrada);
 		// this.nAfinacoes = 0;
 	}
 
-	public C2(String idCarro, String marca, String modelo, String categoria, int potenciaC, int cilindrada,
+	public C2(Integer idCarro, String marca, String modelo, String categoria, int potenciaC, int cilindrada,
 			int nAfinacoes) {
 		super(idCarro, marca, modelo, categoria, potenciaC, cilindrada);
 		this.nAfinacoes = nAfinacoes;
