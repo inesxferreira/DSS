@@ -43,20 +43,24 @@ public class SSCorridaFacade implements ICorrida {
 	 * 
 	 * @param participantes
 	 */
-	public void setScoreCorrida(Map<String, Participante> participantes, Corrida corrida) {
-		// Atribuir um score de acordo com a ordem dos participantes
-		int score = 5;
-		int i = 0;
-
-		Object[] parti = participantes.keySet().toArray();
-
-		while (score != 0) {
-			String id = parti[i].toString();
-			corrida.getScoreCorrida().put(id, score);
-			score--;
-			i++;
-		}
-		// participantes.keySet().forEach(id->corrida.getScoreCorrida().put(id, score));
-	}
+	/*
+	 * public void setScoreCorrida(Map<String, Participante> participantes, Corrida
+	 * corrida) {
+	 * // Atribuir um score de acordo com a ordem dos participantes
+	 * int score = 5;
+	 * int i = 0;
+	 * 
+	 * Object[] parti = participantes.keySet().toArray();
+	 * 
+	 * while (score != 0) {
+	 * String id = parti[i].toString();
+	 * corrida.getScoreCorrida().put(id, score);
+	 * score--;
+	 * i++;
+	 * }
+	 * // participantes.keySet().forEach(id->corrida.getScoreCorrida().put(id,
+	 * score));
+	 * }
+	 */
 
 }

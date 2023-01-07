@@ -14,11 +14,13 @@ public class TextUI {
     // Menus da aplicação
     private Menu menu;
     private Scanner scan;
+    private int nJog;
+    private Boolean admin;
 
     // Leitura
     private Scanner scin;
 
-    public TextUI() {
+    public TextUI() throws IOException {
         this.model = new SimuladorLNFacade();
         this.scan = new Scanner(System.in);
     }
@@ -27,24 +29,43 @@ public class TextUI {
         Menu.Logo();
 
         System.out.println("\n\033[1;35m Bem vindo ao FÓRMULA 1! \033[0m\n");
-        this.menu();
+        this.inicio();
+        for (int i = 0; i < nJog; i++) {
+            if (i == 0)
+                admin = true;
+            else
+                admin = false;
+            this.menuInicial();
+        }
+        // this.menuSimular();
 
         System.out.println("Saindo!...");
     }
 
-    public void menu() {
+    public void inicio() {
+        System.out.println("Insira o número de jogadores:");
+        String n = scan.nextLine();
+        nJog = Integer.parseInt(n);
+    }
+
+    public void menuInicial() {
         Menu menuInicial = new Menu(new String[] {
                 "Fazer login",
                 "Criar conta",
-                "Menu Campeonato", });
-        menuInicial.setPreCondition(1, this.model.existeConta());
-
+                "Guest", });
         menuInicial.setHandler(1, () -> {
             System.out.print("Insira username: ");
             String usern = scan.nextLine();
             System.out.print("Insira password: ");
             String pass = scan.nextLine();
+            boolean loginValido = this.model.getContaFacade().verificarCredenciais(usern, pass);
             /*
+             * if (loginValido) {
+             * menuJogador();
+             * } else {
+             * System.out.println("Login inválido!");
+             * }/
+             * /*
              * if (this.model.conta(id, pass, versao)) { //fazer containsKey(id) com a
              * ContaDAO e verificar se pass é igual à existente
              * System.out.print("\nLogin com sucesso.\n\n");
@@ -54,66 +75,50 @@ public class TextUI {
         });
         menuInicial.setHandler(2, () -> {
             System.out.print("Insira username: ");
+
             String usern = scan.nextLine();
             System.out.print("Insira password: ");
             String pass = scan.nextLine();
             System.out.print("Insira a versão (Base/Premium): ");
             String versao = scan.nextLine();
+            // AQUI criar objeto conta
             /*
+             * menuJogador();
              * (this.model.conta(id, pass, versao)) { //fazer put(id) na ContaDAO
              * System.out.print("\nConta criada com sucesso.\n\n");
              * }
              */
         });
-        menuInicial.setHandler(3, () -> gestaoCampeonato());
+        // menuInicial.setHandler(3, () -> menuJogador());
 
-    }
-
-    public void gestaoCampeonato() {
-        Menu menuCampeonato = new Menu(new String[] {
-                "Consultar Campeonatos", });
-
-        menuCampeonato.setPreCondition(1, this.model.existeCampeonato());
-        menuCampeonato.setHandler(1, () -> {
-            System.out.print("Escolha um campeonato: ");
-            String camp = scan.nextLine(); // id do campeonato
-        });
-
-        Menu menuDetalhes = new Menu(new String[] {
-                "Menu Circuito",
-                "Menu Carro",
-                "Menu Piloto", });
-
-        menuDetalhes.setHandler(1, () -> gestaoCircuito());
-        menuDetalhes.setHandler(2, () -> gestaoCarro());
-        menuDetalhes.setHandler(3, () -> gestaoPiloto());
-
-    }
-
-    public void gestaoCircuito() {
-        Menu menuCircuito = new Menu(new String[] {
-                "Consultar Circuitos", });
-
-        menuCircuito.setHandler(1, () -> {
-            System.out.print("Escolha um circuito: ");
-            String circ = scan.nextLine(); // id do circuito
-        });
     }
     /*
-     * Menu menuJogador = new Menu(new String[] { "Criar conta", "Fazer login" });
-     * // se entrar no "Criar conta" fazer "inserir username, password e versão
-     * // se entrar no "Fazer login" pedir username e password
+     * public void menuJogador() {
+     * Menu menuJog = new Menu(new String[] {
+     * "Configurar Campeonato",
+     * "Ver Ranking Global" });
+     * menuJog.setHandler(1, () -> menuConfigCamp());
+     * menuJog.setHandler(2, () -> showRankingG());
+     * }
      * 
-     *
-     * "Ver Ranking global" }); // listar
-     * // campeonatos
-     * // existentes
-     * Menu menuCircuito = new Menu(new String[] {}); // listar circuitos existentes
-     * Menu menuCorrida = new Menu(new String[] {}); // listar corridas existentes
-     * Menu menuCarro = new Menu(new String[] {}); // listar carros existentes
-     * Menu menuPiloto = new Menu(new String[] {}); // listar pilotos existentes
+     * public void menuConfigCamp() {
+     * if (admin) {
+     * Menu menuAdmin = new Menu(new String[] {
+     * "Escolher Campeonato",
+     * "Escolher Carro",
+     * "Escolher Piloto", });
+     * menuAdmin.setHandler(1, () -> showCamp());
+     * menuAdmin.setHandler(2, () -> showCarro());
+     * menuAdmin.setHandler(3, () -> showPiloto());
      * 
-     * // simular corrida .. "Visualizar Ranking Global"
-     * Menu menuRanking = new Menu(new String[] {}); // listar ranking global
+     * } else {
+     * Menu menuJ = new Menu(new String[] {
+     * "Escolher Carro",
+     * "Escolher Piloto", });
+     * menuJ.setHandler(1, () -> showCarro());
+     * menuJ.setHandler(2, () -> showPiloto());
+     * }
+     * 
+     * }
      */
 }

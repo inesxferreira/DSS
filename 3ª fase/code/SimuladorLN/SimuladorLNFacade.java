@@ -46,7 +46,7 @@ public class SimuladorLNFacade implements ISimuladorLN {
     }
 
     @Override
-    public IConta getContaFacacde() {
+    public IConta getContaFacade() {
 
         return contaFacade;
     }

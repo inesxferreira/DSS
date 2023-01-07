@@ -1,16 +1,39 @@
 package SimuladorLN.SSConta;
 
+import java.util.Map;
 import BaseDeDados.*;
 import SimuladorLN.SSCampeonato.SSCarro.Carro;
 import SimuladorLN.SSCampeonato.SSCarro.Piloto;
 
 public class SSContaFacade implements IConta {
 
-	private ContaDAO todas_contas;
+	// private ContaDAO todas_contas;
+	private Map<String, Conta> todas_contas;
 
-	public int getScore() {
-		// TODO - implement SSContaFacade.getScore
-		throw new UnsupportedOperationException();
+	/**
+	 * Construtor por omissão para objetos da classe SSContaFacade.
+	 */
+	public SSContaFacade() {
+		this.todas_contas = ContaDAO.getInstance();
+	}
+
+	/**
+	 * Método que devolve uma conta dado o seu identificador.
+	 *
+	 * @param idConta id da conta.
+	 * @return Conta.
+	 */
+	public Conta getConta(String idConta) {
+		return this.todas_contas.get(idConta);
+	}
+
+	/**
+	 * Método que permite adicionar uma conta.
+	 *
+	 * @param c Conta a adicionar.
+	 */
+	public void putConta(Conta c) {
+		this.todas_contas.put(c.getIdConta(), c.clone());
 	}
 
 	/**
@@ -18,18 +41,18 @@ public class SSContaFacade implements IConta {
 	 * @param nCorridas
 	 * @param nAfinacoes
 	 */
-	public void verificaAfinacao(int nCorridas, int nAfinacoes) {
-		// TODO - implement SSContaFacade.verificaAfinacao
-		throw new UnsupportedOperationException();
+	public boolean verificaAfinacao(int nCorridas, int nAfinacoes) {
+		if (nAfinacoes <= (2 / 3) * nCorridas)
+			return true;
+		return false;
 	}
 
 	/**
 	 * 
 	 * @param idParticipante
 	 */
-	public int getVersao(String idParticipante) {
-		// TODO - implement SSContaFacade.getVersao
-		throw new UnsupportedOperationException();
+	public boolean getVersao(String idParticipante) {
+		return todas_contas.get(idParticipante).getVersaoPremium();
 	}
 
 	/**
@@ -38,41 +61,40 @@ public class SSContaFacade implements IConta {
 	 * @param password
 	 */
 	public void fazerLogin(String nome, String password) {
-		// TODO - implement SSContaFacade.fazerLogin
-		throw new UnsupportedOperationException();
+		boolean res = false;
+		for (Conta conta : todas_contas) {
+			if (conta.getIdConta().equals(nome) && conta.getPassword().equals(password)) {
+				res = true;
+				break;
+			}
+		}
 	}
 
 	/**
 	 * 
-	 * @param c
+	 * @param participantes_camp Map ao qual queremos adicionar o participante
+	 *                           criado
+	 * @param idCarro            id do carro escolhido pelo participante
+	 * @param idPiloto           id do piloto escolhido pelo participante
 	 */
-	public void setCarro(Carro c) {
-		// TODO - implement SSContaFacade.setCarro
-		throw new UnsupportedOperationException();
-	}
+	public void configuraCampeonato(Map<String, Participante> participantes_camp, String idParticipante, String idCarro,
+			String idPiloto) {
+		// Ir buscar carros e pilotos à db de acordo com o id
+		Carro carro = null;
+		Piloto piloto = null;
+		if (CarroDAO.containsKey(idCarro)) {
+			carro = CarroDAO.get(idCarro);
+		}
 
-	public Carro getCarro() {
-		// TODO - implement SSContaFacade.getCarro
-		throw new UnsupportedOperationException();
-	}
+		if (PilotoDAO.containsKey(idPiloto)) {
+			piloto = PilotoDAO.get(idPiloto);
+		}
 
-	/**
-	 * 
-	 * @param p
-	 */
-	public void setPiloto(Piloto p) {
-		// TODO - implement SSContaFacade.setPiloto
-		throw new UnsupportedOperationException();
-	}
+		// Inicializar participantes
+		Participante participante = new Participante(idParticipante, piloto, carro, 0, 0);
 
-	public Piloto getPiloto() {
-		// TODO - implement SSContaFacade.getPiloto
-		throw new UnsupportedOperationException();
-	}
+		// Adicionas o participante criado ao map do campeonato
 
-	public void configuraCampeonato() {
-		// TODO - implement SSContaFacade.configuraCampeonato
-		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -85,7 +107,6 @@ public class SSContaFacade implements IConta {
 		int count = 1;
 		for (String conta : todas_contas.keySet()) {
 			if (conta.equals(idConta)) {
-				// contas.get(idConta).setPosicao(count);
 				return count;
 			}
 			if (count == 1 && !conta.equals(idConta))
@@ -105,11 +126,9 @@ public class SSContaFacade implements IConta {
 	// PRECISO DE REVER ESTA MELHOR HA AQUI UMAS DUVIDAS !!!!! FALTA DEPOIS MUDAR A
 	// POSICAO
 	public void atualizaScore(String idConta, int scoreDoCampeonato) {
-		// todas_contas.get(idConta).setScore(todas_contas.get(idConta).getScore() +
-		// scoreDoCampeonato);
 		for (Conta c : todas_contas.values())
 			if (c.getIdConta().equals(idConta))
-				todas_contas.get(idConta).setScore(todas_contas.get(idConta).getScore() + scoreDoCampeonato);
+				todas_contas.get(idConta).setScore(todas_contas.get(idConta).getScoreGlobal() + scoreDoCampeonato);
 
 	}
 }

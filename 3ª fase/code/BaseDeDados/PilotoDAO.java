@@ -259,7 +259,8 @@ public class PilotoDAO implements Map<String, Piloto> {
     @Override
     public void putAll(Map<? extends String, ? extends Piloto> m) {
         try (Connection con = DAOconfig.getConnection();
-                PreparedStatement stm = con.prepareStatement("INSERT INTO piloto (IdPiloto, Nome, CTS, SVA) VALUES (?,?,?,?)")) {
+                PreparedStatement stm = con
+                        .prepareStatement("INSERT INTO piloto (IdPiloto, Nome, CTS, SVA) VALUES (?,?,?,?)")) {
             for (Map.Entry<? extends String, ? extends Piloto> entry : m.entrySet()) {
                 stm.setString(1, entry.getKey());
                 stm.setString(2, entry.getValue().getNome());

@@ -3,46 +3,64 @@ package SimuladorLN.SSConta;
 public class Conta implements Comparable<Conta> {
 
 	private String idConta;
+	private String username;
 	private String password;
 	private Boolean versaoPremium;
-	private int score;
+	private int scoreGlobal;
+	private Participante participante;
 
 	public Conta() {
 		this.idConta = "";
+		this.username = "";
 		this.password = "";
 		this.versaoPremium = false;
-		this.score = 0;
+		this.scoreGlobal = 0;
 	}
 
-	public Conta(String idConta, String pass, Boolean premium, int score) {
+	public Conta(String idConta, String user, String pass, Boolean premium) {
 		this.idConta = idConta;
+		this.username = user;
 		this.password = pass;
 		this.versaoPremium = premium;
-		this.score = score;
 	}
 
 	public Conta(Conta c) {
 		this.idConta = c.getIdConta();
+		this.username = c.getUsername();
 		this.password = c.getPassword();
 		this.versaoPremium = c.getVersaoPremium();
-		this.score = c.getScore();
+		this.scoreGlobal = c.getScoreGlobal();
 	}
 
-	String getIdConta() {
+	public String getIdConta() {
 		return this.idConta;
 	}
 
-	private String getPassword() {
+	public String getUsername() {
+		return this.username;
+	}
+
+	public String getPassword() {
 		return this.password;
 	}
 
-	private boolean getVersaoPremium() {
+	public boolean getVersaoPremium() {
 		return this.versaoPremium;
 	}
 
-	int getScore() {
-		return this.score;
+	public void setScoreGlobal(int i) {
+		this.scoreGlobal = i;
 	}
+
+	public int getScoreGlobal() {
+		return this.scoreGlobal;
+	}
+
+	/*
+	 * int[] existeConta() {
+	 * 
+	 * }
+	 */
 
 	/**
 	 * 
@@ -50,41 +68,9 @@ public class Conta implements Comparable<Conta> {
 	 * @param password
 	 */
 	public boolean verificarCredenciais(String nome, String pass) {
+
 		return nome.equals(this.idConta) && pass.equals(this.password);
 	}
-
-	/*
-	 * public int getPosicao() {
-	 * return this.posicao;
-	 * }
-	 */
-
-	/**
-	 * 
-	 * @param posicao
-	 * 
-	 * 
-	 *                public void setPosicao(int pos) {
-	 *                this.posicao = pos;
-	 *                }
-	 */
-
-	/**
-	 * 
-	 * @param username
-	 * @param password
-	 * @param modo
-	 */
-	/*
-	 * public Conta(String username, String password, boolean modo, int ultima_pos)
-	 * {
-	 * this.idConta = username;
-	 * this.password = password;
-	 * this.posicao = ultima_pos + 1;
-	 * this.versaoPremium = modo;
-	 * this.score = 0;
-	 * }
-	 */
 
 	/**
 	 * 
@@ -98,10 +84,11 @@ public class Conta implements Comparable<Conta> {
 	}
 
 	public int compareTo(Conta o) {
-		return this.score - o.getScore();
+		return this.scoreGlobal - o.getScoreGlobal();
 	}
 
-	public void setScore(int i) {
+	public Conta clone() {
+		return new Conta(this);
 	}
 
 }

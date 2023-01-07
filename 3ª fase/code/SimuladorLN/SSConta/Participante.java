@@ -35,7 +35,6 @@ public class Participante implements Comparable<Participante> {
 		this.fatorOrd = c.getFatorOrd();
 	}
 
-
 	public String getIdParticipante() {
 		return this.idParticipante;
 	}
@@ -84,13 +83,13 @@ public class Participante implements Comparable<Participante> {
 		this.fatorOrd = fatorOrd;
 	}
 
-
 	public void configuraCampeonato() {
 		// TODO - implement Participante.configuraCampeonato
 		throw new UnsupportedOperationException();
 	}
+
 	public int compareTo(Participante o) {
-        return this.scoreCampeonato-o.getScoreCampeonato();
+		return this.scoreCampeonato - o.getScoreCampeonato();
 	}
 
 	/**

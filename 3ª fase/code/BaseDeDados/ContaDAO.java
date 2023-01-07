@@ -1,10 +1,10 @@
 package BaseDeDados;
 
+import SimuladorLN.SSCampeonato.SSCarro.Piloto;
+
 import SimuladorLN.SSConta.Conta;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.sql.*;
 import static java.util.stream.Collectors.*;
 
@@ -17,7 +17,9 @@ public class ContaDAO implements Map<String, Conta> {
                 Statement stm = conn.createStatement()) {
             String sql = "CREATE TABLE IF NOT EXISTS contas(" +
                     "IdConta varchar(15) NOT NULL PRIMARY KEY," +
-                    "Password varchar(15) DEFAULT 0)";
+                    "Username varchar(15) NOT NULL," +
+                    "Password varchar(15) NOT NULL," +
+                    "VersaoPremium boolean DEFAULT false)";
             stm.executeUpdate(sql);
         } catch (SQLException e) {
             // Erro a criar tabela...
@@ -40,74 +42,248 @@ public class ContaDAO implements Map<String, Conta> {
 
     @Override
     public void clear() {
-        // TODO Auto-generated method stub
-        
+        try (Connection con = DAOconfig.getConnection();
+                PreparedStatement stm = con.prepareStatement(
+                        "DELETE FROM conta WHERE IdConta = ?")) {
+            for (String id : this.keySet()) {
+                stm.setString(1, id);
+                stm.executeUpdate();
+            }
+        } catch (SQLException e) {
+            // Erro ao remover conta...
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
+        }
     }
 
     @Override
     public boolean containsKey(Object key) {
-        // TODO Auto-generated method stub
-        return false;
+        boolean containsKey = false;
+        try (Connection con = DAOconfig.getConnection();
+                PreparedStatement stm = con.prepareStatement(
+                        "SELECT IdConta FROM conta WHERE IdConta = ?")) {
+            stm.setString(1, key.toString());
+            try (ResultSet rs = stm.executeQuery()) {
+                if (rs.next()) {
+                    containsKey = true;
+                }
+            }
+        } catch (SQLException e) {
+            // Erro ao verificar se existe conta com o id especificado...
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
+        }
+        return containsKey;
     }
 
     @Override
     public boolean containsValue(Object value) {
-        // TODO Auto-generated method stub
+        if (value instanceof Conta) {
+            Conta conta = (Conta) value;
+            for (Conta c : this.values()) {
+                if (conta.getIdConta().equals(c.getIdConta())
+                        && conta.getUsername().equals(c.getUsername())
+                        && conta.getPassword().equals(c.getPassword())
+                        && conta.getVersaoPremium() == c.getVersaoPremium()) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
     @Override
-    public Set<Entry<String, Conta>> entrySet() {
-        // TODO Auto-generated method stub
-        return null;
+    public Set<Map.Entry<String, Conta>> entrySet() {
+        Set<Map.Entry<String, Conta>> entries = new HashSet<>();
+        try (
+                Connection con = DAOconfig.getConnection();
+                PreparedStatement stm = con.prepareStatement(
+                        "SELECT * FROM conta");
+                ResultSet rs = stm.executeQuery()) {
+            while (rs.next()) {
+                String idConta = rs.getString("IdConta");
+                String user = rs.getString("Username");
+                String pass = rs.getString("Password");
+                boolean versao = rs.getBoolean("VersaoPremium");
+
+                Conta conta = new Conta(idConta, user, pass, versao);
+                entries.add(new AbstractMap.SimpleEntry<>(IdConta, conta));
+            }
+        } catch (SQLException e) {
+            // Erro ao selecionar contas...
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
+        }
+        return entries;
     }
 
     @Override
     public Conta get(Object key) {
-        // TODO Auto-generated method stub
-        return null;
+        String idConta = (String) key;
+        Conta conta = null;
+        String sql = "SELECT * FROM conta WHERE IdConta = ?";
+
+        try (
+                Connection con = DAOconfig.getConnection();
+                PreparedStatement stm = con.prepareStatement(sql)) {
+            stm.setString(1, idConta); //// Eu tenho duvidas se aqui nao devemos fazer Set para cada parametro
+            try (ResultSet rs = stm.executeQuery()) {
+                if (rs.next()) {
+                    String id = rs.getString("IdConta");
+                    String user = rs.getString("Username");
+                    String pass = rs.getString("Password");
+                    boolean versao = rs.getBoolean("VersaoPremium");
+                    conta = new Conta(idConta, user, pass, versao);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+        }
+        return conta;
     }
 
     @Override
     public boolean isEmpty() {
-        // TODO Auto-generated method stub
-        return false;
+        String sql = "SELECT COUNT(*) FROM conta";
+        try (
+                Connection con = DAOconfig.getConnection();
+                PreparedStatement stm = con.prepareStatement(sql)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) == 0;
+                } else {
+                    return true;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 
     @Override
     public Set<String> keySet() {
-        // TODO Auto-generated method stub
-        return null;
+        Set<String> set = new HashSet<>();
+        String sql = "SELECT IdConta FROM conta";
+        try (
+                Connection con = DAOconfig.getConnection();
+                PreparedStatement stm = con.prepareStatement(sql);
+                ResultSet rs = stm.executeQuery()) {
+            while (rs.next()) {
+                set.add(rs.getString("IdConta"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return set;
     }
 
     @Override
-    public Conta put(String arg0, Conta arg1) {
-        // TODO Auto-generated method stub
-        return null;
+    public Conta put(String id, Conta conta) {
+        try (Connection con = DAOconfig.getConnection();
+                PreparedStatement stm = con.prepareStatement(
+                        "INSERT INTO conta (IdConta,UserName,Password,VersaoPremium) VALUES (?,?,?,?)")) {
+            stm.setString(1, id);
+            stm.setString(2, conta.getUsername());
+            stm.setString(3, conta.getPassword());
+            stm.setBoolean(4, conta.getVersaoPremium());
+            stm.executeUpdate();
+            if (con != null)
+                con.close();
+
+        } catch (SQLException e) {
+            // Erro a inserir conta...
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
+        }
+        return conta;
     }
 
     @Override
     public void putAll(Map<? extends String, ? extends Conta> m) {
-        // TODO Auto-generated method stub
-        
+        try (Connection con = DAOconfig.getConnection()) {
+            for (Entry<? extends String, ? extends Conta> entry : m.entrySet()) {
+                Conta conta = entry.getValue();
+                String sql = "INSERT INTO conta (IdConta,Username, Password, VersaoPremium) "
+                        + "VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE "
+                        + "IdConta = VALUES(IdConta), "
+                        + "Username = VALUES(Username),"
+                        + "Password = VALUES(Password), "
+                        + "VersaoPremium = VALUES(VersaoPremium)";
+                PreparedStatement pstm = con.prepareStatement(sql);
+                pstm.setString(1, conta.getIdConta());
+                pstm.setString(2, conta.getUsername());
+                pstm.setString(2, conta.getPassword());
+                pstm.setBoolean(3, conta.getVersaoPremium());
+                pstm.executeUpdate();
+                pstm.close();
+            }
+        } catch (SQLException e) {
+            // Erro ao inserir dados na tabela...
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
+        }
     }
 
     @Override
     public Conta remove(Object key) {
-        // TODO Auto-generated method stub
-        return null;
+        Conta conta = this.get(key);
+        try (
+                Connection con = DAOconfig.getConnection();
+                PreparedStatement stm = con.prepareStatement(
+                        "DELETE FROM conta WHERE IdConta = ?")) {
+            stm.setString(1, (String) key);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            // Erro ao remover conta...
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
+        }
+        return conta;
     }
 
     @Override
     public int size() {
-        // TODO Auto-generated method stub
-        return 0;
+        int size = 0;
+        String sql = "SELECT COUNT(*) FROM conta";
+        try (
+                Connection con = DAOconfig.getConnection();
+                Statement stm = con.createStatement();
+                ResultSet rs = stm.executeQuery(sql)) {
+            if (rs.next()) {
+                size = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return size;
     }
 
     @Override
     public Collection<Conta> values() {
-        // TODO Auto-generated method stub
-        return null;
+        List<Conta> contas = new ArrayList<>();
+        try (
+                Connection con = DAOconfig.getConnection();
+                Statement stm = con.createStatement();
+                ResultSet rs = stm.executeQuery("SELECT * FROM contas")) {
+            while (rs.next()) {
+                String id = rs.getString("IdConta");
+                String user = rs.getString("Username");
+                String password = rs.getString("Password");
+                boolean versao = rs.getBoolean("VersaoPremium");
+                Conta conta = new Conta(id, user, password, versao);
+                contas.add(conta);
+            }
+        } catch (SQLException e) {
+            // Erro ao selecionar contas...
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
+        }
+        return contas;
     }
 
 }

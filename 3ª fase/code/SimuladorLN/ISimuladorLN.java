@@ -17,7 +17,7 @@ public interface ISimuladorLN {
 
     ICorrida getCorridaFacade();
 
-    IConta getContaFacacde();
+    IConta getContaFacade();
 
     void start();
 

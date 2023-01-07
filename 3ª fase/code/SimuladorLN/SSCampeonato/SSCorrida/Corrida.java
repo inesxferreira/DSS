@@ -139,4 +139,9 @@ public class Corrida {
 	public void desclassifica(String idParticipante, Corrida corrida) {
 		corrida.getScoreCorrida().put(idParticipante, 0);
 	}
+
+	public Corrida clone() {
+		return new Corrida(this);
+	}
+
 }

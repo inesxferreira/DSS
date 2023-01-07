@@ -5,8 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DAOconfig {
-    static final String USERNAME = "root";
-    static final String PASSWORD = "rbs0284a";
+    static final String USERNAME = "pausa";
+    static final String PASSWORD = "agora";
     private static final String DATABASE = "formula1";
     private static final String DRIVER = "jdbc:mysql";
     static final String URL = DRIVER + "://localhost:3306/" + DATABASE;

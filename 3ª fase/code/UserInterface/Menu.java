@@ -2,6 +2,8 @@ package UserInterface;
 
 import java.util.*;
 
+import SimuladorLN.SSCampeonato.ICampeonato;
+
 public class Menu {
 
     // Interfaces auxiliares
@@ -87,8 +89,8 @@ public class Menu {
         } while (op != 0);
     }
 
-    public void setPreCondition(int i, PreCondition b) {
-        this.disponivel.set(i - 1, b);
+    public void setPreCondition(int i, ICampeonato iCampeonato) {
+        this.disponivel.set(i - 1, iCampeonato);
     }
 
     public void setHandler(int i, Handler h) {

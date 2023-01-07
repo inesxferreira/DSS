@@ -7,18 +7,20 @@ public interface IConta {
 
 	int getScore();
 
+	int getId();
+
 	/**
 	 * 
 	 * @param nCorridas
 	 * @param nAfinacoes
 	 */
-	void verificaAfinacao(int nCorridas, int nAfinacoes);
+	boolean verificaAfinacao(int nCorridas, int nAfinacoes);
 
 	/**
 	 * 
 	 * @param idParticipante
 	 */
-	int getVersao(String idParticipante);
+	boolean getVersao(String idParticipante);
 
 	/**
 	 * 
@@ -32,6 +34,8 @@ public interface IConta {
 	 * @param c
 	 */
 	void setCarro(Carro c);
+
+	boolean verificarCredenciais(String nome, String pass);
 
 	Carro getCarro();
 

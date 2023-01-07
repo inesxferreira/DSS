@@ -8,6 +8,7 @@ public class Campeonato {
 	private String idCampeonato;
 	private String nome;
 	TreeMap<String, Integer> scoreCamp = new TreeMap<String, Integer>();
+	private Map<String, Circuito> circuitos = new HashMap<String, Circuito>();
 	private Map<String, Corrida> corridas = new HashMap<String, Corrida>();
 	private Map<String, Participante> participantes = new HashMap<String, Participante>();
 
@@ -15,6 +16,7 @@ public class Campeonato {
 		this.nome = "";
 		this.idCampeonato = "";
 		this.scoreCamp = new TreeMap<>();
+		this.circuitos = new HashMap<>();
 		this.corridas = new HashMap<>();
 		this.participantes = new HashMap<>();
 	}
@@ -53,11 +55,19 @@ public class Campeonato {
 	}
 
 	public Map<String, Circuito> getCircuitos() {
-		Map<String, Circuito> circ = new HashMap<>();
+		Map<String, Circuito> n_circuitos = new HashMap<>();
 		for (String id : this.circuitos.keySet()) {
-			circ.put(id, this.circuitos.get(id).clone());
+			n_circuitos.put(id, this.circuitos.get(id).clone());
 		}
-		return circ;
+		return n_circuitos;
+	}
+
+	public Map<String, Corrida> getCorridas() {
+		Map<String, Corrida> n_corridas = new HashMap<>();
+		for (String id : this.corridas.keySet()) {
+			n_corridas.put(id, this.corridas.get(id).clone());
+		}
+		return n_corridas;
 	}
 
 	public void setIdCampeonato(String idCampeonato) {
