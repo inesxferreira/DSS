@@ -16,6 +16,22 @@ public class Corrida {
 	private Circuito circuito;
 	private TreeMap<String, Integer> scoreCorrida; // IdParticipante, ScoreCorrida
 
+	private TreeMap<String, double> fatores_ultrapassagem = new TreeMap<>(new Comparator<String>() {
+      public double compare(String s1, String s2) {
+        double p1 = fatores_ultrapassagem.get(s1);
+        double p2 = fatores_ultrapassagem.get(s2);
+        return p2-p1;
+      }
+    });
+	private TreeMap<String,int> quant_despistes = new TreeMap<>(new Comparator<String>() {
+      public int compare(String s1, String s2) {
+        int p1 = quant_despistes.get(s1);
+        int p2 = quant_despistes.get(s2);
+        return p2-p1;
+      }
+    });
+
+
 	/* Construtores */
 	public Corrida() {
 		this.idCorrida = 0;
@@ -110,18 +126,19 @@ public class Corrida {
 	 * 
 	 * @param participantes
 	 */
-	public void calcularUltrapassagem(Participante participante) {
+	public void calcularUltrapassagem(Participante participante, float gdu) {
 		Carro c = participante.getCarro();
 		int potencia = c.getPotenciaC();
 		float pac = c.getPac();
 		int tipoPneus = c.getTipoPneus();
+		int modoMotor = c.getModoMotor();
 
 		Piloto p = participante.getPiloto();
 		float sva = p.getSVA();
 		float cts = p.getCTS();
 
-		fator_ultrapassagem = 0.1 * gdu + 0.8 * (potencia + 1 - pac + tipoPneus + modoMotor) + 0.1 * (sva + cts);
-
+		double fator_ultrapassagem = 0.1 * gdu + 0.8 * (potencia + 1 - pac + tipoPneus + modoMotor) + 0.1 * (sva + cts);
+		this.fatores_ultrapassagem.put()
 	}
 
 	/**
@@ -152,8 +169,11 @@ public class Corrida {
 	public Map<String, Participante> calcularEventosBase(Map<String, Participante> participantes) {
 		List<Caracteristica> caracteristicas = this.circuito.getCaracteristicas();
 
-		for (Participante participante : participantes.values()) {
-			calcularUltrapassagem(participante);
+		for (Caracteristica c : caracteristicas) {
+			float gdu = c.getGDU();
+			for (Participante participante : participantes.values()) {
+				calcularUltrapassagem(participante, gdu);
+			}
 		}
 		return participantes;
 	}
