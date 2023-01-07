@@ -138,6 +138,7 @@ public class TextUI {
                 System.out.println("Todos os dados inseridos com sucesso!");
                 // Como este participante já selecionou tudo, vai para o próximo
             }
+        menuAdmin.run();
         } else {
             Menu menuJ = new Menu(new String[] {
                     "Escolher Carro",
@@ -148,8 +149,8 @@ public class TextUI {
                 System.out.println("Todos os dados inseridos com sucesso!");
                 // Como este participante já selecionou tudo, vai para o próximo
             }
+            menuJ.run();
         }
-        menuConfigCamp.run();
     }
 
     public void showRankingG() {
