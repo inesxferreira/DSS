@@ -112,4 +112,31 @@ public class Corrida {
 	public void calcularAvarias(Map<String, Participante> participantes) {
 
 	}
+
+	/**
+	 * 
+	 * @param participantes
+	 */
+	public Map<String, Participante> calcularEventosBase(Map<String, Participante> participantes) {
+		// TODO - implement SSCorridaFacade.calcularEventosBase
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * 
+	 * @param participantes
+	 */
+	public Map<String, Participante> calcularEventosPremium(Map<String, Participante> participantes) {
+		// TODO - implement SSCorridaFacade.calcularEventosPremium
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * 
+	 * @param idParticipante ID do participante
+	 * @param corrida        Corrida em que o participante é desclassificado
+	 */
+	public void desclassifica(String idParticipante, Corrida corrida) {
+		corrida.getScoreCorrida().put(idParticipante, 0);
+	}
 }

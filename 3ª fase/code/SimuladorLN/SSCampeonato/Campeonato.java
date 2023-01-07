@@ -2,17 +2,21 @@ package SimuladorLN.SSCampeonato;
 
 import java.util.*;
 import SimuladorLN.SSCampeonato.SSCorrida.*;
+import SimuladorLN.SSConta.Participante;
 
 public class Campeonato {
 	private String idCampeonato;
 	private String nome;
 	TreeMap<String, Integer> scoreCamp = new TreeMap<String, Integer>();
-	private Map<String, Circuito> circuitos = new HashMap<String, Circuito>();
+	private Map<String, Corrida> corridas = new HashMap<String, Corrida>();
+	private Map<String, Participante> participantes = new HashMap<String, Participante>();
 
 	public Campeonato() {
 		this.nome = "";
 		this.idCampeonato = "";
-
+		this.scoreCamp = new TreeMap<>();
+		this.corridas = new HashMap<>();
+		this.participantes = new HashMap<>();
 	}
 
 	public Campeonato(String idCampeonato, String nome) {
@@ -20,11 +24,12 @@ public class Campeonato {
 		this.nome = nome;
 	}
 
-	public Campeonato(String idCampeonato, String nome, Map<String, Circuito> circuitos) {
+	public Campeonato(String idCampeonato, String nome, Map<String, Participante> participantes) {
 		this.idCampeonato = idCampeonato;
 		this.nome = nome;
-		for (Circuito c : circuitos.values()) {
-			this.circuitos.put(c.getIdCircuito(), c.clone());
+
+		for (Participante p : participantes.values()) {
+			this.participantes.put(p.getIdParticipante(), p.clone());
 		}
 	}
 
@@ -32,7 +37,7 @@ public class Campeonato {
 		this.idCampeonato = c.getIdCampeonato();
 		this.nome = c.getNome();
 		this.scoreCamp = c.getScoreCamp();
-		this.circuitos = c.getCircuitos();
+		this.corridas = c.getCorridas();
 	}
 
 	public String getNome() {

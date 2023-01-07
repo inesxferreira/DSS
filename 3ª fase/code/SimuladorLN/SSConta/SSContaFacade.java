@@ -81,6 +81,7 @@ public class SSContaFacade implements IConta {
 	 */
 	public int getPosicaoRanking(String idConta) {
 		boolean primeiro = true;
+
 		int count = 1;
 		for (String conta : todas_contas.keySet()) {
 			if (conta.equals(idConta)) {
@@ -91,7 +92,8 @@ public class SSContaFacade implements IConta {
 				primeiro = false;
 			count++;
 		}
-		if (count == 1 && !flag)
+
+		if (count == 1 && !primeiro)
 			return -1;
 		return count;
 	}

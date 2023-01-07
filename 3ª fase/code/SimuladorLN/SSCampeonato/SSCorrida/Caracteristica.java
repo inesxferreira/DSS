@@ -39,7 +39,15 @@ public class Caracteristica {
 		this.gdu = gdu;
 	}
 
-	public Caracteristica clone(){
+	/**
+	 * 
+	 * @param gdu
+	 */
+	public void setIdCaracteristica(String id) {
+		this.idCaracteristica = id;
+	}
+
+	public Caracteristica clone() {
 		return new Caracteristica(this);
 	}
 

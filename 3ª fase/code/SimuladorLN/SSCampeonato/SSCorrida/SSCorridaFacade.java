@@ -4,14 +4,14 @@ import SimuladorLN.SSConta.Participante;
 import BaseDeDados.CircuitoDAO;
 import java.util.*;
 
-public class SSCircuitoFacade implements ICircuito {
+public class SSCorridaFacade implements ICorrida {
 
 	private Map<String, Circuito> todos_circuitos;
 
 	/**
 	 * Construtor por omissão para objetos da classe SSCarroFacade.
 	 */
-	public SSCircuitoFacade() {
+	public SSCorridaFacade() {
 		this.todos_circuitos = CircuitoDAO.getInstance();
 	}
 
@@ -34,27 +34,9 @@ public class SSCircuitoFacade implements ICircuito {
 		this.todos_circuitos.put(c.getIdCircuito(), c.clone());
 	}
 
-	public void simularCorrida(Map<String, Participante> participantes) {
+	public void simularCorrida(Map<String, Participante> participantes, Corrida corrida) {
 		// TODO Auto-generated method stub
 
-	}
-
-	/**
-	 * 
-	 * @param participantes
-	 */
-	public Map<String, Participante> calcularEventosBase(Map<String, Participante> participantes) {
-		// TODO - implement SSCorridaFacade.calcularEventosBase
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * 
-	 * @param participantes
-	 */
-	public Map<String, Participante> calcularEventosPremium(Map<String, Participante> participantes) {
-		// TODO - implement SSCorridaFacade.calcularEventosPremium
-		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -75,15 +57,6 @@ public class SSCircuitoFacade implements ICircuito {
 			i++;
 		}
 		// participantes.keySet().forEach(id->corrida.getScoreCorrida().put(id, score));
-	}
-
-	/**
-	 * 
-	 * @param idParticipante ID do participante
-	 * @param corrida        Corrida em que o participante é desclassificado
-	 */
-	public void desclassifica(String idParticipante, Corrida corrida) {
-		corrida.getScoreCorrida().put(idParticipante, 0);
 	}
 
 }
