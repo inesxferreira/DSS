@@ -97,10 +97,6 @@ public class Menu {
         this.disponivel.set(i - 1, b);
     }
 
-    public void setHandler(int i, Handler h) {
-        this.handlers.set(i - 1, h);
-    }
-
     // Métodos auxiliares
 
     private void show() {
@@ -141,5 +137,10 @@ public class Menu {
         System.out.println(
                 ANSI_RED + "        UMFormula1       " + ANSI_GREEN
                         + ANSI_RESET);
-    };
+    }
+
+    public void setHandler(int i, Handler h) {
+        this.handlers.set(i - 1, h);
+    }
+
 }

@@ -26,6 +26,11 @@ public class Campeonato {
 		this.nome = nome;
 	}
 
+	public Campeonato(String idCampeonato, String nome, HashMap<String, Circuito> circuitos) {
+		this.idCampeonato = idCampeonato;
+		this.nome = nome;
+	}
+
 	public Campeonato(String idCampeonato, String nome, Map<String, Participante> participantes) {
 		this.idCampeonato = idCampeonato;
 		this.nome = nome;
@@ -52,6 +57,14 @@ public class Campeonato {
 
 	public TreeMap<String, Integer> getScoreCamp() {
 		return this.scoreCamp;
+	}
+
+	public Map<String, Participante> getParticipantes() {
+		Map<String, Participante> n_participantes = new HashMap<>();
+		for (String id : this.participantes.keySet()) {
+			n_participantes.put(id, this.participantes.get(id).clone());
+		}
+		return n_participantes;
 	}
 
 	public Map<String, Circuito> getCircuitos() {

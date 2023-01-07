@@ -223,7 +223,7 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
                 while (rs.next()) {
                     String idCampeonato = rs.getString("idCampeonato");
                     String nome = rs.getString("nome");
-                    Map<String, Circuito> circuitos = getCircuitos(idCampeonato);
+                    HashMap<String, Circuito> circuitos = (HashMap<String, Circuito>) getCircuitos(idCampeonato);
                     Campeonato campeonato = new Campeonato(idCampeonato, nome, circuitos);
                     campeonatos.add(campeonato);
                 }

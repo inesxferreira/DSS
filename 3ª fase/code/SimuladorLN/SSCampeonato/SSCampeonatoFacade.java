@@ -1,19 +1,17 @@
 package SimuladorLN.SSCampeonato;
 
 import java.util.Map;
-import java.util.TreeMap;
 import BaseDeDados.CampeonatoDAO;
+import SimuladorLN.SSCampeonato.SSCorrida.Corrida;
+import SimuladorLN.SSCampeonato.SSCorrida.SSCorridaFacade;
 
 public class SSCampeonatoFacade implements ICampeonato {
 	/* campeonatos existentes */
 
-	//TreeMap<String, Integer> scoreCamp = new TreeMap<String, Integer>();
 	// private CampeonatoDAO todos_campeonatos;
 	private Map<String, Campeonato> todos_campeonatos;
 
-	/**
-	 * Construtor por omissão para objetos da classe SSCarroFacade.
-	 */
+	/* Constutor por omissão */
 	public SSCampeonatoFacade() {
 		this.todos_campeonatos = CampeonatoDAO.getInstance();
 	}
@@ -41,21 +39,21 @@ public class SSCampeonatoFacade implements ICampeonato {
 	 * 
 	 * @param idCampeonato
 	 */
+	public void infoCampeonato(String idCampeonato) {
+		Campeonato camp = todos_campeonatos.get(idCampeonato);
+		System.out.println("Corridas:" + camp.getCorridas().values().toString() + "\n" +
+				"Circuitos:" + camp.getCircuitos().values().toString());
 
-	public String infoCampeonato(String idCampeonato) {
-		throw new UnsupportedOperationException();
-	}
-
-	/* Constutor por omissão */
-	public SSCampeonatoFacade(String todos_campeonatos) {
-		this.todos_campeonatos = CampeonatoDAO.getInstance();
 	}
 
 	// dar print de listar campeaonato
 	public void listarCampeonatos() {
 
-		// TODO - implement SSCampeonatoFacade.listarCampeonatos
-		throw new UnsupportedOperationException();
+		for (String campId : todos_campeonatos.keySet()) {
+			System.out.println("Campeonato: " + campId);
+			infoCampeonato(campId);
+		}
+
 	}
 
 	/**
@@ -63,23 +61,35 @@ public class SSCampeonatoFacade implements ICampeonato {
 	 * @param idCampeonato
 	 */
 	public Campeonato escolherCampeonato(String idCampeonato) {
-		// TODO - implement SSCampeonatoFacade.escolherCampeonato
-		throw new UnsupportedOperationException();
+		Campeonato camp = todos_campeonatos.get(idCampeonato);
+		return camp;
 	}
 
 	/**
 	 * 
 	 * @param campeonato
 	 */
-	public void simularCampeonato(Campeonato campeonato) {
-		// TODO - implement SSCampeonatoFacade.simularCampeonato
-		throw new UnsupportedOperationException();
+	public void simularCampeonato(String idCampeonato) {
+		Campeonato camp = todos_campeonatos.get(idCampeonato);
+
+		// Map<String,Corrida> corridas = camp.getCorridas();
+		// simularCorrida(camp.getParticipantes(), camp.getCorridas().values());
+		for (Corrida c : camp.getCorridas().values()) {
+			SSCorridaFacade.simularCorrida(camp.getParticipantes(), c);
+		}
+		atualizaScoreCampeonato(idCampeonato);
 	}
 
 	@Override
-	public void setScoreCampeonato(TreeMap<String, Integer> scoreCamp) {
-		// TODO Auto-generated method stub
+	// public void setScoreCampeonato(TreeMap<String, Integer> scoreCamp) {
+	public void atualizaScoreCampeonato(String idCampeonato) {
+		Campeonato camp = todos_campeonatos.get(idCampeonato);
 
+		// Para cada corrida do campeonato
+		for (Corrida c : camp.getCorridas().values()) {
+			// Vai buscar o score de cada participante naquela corrida
+			c.getScoreCorrida().entrySet().stream()
+					.forEach(idP_score -> camp.scoreCamp.put(idP_score.getKey(), idP_score.getValue()));
+		}
 	}
-
 }

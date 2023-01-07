@@ -1,12 +1,8 @@
 package BaseDeDados;
 
-import SimuladorLN.SSCampeonato.SSCarro.Piloto;
-
 import SimuladorLN.SSConta.Conta;
-
 import java.util.*;
 import java.sql.*;
-import static java.util.stream.Collectors.*;
 
 public class ContaDAO implements Map<String, Conta> {
 
@@ -16,10 +12,10 @@ public class ContaDAO implements Map<String, Conta> {
         try (Connection conn = DAOconfig.getConnection();
                 Statement stm = conn.createStatement()) {
             String sql = "CREATE TABLE IF NOT EXISTS contas(" +
-                    "IdConta varchar(15) NOT NULL PRIMARY KEY," +
-                    "Username varchar(15) NOT NULL," +
-                    "Password varchar(15) NOT NULL," +
-                    "VersaoPremium boolean DEFAULT false)";
+                    "IdConta VARCHAR(15) NOT NULL PRIMARY KEY," +
+                    "Username VARCHAR(15) NOT NULL," +
+                    "Password VARCHAR(15) NOT NULL," +
+                    "VersaoPremium BOOLEAN DEFAULT false)";
             stm.executeUpdate(sql);
         } catch (SQLException e) {
             // Erro a criar tabela...
@@ -80,13 +76,16 @@ public class ContaDAO implements Map<String, Conta> {
     public boolean containsValue(Object value) {
         if (value instanceof Conta) {
             Conta conta = (Conta) value;
-            for (Conta c : this.values()) {
-                if (conta.getIdConta().equals(c.getIdConta())
-                        && conta.getUsername().equals(c.getUsername())
-                        && conta.getPassword().equals(c.getPassword())
-                        && conta.getVersaoPremium() == c.getVersaoPremium()) {
-                    return true;
+            try (Connection conn = DAOconfig.getConnection();
+                    PreparedStatement stm = conn.prepareStatement(
+                            "SELECT * FROM contas WHERE IdConta = ? AND Password = ?")) {
+                stm.setString(1, conta.getIdConta());
+                stm.setString(2, conta.getPassword());
+                try (ResultSet rs = stm.executeQuery()) {
+                    return rs.next();
                 }
+            } catch (SQLException e) {
+                throw new RuntimeException("Erro a verificar existência da conta na base de dados", e);
             }
         }
         return false;
@@ -107,7 +106,7 @@ public class ContaDAO implements Map<String, Conta> {
                 boolean versao = rs.getBoolean("VersaoPremium");
 
                 Conta conta = new Conta(idConta, user, pass, versao);
-                entries.add(new AbstractMap.SimpleEntry<>(IdConta, conta));
+                entries.add(new AbstractMap.SimpleEntry<>(idConta, conta));
             }
         } catch (SQLException e) {
             // Erro ao selecionar contas...
@@ -119,17 +118,16 @@ public class ContaDAO implements Map<String, Conta> {
 
     @Override
     public Conta get(Object key) {
-        String idConta = (String) key;
         Conta conta = null;
         String sql = "SELECT * FROM conta WHERE IdConta = ?";
 
         try (
                 Connection con = DAOconfig.getConnection();
                 PreparedStatement stm = con.prepareStatement(sql)) {
-            stm.setString(1, idConta); //// Eu tenho duvidas se aqui nao devemos fazer Set para cada parametro
+            stm.setString(1, (String) key);
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    String id = rs.getString("IdConta");
+                    String idConta = rs.getString("IdConta");
                     String user = rs.getString("Username");
                     String pass = rs.getString("Password");
                     boolean versao = rs.getBoolean("VersaoPremium");

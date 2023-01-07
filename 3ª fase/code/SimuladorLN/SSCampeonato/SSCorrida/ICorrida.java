@@ -5,5 +5,8 @@ import java.util.Map;
 
 public interface ICorrida {
 
-	void simularCorrida(Map<String, Participante> participantes, Corrida corrida);
+	static void simularCorrida(Map<String, Participante> participantes, Corrida corrida) {
+		// TODO Auto-generated method stub
+
+	}
 }

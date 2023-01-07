@@ -33,7 +33,7 @@ public class CarroDAO implements Map<String, Carro> {
      *
      * @return devolve a instância única desta classe
      */
-    public CarroDAO getInstance() {
+    public static CarroDAO getInstance() {
         if (CarroDAO.singleton == null) {
             CarroDAO.singleton = new CarroDAO();
         }

@@ -34,8 +34,12 @@ public class SSCorridaFacade implements ICorrida {
 		this.todos_circuitos.put(c.getIdCircuito(), c.clone());
 	}
 
-	public void simularCorrida(Map<String, Participante> participantes, Corrida corrida) {
-		// TODO Auto-generated method stub
+	public static void simularCorrida(Map<String, Participante> participantes, Corrida c) {
+		for (Participante p : participantes.values()) {
+			if (p.getCarro().getCategoria() != "C1" && p.getCarro().getCategoria() != "C2")
+				p.getCarro().setFiabilidade(p.getCarro().getFiabilidade() * 0.9);
+
+		}
 
 	}
 

@@ -1,6 +1,10 @@
 package SimuladorLN.SSCampeonato.SSCorrida;
 
+import SimuladorLN.SSCampeonato.SSCarro.Carro;
+import SimuladorLN.SSCampeonato.SSCarro.Piloto;
 import SimuladorLN.SSConta.Participante;
+
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -39,6 +43,11 @@ public class Corrida {
 
 	public Circuito getCircuito() {
 		return this.circuito.clone();
+	}
+
+	// fui eu que fizio n sei se é util
+	public Integer getScoreCorrida(String idParticipante) {
+		return this.scoreCorrida.get(idParticipante);
 	}
 
 	public TreeMap<String, Integer> getScoreCorrida() {
@@ -101,8 +110,18 @@ public class Corrida {
 	 * 
 	 * @param participantes
 	 */
-	public void calcularDespistes(Map<String, Participante> participantes) {
+	public void calcularUltrapassagem(Map<String, Participante> participantes) {
+		// TODO - implement SSCorridaFacade.calcularEventosPremium
+		throw new UnsupportedOperationException();
+	}
 
+	/**
+	 * 
+	 * @param participantes
+	 */
+	public void calcularDespistes(Map<String, Participante> participantes) {
+		// TODO - implement SSCorridaFacade.calcularEventosPremium
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -110,7 +129,8 @@ public class Corrida {
 	 * @param participantes
 	 */
 	public void calcularAvarias(Map<String, Participante> participantes) {
-
+		// TODO - implement SSCorridaFacade.calcularEventosPremium
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -118,8 +138,19 @@ public class Corrida {
 	 * @param participantes
 	 */
 	public Map<String, Participante> calcularEventosBase(Map<String, Participante> participantes) {
-		// TODO - implement SSCorridaFacade.calcularEventosBase
-		throw new UnsupportedOperationException();
+		List<Caracteristica> caracteristicas = this.circuito.getCaracteristicas();
+
+		for (Participante participante : participantes.values()) {
+			Carro c = participante.getCarro();
+			int potencia = c.getPotenciaC();
+			float pac = c.getPac();
+			int tipoPneus = c.getTipoPneus();
+
+			Piloto p = participante.getPiloto();
+			float sva = p.getSVA();
+			float cts = p.getCTS();
+		}
+		return participantes;
 	}
 
 	/**

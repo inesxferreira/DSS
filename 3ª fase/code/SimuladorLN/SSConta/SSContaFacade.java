@@ -1,19 +1,25 @@
 package SimuladorLN.SSConta;
 
 import java.util.Map;
-import BaseDeDados.*;
+
+import BaseDeDados.CarroDAO;
+import BaseDeDados.ContaDAO;
+import BaseDeDados.PilotoDAO;
 import SimuladorLN.SSCampeonato.SSCarro.Carro;
 import SimuladorLN.SSCampeonato.SSCarro.Piloto;
 
 public class SSContaFacade implements IConta {
 
-	// private ContaDAO todas_contas;
+	private Map<String, Carro> todos_carros;
+	private Map<String, Piloto> todos_pilotos;
 	private Map<String, Conta> todas_contas;
 
 	/**
 	 * Construtor por omissão para objetos da classe SSContaFacade.
 	 */
 	public SSContaFacade() {
+		this.todos_carros = CarroDAO.getInstance();
+		this.todos_pilotos = PilotoDAO.getInstance();
 		this.todas_contas = ContaDAO.getInstance();
 	}
 
@@ -48,26 +54,16 @@ public class SSContaFacade implements IConta {
 	}
 
 	/**
+	 * @param idConta  Id da conta
+	 * @param user     username da conta
+	 * @param password password da conta
 	 * 
-	 * @param idParticipante
+	 * @return boolean validacao das credenciais
 	 */
-	public boolean getVersao(String idParticipante) {
-		return todas_contas.get(idParticipante).getVersaoPremium();
-	}
-
-	/**
-	 * 
-	 * @param nome
-	 * @param password
-	 */
-	public void fazerLogin(String nome, String password) {
-		boolean res = false;
-		for (Conta conta : todas_contas) {
-			if (conta.getIdConta().equals(nome) && conta.getPassword().equals(password)) {
-				res = true;
-				break;
-			}
-		}
+	@Override
+	public boolean verificarCredenciais(String user, String password) {
+		Conta c = todas_contas.get(user);
+		return user == c.getUsername() && password == c.getPassword();
 	}
 
 	/**
@@ -77,47 +73,57 @@ public class SSContaFacade implements IConta {
 	 * @param idCarro            id do carro escolhido pelo participante
 	 * @param idPiloto           id do piloto escolhido pelo participante
 	 */
-	public void configuraCampeonato(Map<String, Participante> participantes_camp, String idParticipante, String idCarro,
+	public void configurarCampeonato(Map<String, Participante> participantes_camp, String idParticipante,
+			String idCarro,
 			String idPiloto) {
 		// Ir buscar carros e pilotos à db de acordo com o id
 		Carro carro = null;
 		Piloto piloto = null;
-		if (CarroDAO.containsKey(idCarro)) {
-			carro = CarroDAO.get(idCarro);
+
+		if (todos_carros.containsKey(idCarro)) {
+			carro = todos_carros.get(idCarro);
 		}
 
-		if (PilotoDAO.containsKey(idPiloto)) {
-			piloto = PilotoDAO.get(idPiloto);
+		if (todos_pilotos.containsKey(idPiloto)) {
+			piloto = todos_pilotos.get(idPiloto);
 		}
 
 		// Inicializar participantes
-		Participante participante = new Participante(idParticipante, piloto, carro, 0, 0);
+		Participante participante = new Participante(idParticipante, piloto, carro, 0);
 
 		// Adicionas o participante criado ao map do campeonato
+		participantes_camp.put(participante.getIdParticipante(), participante);
+	}
 
+	@Override
+	public Conta criarConta(int id, String usern, String pass, String versao) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
 	 * 
 	 * @param idConta
 	 */
-	public int getPosicaoRanking(String idConta) {
-		boolean primeiro = true;
-
-		int count = 1;
-		for (String conta : todas_contas.keySet()) {
-			if (conta.equals(idConta)) {
-				return count;
-			}
-			if (count == 1 && !conta.equals(idConta))
-				primeiro = false;
-			count++;
-		}
-
-		if (count == 1 && !primeiro)
-			return -1;
-		return count;
-	}
+	/*
+	 * public int getPosicaoRanking(String idConta) {
+	 * boolean primeiro = true;
+	 * 
+	 * int count = 1;
+	 * for (String conta : todas_contas.keySet()) {
+	 * if (conta.equals(idConta)) {
+	 * return count;
+	 * }
+	 * if (count == 1 && !conta.equals(idConta))
+	 * primeiro = false;
+	 * count++;
+	 * }
+	 * 
+	 * if (count == 1 && !primeiro)
+	 * return -1;
+	 * return count;
+	 * }
+	 */
 
 	/**
 	 * 
@@ -125,10 +131,14 @@ public class SSContaFacade implements IConta {
 	 */
 	// PRECISO DE REVER ESTA MELHOR HA AQUI UMAS DUVIDAS !!!!! FALTA DEPOIS MUDAR A
 	// POSICAO
-	public void atualizaScore(String idConta, int scoreDoCampeonato) {
-		for (Conta c : todas_contas.values())
-			if (c.getIdConta().equals(idConta))
-				todas_contas.get(idConta).setScore(todas_contas.get(idConta).getScoreGlobal() + scoreDoCampeonato);
+	/*
+	 * public void atualizaScore(String idConta, int scoreDoCampeonato) {
+	 * for (Conta c : todas_contas.values())
+	 * if (c.getIdConta().equals(idConta))
+	 * todas_contas.get(idConta).setScore(todas_contas.get(idConta).getScoreGlobal()
+	 * + scoreDoCampeonato);
+	 * 
+	 * }
+	 */
 
-	}
 }

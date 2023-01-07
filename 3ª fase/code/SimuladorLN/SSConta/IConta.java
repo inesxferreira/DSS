@@ -1,52 +1,19 @@
 package SimuladorLN.SSConta;
 
-import SimuladorLN.SSCampeonato.SSCarro.Carro;
-import SimuladorLN.SSCampeonato.SSCarro.Piloto;
+import java.util.Map;
 
 public interface IConta {
 
-	int getScore();
-
-	int getId();
-
-	/**
-	 * 
-	 * @param nCorridas
-	 * @param nAfinacoes
-	 */
 	boolean verificaAfinacao(int nCorridas, int nAfinacoes);
 
-	/**
-	 * 
-	 * @param idParticipante
-	 */
-	boolean getVersao(String idParticipante);
+	boolean verificarCredenciais(String user, String password);
 
-	/**
-	 * 
-	 * @param nome
-	 * @param password
-	 */
-	void fazerLogin(String nome, String password);
+	void configurarCampeonato(Map<String, Participante> participantes_camp, String idParticipante, String idCarro,
+			String idPiloto);
 
-	/**
-	 * 
-	 * @param c
-	 */
-	void setCarro(Carro c);
+	Conta criarConta(int id, String usern, String pass, String versao);
 
-	boolean verificarCredenciais(String nome, String pass);
+	void putConta(Conta c);
 
-	Carro getCarro();
-
-	/**
-	 * 
-	 * @param p
-	 */
-	void setPiloto(Piloto p);
-
-	Piloto getPiloto();
-
-	void configuraCampeonato();
-
+	Conta getConta(String idConta);
 }

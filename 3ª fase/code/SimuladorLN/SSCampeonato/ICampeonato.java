@@ -1,14 +1,12 @@
 package SimuladorLN.SSCampeonato;
 
-import java.util.TreeMap;
-
 public interface ICampeonato {
 
 	/**
 	 * 
 	 * @param idCampeonato
 	 */
-	String infoCampeonato(String idCampeonato);
+	void infoCampeonato(String idCampeonato);
 
 	void listarCampeonatos();
 
@@ -22,12 +20,12 @@ public interface ICampeonato {
 	 * 
 	 * @param campeonato
 	 */
-	void simularCampeonato(Campeonato campeonato);
+	void simularCampeonato(String idCampeonato);
 
 	/**
 	 * 
 	 * @param scoreCamp
 	 */
-	void setScoreCampeonato(TreeMap<String, Integer> scoreCamp);
+	public void atualizaScoreCampeonato(String idCampeonato);
 
 }

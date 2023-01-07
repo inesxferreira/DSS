@@ -1,7 +1,7 @@
 package SimuladorLN.SSCampeonato.SSCorrida;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Circuito {
 
@@ -11,7 +11,7 @@ public class Circuito {
 	private int nCurvas;
 	private int nChicanes;
 	private int nRetas;
-	private Map<String, Caracteristica> caracteristicas;
+	private List<Caracteristica> caracteristicas;
 
 	/* Construtores */
 	public Circuito() {
@@ -21,18 +21,18 @@ public class Circuito {
 		this.nCurvas = 0;
 		this.nChicanes = 0;
 		this.nRetas = 0;
-		this.caracteristicas = new HashMap<>();
+		this.caracteristicas = new ArrayList<>();
 	}
 
 	public Circuito(String idCircuito, String nomeCircuito, float distancia, int nCurvas, int nChicanes,
-			Map<String, Caracteristica> carac) {
+			List<Caracteristica> carac) {
 		this.idCircuito = idCircuito;
 		this.nomeCircuito = nomeCircuito;
 		this.distancia = distancia;
 		this.nCurvas = nCurvas;
 		this.nChicanes = nChicanes;
-		for (Caracteristica c : carac.values()) {
-			this.caracteristicas.put(c.getIdCaracteristica(), c.clone());
+		for (Caracteristica c : carac) {
+			this.caracteristicas.add(c.clone());
 		}
 	}
 
@@ -107,10 +107,10 @@ public class Circuito {
 	 * 
 	 * @return caracteristicas
 	 */
-	public Map<String, Caracteristica> getCaracteristicas() {
-		Map<String, Caracteristica> carac = new HashMap<>();
-		for (String id : this.caracteristicas.keySet()) {
-			carac.put(id, this.caracteristicas.get(id).clone());
+	public List<Caracteristica> getCaracteristicas() {
+		List<Caracteristica> carac = new ArrayList<>();
+		for (Caracteristica c : this.caracteristicas) {
+			carac.add(c.clone());
 		}
 		return carac;
 	}

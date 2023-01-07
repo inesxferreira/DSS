@@ -7,7 +7,7 @@ public class Conta implements Comparable<Conta> {
 	private String password;
 	private Boolean versaoPremium;
 	private int scoreGlobal;
-	private Participante participante;
+	// private Participante participante;
 
 	public Conta() {
 		this.idConta = "";
@@ -48,12 +48,30 @@ public class Conta implements Comparable<Conta> {
 		return this.versaoPremium;
 	}
 
-	public void setScoreGlobal(int i) {
-		this.scoreGlobal = i;
-	}
-
 	public int getScoreGlobal() {
 		return this.scoreGlobal;
+	}
+
+	public void setIdConta(String id) {
+		this.idConta = id;
+	}
+
+	public void setUsername(String usern) {
+		this.username = usern;
+
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+
+	}
+
+	public void setVersao(Boolean versao) {
+		this.versaoPremium = versao;
+	}
+
+	public void setScoreGlobal(int i) {
+		this.scoreGlobal = i;
 	}
 
 	/*
