@@ -13,9 +13,13 @@ public class DAOconfig {
 
     public static Connection getConnection() {
         try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
             return DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        } catch (SQLException e) {
-            throw new RuntimeException("Erro ao obter conexão com a base de dados", e);
+        } catch (SQLException | ClassNotFoundException e) {
+            //throw new RuntimeException("Erro ao obter conexão com a base de dados", e);
+            e.printStackTrace();
         }
+        return null;
+
     }
 }
