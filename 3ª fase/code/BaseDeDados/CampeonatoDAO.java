@@ -17,11 +17,11 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
     private CampeonatoDAO() {
         try (Connection conn = DAOconfig.getConnection();
                 Statement stm = conn.createStatement()) {
-            String sql = "CREATE TABLE campeonato (" +
+            String sql = "CREATE TABLE IF NOT EXISTS campeonato (" +
                     "idCampeonato INT PRIMARY KEY AUTO_INCREMENT, " +
                     "nome VARCHAR(30) NOT NULL)";
             stm.executeUpdate(sql);
-            sql = "CREATE TABLE circuito_campeonato (" +
+            sql = "CREATE TABLE IF NOT EXISTS circuito_campeonato (" +
                     "idCampeonato INTEGER NOT NULL," +
                     "idCircuito INT NOT NULL," +
                     "PRIMARY KEY (idCampeonato, idCircuito)," +

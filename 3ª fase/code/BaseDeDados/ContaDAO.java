@@ -11,7 +11,7 @@ public class ContaDAO implements Map<String, Conta> {
     private ContaDAO() {
         try (Connection conn = DAOconfig.getConnection();
                 Statement stm = conn.createStatement()) {
-            String sql = "CREATE TABLE IF NOT EXISTS contas(" +
+            String sql = "CREATE TABLE IF NOT EXISTS conta(" +
                     "IdConta INT NOT NULL PRIMARY KEY AUTO_INCREMENT," +
                     "Username VARCHAR(15) NOT NULL," +
                     "Password VARCHAR(15) NOT NULL," +
@@ -78,8 +78,8 @@ public class ContaDAO implements Map<String, Conta> {
             Conta conta = (Conta) value;
             try (Connection conn = DAOconfig.getConnection();
                     PreparedStatement stm = conn.prepareStatement(
-                            "SELECT * FROM contas WHERE IdConta = ? AND Password = ?")) {
-                stm.setString(1, conta.getIdConta());
+                            "SELECT * FROM conta WHERE IdConta = ? AND Password = ?")) {
+                stm.setInt(1, conta.getIdConta());
                 stm.setString(2, conta.getPassword());
                 try (ResultSet rs = stm.executeQuery()) {
                     return rs.next();
@@ -100,13 +100,13 @@ public class ContaDAO implements Map<String, Conta> {
                         "SELECT * FROM conta");
                 ResultSet rs = stm.executeQuery()) {
             while (rs.next()) {
-                String idConta = rs.getString("IdConta");
+                Integer idConta = rs.getInt("IdConta");
                 String user = rs.getString("Username");
                 String pass = rs.getString("Password");
                 boolean versao = rs.getBoolean("VersaoPremium");
 
                 Conta conta = new Conta(idConta, user, pass, versao);
-                entries.add(new AbstractMap.SimpleEntry<>(idConta, conta));
+                entries.add(new AbstractMap.SimpleEntry<>(idConta.toString(), conta));
             }
         } catch (SQLException e) {
             // Erro ao selecionar contas...
@@ -127,7 +127,7 @@ public class ContaDAO implements Map<String, Conta> {
             stm.setString(1, (String) key);
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    String idConta = rs.getString("IdConta");
+                    Integer idConta = rs.getInt("IdConta");
                     String user = rs.getString("Username");
                     String pass = rs.getString("Password");
                     boolean versao = rs.getBoolean("VersaoPremium");
@@ -189,8 +189,6 @@ public class ContaDAO implements Map<String, Conta> {
             stm.setString(3, conta.getPassword());
             stm.setBoolean(4, conta.getVersaoPremium());
             stm.executeUpdate();
-            if (con != null)
-                con.close();
 
         } catch (SQLException e) {
             // Erro a inserir conta...
@@ -212,7 +210,7 @@ public class ContaDAO implements Map<String, Conta> {
                         + "Password = VALUES(Password), "
                         + "VersaoPremium = VALUES(VersaoPremium)";
                 PreparedStatement pstm = con.prepareStatement(sql);
-                pstm.setString(1, conta.getIdConta());
+                pstm.setInt(1, conta.getIdConta());
                 pstm.setString(2, conta.getUsername());
                 pstm.setString(2, conta.getPassword());
                 pstm.setBoolean(3, conta.getVersaoPremium());
@@ -267,9 +265,9 @@ public class ContaDAO implements Map<String, Conta> {
         try (
                 Connection con = DAOconfig.getConnection();
                 Statement stm = con.createStatement();
-                ResultSet rs = stm.executeQuery("SELECT * FROM contas")) {
+                ResultSet rs = stm.executeQuery("SELECT * FROM conta")) {
             while (rs.next()) {
-                String id = rs.getString("IdConta");
+                Integer id = rs.getInt("IdConta");
                 String user = rs.getString("Username");
                 String password = rs.getString("Password");
                 boolean versao = rs.getBoolean("VersaoPremium");

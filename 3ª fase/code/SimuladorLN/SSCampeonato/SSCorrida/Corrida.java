@@ -110,18 +110,27 @@ public class Corrida {
 	 * 
 	 * @param participantes
 	 */
-	public void calcularUltrapassagem(Map<String, Participante> participantes) {
-		// TODO - implement SSCorridaFacade.calcularEventosPremium
-		throw new UnsupportedOperationException();
+	public void calcularUltrapassagem(Participante participante) {
+		Carro c = participante.getCarro();
+		int potencia = c.getPotenciaC();
+		float pac = c.getPac();
+		int tipoPneus = c.getTipoPneus();
+
+		Piloto p = participante.getPiloto();
+		float sva = p.getSVA();
+		float cts = p.getCTS();
+
+		fator_ultrapassagem = 0.1 * gdu + 0.8 * (potencia + 1 - pac + tipoPneus + modoMotor) + 0.1 * (sva + cts);
+
 	}
 
 	/**
 	 * 
 	 * @param participantes
 	 */
-	public void calcularDespistes(Map<String, Participante> participantes) {
-		// TODO - implement SSCorridaFacade.calcularEventosPremium
-		throw new UnsupportedOperationException();
+	// public void calcularDespistes(Map<String, Participante> participantes) {
+	public void calcularDespistes(Participante p) {
+
 	}
 
 	/**
@@ -129,8 +138,11 @@ public class Corrida {
 	 * @param participantes
 	 */
 	public void calcularAvarias(Map<String, Participante> participantes) {
-		// TODO - implement SSCorridaFacade.calcularEventosPremium
-		throw new UnsupportedOperationException();
+		for (Participante p : participantes.values()) {
+			Carro c = p.getCarro();
+			if (c.getFiabilidade() < 0.32)
+				desclassifica(p.getIdParticipante());
+		}
 	}
 
 	/**
@@ -141,14 +153,7 @@ public class Corrida {
 		List<Caracteristica> caracteristicas = this.circuito.getCaracteristicas();
 
 		for (Participante participante : participantes.values()) {
-			Carro c = participante.getCarro();
-			int potencia = c.getPotenciaC();
-			float pac = c.getPac();
-			int tipoPneus = c.getTipoPneus();
-
-			Piloto p = participante.getPiloto();
-			float sva = p.getSVA();
-			float cts = p.getCTS();
+			calcularUltrapassagem(participante);
 		}
 		return participantes;
 	}
@@ -167,8 +172,8 @@ public class Corrida {
 	 * @param idParticipante ID do participante
 	 * @param corrida        Corrida em que o participante é desclassificado
 	 */
-	public void desclassifica(String idParticipante, Corrida corrida) {
-		corrida.getScoreCorrida().put(idParticipante, 0);
+	public void desclassifica(String idParticipante) {
+		this.getScoreCorrida().put(idParticipante, 0);
 	}
 
 	public Corrida clone() {

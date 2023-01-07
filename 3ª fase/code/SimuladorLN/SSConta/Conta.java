@@ -2,7 +2,7 @@ package SimuladorLN.SSConta;
 
 public class Conta implements Comparable<Conta> {
 
-	private String idConta;
+	private Integer idConta;
 	private String username;
 	private String password;
 	private Boolean versaoPremium;
@@ -10,14 +10,14 @@ public class Conta implements Comparable<Conta> {
 	// private Participante participante;
 
 	public Conta() {
-		this.idConta = "";
+		this.idConta = 0;
 		this.username = "";
 		this.password = "";
 		this.versaoPremium = false;
 		this.scoreGlobal = 0;
 	}
 
-	public Conta(String idConta, String user, String pass, Boolean premium) {
+	public Conta(Integer idConta, String user, String pass, Boolean premium) {
 		this.idConta = idConta;
 		this.username = user;
 		this.password = pass;
@@ -32,7 +32,7 @@ public class Conta implements Comparable<Conta> {
 		this.scoreGlobal = c.getScoreGlobal();
 	}
 
-	public String getIdConta() {
+	public Integer getIdConta() {
 		return this.idConta;
 	}
 
@@ -52,7 +52,7 @@ public class Conta implements Comparable<Conta> {
 		return this.scoreGlobal;
 	}
 
-	public void setIdConta(String id) {
+	public void setIdConta(Integer id) {
 		this.idConta = id;
 	}
 

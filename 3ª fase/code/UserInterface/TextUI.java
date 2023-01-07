@@ -15,6 +15,9 @@ public class TextUI {
     private int nJog;
     private Boolean admin;
 
+    private Boolean flagCamp = false;
+    private Boolean flagCarro = false;
+    private Boolean flagPiloto = false;
 
     public TextUI() throws IOException {
         this.model = new SimuladorLNFacade();
@@ -25,12 +28,15 @@ public class TextUI {
         Menu.Logo();
 
         System.out.println("\n\033[1;35m Bem vindo ao FÓRMULA UM! \033[0m\n");
-        this.inicio();
+        nJog = 0;
+        nJog = this.inicio();
         for (int i = 0; i < nJog; i++) {
-            if (i == 0)
+            if (i == 0) {
                 admin = true;
-            else
+            } else {
                 admin = false;
+            }
+            System.out.println("Oi oi!");
             this.menuInicial();
         }
         // this.menuSimular();
@@ -38,10 +44,11 @@ public class TextUI {
         System.out.println("Saindo!...");
     }
 
-    public void inicio() {
+    public int inicio() {
         System.out.println("Insira o número de jogadores:");
         String n = scan.nextLine();
         nJog = Integer.parseInt(n);
+        return nJog;
     }
 
     /**
@@ -52,6 +59,7 @@ public class TextUI {
                 "Fazer login",
                 "Criar conta",
                 "Guest", });
+
         menuInicial.setHandler(1, () -> {
             System.out.print("Insira username: ");
             String usern = scan.nextLine();
@@ -79,8 +87,10 @@ public class TextUI {
             switch (versao) {
                 case "True":
                     vs = true;
+                    break;
                 case "False":
                     vs = false;
+                    break;
                 default:
                     vs = false;
             }
@@ -90,7 +100,7 @@ public class TextUI {
 
             // menuJogador();
             Conta c = new Conta();
-            c.setIdConta(id.toString());
+            c.setIdConta(id);
             c.setUsername(usern);
             c.setPassword(pass);
             c.setVersao(vs);
@@ -101,8 +111,9 @@ public class TextUI {
             System.out.print("\nConta criada com sucesso.\n\n");
 
         });
-        menuInicial.setHandler(3, () -> menuJogador());
 
+        menuInicial.setHandler(3, () -> menuJogador());
+        menuInicial.run();
     }
 
     public void menuJogador() {
@@ -111,6 +122,7 @@ public class TextUI {
                 "Ver Ranking Global" });
         menuJog.setHandler(1, () -> menuConfigCamp());
         menuJog.setHandler(2, () -> showRankingG());
+        menuJog.run();
     }
 
     public void menuConfigCamp() {
@@ -122,14 +134,22 @@ public class TextUI {
             menuAdmin.setHandler(1, () -> showCamp());
             menuAdmin.setHandler(2, () -> showCarro());
             menuAdmin.setHandler(3, () -> showPiloto());
-
+            if (flagCamp && flagCarro && flagPiloto) {
+                System.out.println("Todos os dados inseridos com sucesso!");
+                // Como este participante já selecionou tudo, vai para o próximo
+            }
         } else {
             Menu menuJ = new Menu(new String[] {
                     "Escolher Carro",
                     "Escolher Piloto", });
             menuJ.setHandler(1, () -> showCarro());
             menuJ.setHandler(2, () -> showPiloto());
+            if (flagCarro && flagPiloto) {
+                System.out.println("Todos os dados inseridos com sucesso!");
+                // Como este participante já selecionou tudo, vai para o próximo
+            }
         }
+        menuConfigCamp.run();
     }
 
     public void showRankingG() {
@@ -141,6 +161,7 @@ public class TextUI {
         this.model.getCampeonatoFacade().listarCampeonatos();
         System.out.println("Insira o numero do campeonato desejado: \n");
         String id = scan.nextLine();
+        flagCamp = true;
 
         // para podermos selecionar ENTRE os varios campeonatos
 
@@ -149,9 +170,13 @@ public class TextUI {
     public void showCarro() {
         // mostrar lista de carros disponiveis
 
+        flagCarro = true;
+
     }
 
     public void showPiloto() {
+
+        flagPiloto = true;
 
     }
 }

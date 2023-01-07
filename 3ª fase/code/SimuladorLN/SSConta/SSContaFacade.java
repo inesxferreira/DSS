@@ -1,6 +1,8 @@
 package SimuladorLN.SSConta;
 
 import java.util.Map;
+import java.util.Set;
+import java.util.List;
 
 import BaseDeDados.CarroDAO;
 import BaseDeDados.ContaDAO;
@@ -39,7 +41,7 @@ public class SSContaFacade implements IConta {
 	 * @param c Conta a adicionar.
 	 */
 	public void putConta(Conta c) {
-		this.todas_contas.put(c.getIdConta(), c.clone());
+		this.todas_contas.put(c.getIdConta().toString(), c.clone());
 	}
 
 	/**
@@ -62,8 +64,13 @@ public class SSContaFacade implements IConta {
 	 */
 	@Override
 	public boolean verificarCredenciais(String user, String password) {
-		Conta c = todas_contas.get(user);
-		return user == c.getUsername() && password == c.getPassword();
+		Set<Map.Entry<String, Conta>> c = todas_contas.entrySet();
+		for (Map.Entry<String, Conta> entry : c) {
+			if (entry.getValue().getUsername().equals(user) && entry.getValue().getPassword().equals(password)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**

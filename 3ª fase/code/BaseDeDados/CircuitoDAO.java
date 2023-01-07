@@ -27,9 +27,6 @@ public class CircuitoDAO implements Map<String, Circuito> {
                     "NRetas int DEFAULT 0)";
             stm.executeUpdate(sql);
 
-            if (con != null)
-                con.close();
-
         } catch (SQLException e) {
             // Erro a criar tabela...
             e.printStackTrace();
@@ -113,7 +110,7 @@ public class CircuitoDAO implements Map<String, Circuito> {
         try (
                 Connection con = DAOconfig.getConnection();
                 PreparedStatement stm = con.prepareStatement(
-                    "SELECT * FROM circuito WHERE IdCircuito = ?")) {
+                        "SELECT * FROM circuito WHERE IdCircuito = ?")) {
             stm.setString(1, (String) key);
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
@@ -139,7 +136,7 @@ public class CircuitoDAO implements Map<String, Circuito> {
         try (
                 Connection con = DAOconfig.getConnection();
                 PreparedStatement stm = con.prepareStatement(
-                    "DELETE FROM circuito WHERE idCircuito = ?")) {
+                        "DELETE FROM circuito WHERE idCircuito = ?")) {
             for (String id : this.keySet()) {
                 stm.setString(1, id);
                 stm.executeUpdate();
