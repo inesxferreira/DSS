@@ -35,12 +35,7 @@ public class SSCorridaFacade implements ICorrida {
 	}
 
 	public static void simularCorrida(Map<String, Participante> participantes, Corrida c) {
-		for (Participante p : participantes.values()) {
-			if (p.getCarro().getCategoria() != "C1" && p.getCarro().getCategoria() != "C2")
-				p.getCarro().setFiabilidade(p.getCarro().getFiabilidade() * 0.9);
-
-		}
-
+		c.calcularEventosBase(participantes);
 	}
 
 	/**

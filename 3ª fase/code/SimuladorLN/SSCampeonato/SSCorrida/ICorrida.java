@@ -4,9 +4,9 @@ import SimuladorLN.SSConta.Participante;
 import java.util.Map;
 
 public interface ICorrida {
+	Circuito getCircuito(String idCircuito);
 
-	static void simularCorrida(Map<String, Participante> participantes, Corrida corrida) {
-		// TODO Auto-generated method stub
+	void putCircuito(Circuito c);
 
-	}
+	static void simularCorrida(Map<String, Participante> participantes, Corrida c){};
 }

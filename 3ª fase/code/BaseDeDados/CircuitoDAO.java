@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 
+import SimuladorLN.SSCampeonato.SSCorrida.Caracteristica;
 import SimuladorLN.SSCampeonato.SSCorrida.Circuito;
 
 public class CircuitoDAO implements Map<String, Circuito> {
@@ -25,6 +26,14 @@ public class CircuitoDAO implements Map<String, Circuito> {
                     "NCurvas int DEFAULT 0," +
                     "NChicanes int DEFAULT 0," +
                     "NRetas int DEFAULT 0)";
+            stm.executeUpdate(sql);
+
+            sql = "CREATE TABLE IF NOT EXISTS caracteristicas ( " +
+                    "IdCaracteristica INT NOT NULL PRIMARY KEY AUTO_INCREMENT, " +
+                    "NomeCaracteristica VARCHAR(15) DEFAULT NULL, " +
+                    "GDU FLOAT DEFAULT 0," +
+                    "IdCircuito INT NOT NULL, " +
+                    "FOREIGN KEY (IdCircuito) REFERENCES circuito(IdCircuito));";
             stm.executeUpdate(sql);
 
         } catch (SQLException e) {
@@ -47,7 +56,7 @@ public class CircuitoDAO implements Map<String, Circuito> {
         try (
                 Connection con = DAOconfig.getConnection();
                 Statement stm = con.createStatement()) {
-            String sql = "SELECT COUNT(*) AS size FROM circuito";
+            String sql = "SELECT COUNT(*) AS size FROM circuito INNER JOIN caracteristicas ON circuito.IdCircuito = caracteristicas.IdCircuito";
             try (ResultSet rs = stm.executeQuery(sql)) {
                 if (rs.next())
                     size = rs.getInt("size");
@@ -96,7 +105,8 @@ public class CircuitoDAO implements Map<String, Circuito> {
                         && circuito.getDistancia() == c.getDistancia()
                         && circuito.getnCurvas() == c.getnCurvas()
                         && circuito.getnChicanes() == c.getnChicanes()
-                        && circuito.getnRetas() == c.getnRetas()) {
+                        && circuito.getnRetas() == c.getnRetas()
+                        && circuito.getCaracteristicas().equals(c.getCaracteristicas())) {
                     return true;
                 }
             }
@@ -121,8 +131,21 @@ public class CircuitoDAO implements Map<String, Circuito> {
                     int nChicanes = rs.getInt("NChicanes");
                     int nRetas = rs.getInt("NRetas");
                     circuito = new Circuito(idCircuito, nomeCircuito, distancia, nCurvas, nChicanes, nRetas);
+
+                    String sql2 = "SELECT * FROM caracteristicas WHERE IdCircuito = ?";
+                    PreparedStatement stm2 = con.prepareStatement(sql2);
+                    stm2.setInt(1, idCircuito);
+                    ResultSet rs2 = stm2.executeQuery();
+                    while (rs2.next()) {
+                        Integer idCaracteristica = rs2.getInt("IdCaracteristica");
+                        String nomeCaracteristica = rs2.getString("NomeCaracteristica");
+                        float GDU = rs2.getFloat("GDU");
+                        Caracteristica caracteristica = new Caracteristica(idCaracteristica, nomeCaracteristica, GDU);
+                        circuito.getCaracteristicas().add(caracteristica);
+                    }
                 }
             }
+
         } catch (SQLException e) {
             // Erro ao selecionar circuito...
             e.printStackTrace();
@@ -136,10 +159,14 @@ public class CircuitoDAO implements Map<String, Circuito> {
         try (
                 Connection con = DAOconfig.getConnection();
                 PreparedStatement stm = con.prepareStatement(
+                        "DELETE FROM caracteristicas WHERE idCircuito = ?");
+                PreparedStatement stm2 = con.prepareStatement(
                         "DELETE FROM circuito WHERE idCircuito = ?")) {
             for (String id : this.keySet()) {
                 stm.setString(1, id);
                 stm.executeUpdate();
+                stm2.setString(1, id);
+                stm2.executeUpdate();
             }
         } catch (SQLException e) {
             // Erro ao remover circuito...
@@ -246,16 +273,23 @@ public class CircuitoDAO implements Map<String, Circuito> {
     @Override
     public Circuito remove(Object key) {
         Circuito circuito = this.get(key);
-        try (
-                Connection con = DAOconfig.getConnection();
-                PreparedStatement stm = con.prepareStatement(
-                        "DELETE FROM circuito WHERE idCircuito = ?")) {
-            stm.setString(1, (String) key);
-            stm.executeUpdate();
-        } catch (SQLException e) {
-            // Erro ao remover circuito...
-            e.printStackTrace();
-            throw new NullPointerException(e.getMessage());
+        if (circuito != null) {
+            try (
+                    Connection con = DAOconfig.getConnection();
+                    PreparedStatement stm = con.prepareStatement(
+                            "DELETE FROM caracteristicas WHERE IdCircuito = ?")) {
+                stm.setInt(1, circuito.getIdCircuito());
+                stm.executeUpdate();
+
+                PreparedStatement stm2 = con.prepareStatement(
+                        "DELETE FROM circuito WHERE IdCircuito = ?");
+                stm2.setString(1, (String) key);
+                stm2.executeUpdate();
+            } catch (SQLException e) {
+                // Erro ao remover circuito...
+                e.printStackTrace();
+                throw new NullPointerException(e.getMessage());
+            }
         }
         return circuito;
     }

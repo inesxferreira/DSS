@@ -3,10 +3,12 @@ package SimuladorLN.SSCampeonato.SSCorrida;
 import SimuladorLN.SSCampeonato.SSCarro.Carro;
 import SimuladorLN.SSCampeonato.SSCarro.Piloto;
 import SimuladorLN.SSConta.Participante;
-
+import java.lang.Math;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Random;
 
 public class Corrida {
 
@@ -16,21 +18,21 @@ public class Corrida {
 	private Circuito circuito;
 	private TreeMap<String, Integer> scoreCorrida; // IdParticipante, ScoreCorrida
 
-	private TreeMap<String, double> fatores_ultrapassagem = new TreeMap<>(new Comparator<String>() {
-      public double compare(String s1, String s2) {
-        double p1 = fatores_ultrapassagem.get(s1);
-        double p2 = fatores_ultrapassagem.get(s2);
-        return p2-p1;
-      }
-    });
-	private TreeMap<String,int> quant_despistes = new TreeMap<>(new Comparator<String>() {
-      public int compare(String s1, String s2) {
-        int p1 = quant_despistes.get(s1);
-        int p2 = quant_despistes.get(s2);
-        return p2-p1;
-      }
-    });
+	private TreeMap<Participante, Double> fatores_ultrapassagem = new TreeMap<>(new Comparator<Participante>() {
+		public int compare(Participante s1, Participante s2) {
+			Double p1 = fatores_ultrapassagem.get(s1);
+			Double p2 = fatores_ultrapassagem.get(s2);
+			return p2.compareTo(p1);
+		}
+	});
 
+	private TreeMap<Participante, Integer> quant_despistes = new TreeMap<>(new Comparator<Participante>() {
+		public int compare(Participante s1, Participante s2) {
+			Integer p1 = quant_despistes.get(s1);
+			Integer p2 = quant_despistes.get(s2);
+			return p2.compareTo(p1);
+		}
+	});
 
 	/* Construtores */
 	public Corrida() {
@@ -106,6 +108,21 @@ public class Corrida {
 		this.scoreCorrida = score;
 	}
 
+	public void atribuiScore() {
+		Integer n = (Integer) this.fatores_ultrapassagem.size();
+		for (Participante p : fatores_ultrapassagem.keySet()) {
+			if (n > 2) {
+				this.scoreCorrida.put(p.getIdParticipante(), n);
+			} else if (n == 2) {
+				this.scoreCorrida.put(p.getIdParticipante(), n);
+			} else if (n == 1) {
+				this.scoreCorrida.put(p.getIdParticipante(), 1);
+			} else
+				this.scoreCorrida.put(p.getIdParticipante(), 0);
+			n--;
+		}
+	}
+
 	/**
 	 * 
 	 * @param voltas
@@ -138,7 +155,7 @@ public class Corrida {
 		float cts = p.getCTS();
 
 		double fator_ultrapassagem = 0.1 * gdu + 0.8 * (potencia + 1 - pac + tipoPneus + modoMotor) + 0.1 * (sva + cts);
-		this.fatores_ultrapassagem.put()
+		this.fatores_ultrapassagem.put(participante, fator_ultrapassagem);
 	}
 
 	/**
@@ -147,7 +164,14 @@ public class Corrida {
 	 */
 	// public void calcularDespistes(Map<String, Participante> participantes) {
 	public void calcularDespistes(Participante p) {
-
+		Random random = new Random();
+		int despistes = random.nextInt(3) + random.nextInt(3);
+		if (despistes > 5)
+			despistes = random.nextInt(2);
+		this.quant_despistes.put(p, despistes);
+		fatores_ultrapassagem.put(p, fatores_ultrapassagem.get(p) * (Math.pow(0.8, despistes)));
+		// fatores_ultrapassagem -> passa a ser o valor * 0.8 elevado ao numero de
+		// despistes
 	}
 
 	/**

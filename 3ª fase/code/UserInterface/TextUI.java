@@ -36,7 +36,6 @@ public class TextUI {
             } else {
                 admin = false;
             }
-            System.out.println("Oi oi!");
             this.menuInicial();
         }
         // this.menuSimular();
@@ -138,7 +137,7 @@ public class TextUI {
                 System.out.println("Todos os dados inseridos com sucesso!");
                 // Como este participante já selecionou tudo, vai para o próximo
             }
-        menuAdmin.run();
+            menuAdmin.run();
         } else {
             Menu menuJ = new Menu(new String[] {
                     "Escolher Carro",

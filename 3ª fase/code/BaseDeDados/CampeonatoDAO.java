@@ -19,8 +19,12 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
                 Statement stm = conn.createStatement()) {
             String sql = "CREATE TABLE IF NOT EXISTS campeonato (" +
                     "idCampeonato INT PRIMARY KEY AUTO_INCREMENT, " +
-                    "nome VARCHAR(30) NOT NULL)";
+                    "nome VARCHAR(30) NOT NULL);";
             stm.executeUpdate(sql);
+
+            sql = "INSERT INTO campeonato (nome) VALUES ('Campeonato de Teste');";
+            stm.executeUpdate(sql);
+
             sql = "CREATE TABLE IF NOT EXISTS circuito_campeonato (" +
                     "idCampeonato INTEGER NOT NULL," +
                     "idCircuito INT NOT NULL," +
@@ -54,7 +58,7 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
         try {
             con = DAOconfig.getConnection();
             stm = con.prepareStatement(
-                    "INSERT INTO Campeonato (idCampeonato, nome) VALUES (?,?)");
+                    "INSERT INTO campeonato (idCampeonato, nome) VALUES (?,?)");
             stm.setInt(1, Integer.valueOf(id));
             stm.setString(2, campeonato.getNome());
             stm.executeUpdate();
@@ -92,7 +96,7 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
     public Campeonato get(Object key) {
         String idCampeonato = (String) key;
         Campeonato campeonato = null;
-        String sql = "SELECT * FROM Campeonato WHERE idCampeonato = ?";
+        String sql = "SELECT * FROM campeonato WHERE idCampeonato = ?";
 
         try (
                 Connection con = DAOconfig.getConnection();
@@ -155,7 +159,7 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
         try (
                 Connection con = DAOconfig.getConnection();
                 PreparedStatement stm = con.prepareStatement(
-                        "SELECT idCampeonato FROM Campeonato");
+                        "SELECT idCampeonato FROM campeonato");
                 ResultSet rs = stm.executeQuery()) {
             while (rs.next()) {
                 campeonatos.add(rs.getString("idCampeonato"));
@@ -178,7 +182,7 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
         try (
                 Connection con = DAOconfig.getConnection();
                 PreparedStatement stm = con.prepareStatement(
-                        "DELETE FROM Campeonato WHERE idCampeonato = ?")) {
+                        "DELETE FROM campeonato WHERE idCampeonato = ?")) {
             stm.setString(1, idCampeonato);
             stm.executeUpdate();
             PreparedStatement pstm = con.prepareStatement(
@@ -196,7 +200,7 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
     @Override
     public int size() {
         int size = 0;
-        String sql = "SELECT COUNT(*) FROM Campeonato";
+        String sql = "SELECT COUNT(*) FROM campeonato";
         try (
                 Connection con = DAOconfig.getConnection();
                 PreparedStatement stm = con.prepareStatement(sql);
@@ -218,7 +222,7 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
         try (
                 Connection con = DAOconfig.getConnection();
                 Statement stm = con.createStatement()) {
-            String sql = "SELECT * FROM Campeonato";
+            String sql = "SELECT * FROM campeonato";
             try (ResultSet rs = stm.executeQuery(sql)) {
                 while (rs.next()) {
                     String idCampeonato = rs.getString("idCampeonato");
@@ -263,7 +267,7 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
         try (
                 Connection con = DAOconfig.getConnection();
                 PreparedStatement stm = con.prepareStatement(
-                        "DELETE FROM Campeonato WHERE idCampeonato = ?")) {
+                        "DELETE FROM campeonato WHERE idCampeonato = ?")) {
             for (String id : this.keySet()) {
                 stm.setString(1, id);
                 stm.executeUpdate();
@@ -285,7 +289,7 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
         try (
                 Connection con = DAOconfig.getConnection();
                 PreparedStatement stm = con.prepareStatement(
-                        "SELECT * FROM Campeonato WHERE nome = ?")) {
+                        "SELECT * FROM campeonato WHERE nome = ?")) {
             stm.setString(1, campeonato.getNome());
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
@@ -306,7 +310,7 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
         try (
                 Connection con = DAOconfig.getConnection();
                 PreparedStatement stm = con.prepareStatement(
-                        "SELECT idCampeonato FROM Campeonato")) {
+                        "SELECT idCampeonato FROM campeonato")) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     String id = rs.getString("idCampeonato");

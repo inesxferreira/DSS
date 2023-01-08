@@ -41,7 +41,7 @@ public class SSCampeonatoFacade implements ICampeonato {
 	 */
 	public void infoCampeonato(String idCampeonato) {
 		Campeonato camp = todos_campeonatos.get(idCampeonato);
-		System.out.println("Corridas:" + camp.getCorridas().values().toString() + "\n" +
+		System.out.println("Nome: " + camp.getNome() + "\n" +
 				"Circuitos:" + camp.getCircuitos().values().toString());
 
 	}

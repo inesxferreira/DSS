@@ -8,7 +8,6 @@ import SimuladorLN.SSCampeonato.ICampeonato;
 import SimuladorLN.SSCampeonato.SSCampeonatoFacade;
 import SimuladorLN.SSConta.IConta;
 import SimuladorLN.SSConta.SSContaFacade;
-import UserInterface.Menu.PreCondition;
 
 import java.io.IOException;
 
@@ -49,30 +48,6 @@ public class SimuladorLNFacade implements ISimuladorLN {
     public IConta getContaFacade() {
 
         return contaFacade;
-    }
-
-    @Override
-    public void start() {
-
-    }
-
-    // boolean login(String user,String password) throws IOException;
-
-    @Override
-    public void shutdown() {
-
-    }
-
-    @Override
-    public boolean login(String user, String password) throws IOException {
-
-        return false;
-    }
-
-    @Override
-    public PreCondition existeConta() {
-        // TODO Auto-generated method stub
-        return null;
     }
 
 }

@@ -2,17 +2,19 @@ package SimuladorLN.SSCampeonato.SSCorrida;
 
 public class Caracteristica {
 
-	private String idCaracteristica;
+	private Integer idCaracteristica;
+	private String nomeCaracteristica;
 	private float gdu;
 
 	/* Construtores */
 	public Caracteristica() {
-		this.idCaracteristica = "";
+		this.idCaracteristica = 0;
 		this.gdu = 0.0f;
 	}
 
-	public Caracteristica(String idCaracteristica, float gdu) {
+	public Caracteristica(Integer idCaracteristica, String nome, float gdu) {
 		this.idCaracteristica = idCaracteristica;
+		this.nomeCaracteristica = nome;
 		this.gdu = gdu;
 
 	}
@@ -23,8 +25,12 @@ public class Caracteristica {
 	}
 
 	/* Getters */
-	public String getIdCaracteristica() {
+	public Integer getIdCaracteristica() {
 		return this.idCaracteristica;
+	}
+
+	public String getNomeCaracteristica() {
+		return this.nomeCaracteristica;
 	}
 
 	public float getGDU() {
@@ -39,11 +45,15 @@ public class Caracteristica {
 		this.gdu = gdu;
 	}
 
+	public void setNomeCaracteristica(String nome) {
+		this.nomeCaracteristica = nome;
+	}
+
 	/**
 	 * 
 	 * @param gdu
 	 */
-	public void setIdCaracteristica(String id) {
+	public void setIdCaracteristica(Integer id) {
 		this.idCaracteristica = id;
 	}
 
