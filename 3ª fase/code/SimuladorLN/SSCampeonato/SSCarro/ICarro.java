@@ -8,6 +8,11 @@ package SimuladorLN.SSCampeonato.SSCarro;
  */
 
 public interface ICarro {
+
+	public void listarCarros();
+
+	public void listarPilotos();
+
 	public Carro getCarro(Integer idCarro);
 
 	public void putCarro(Carro c);

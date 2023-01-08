@@ -24,6 +24,8 @@ public class Campeonato {
 	public Campeonato(String idCampeonato, String nome) {
 		this.idCampeonato = idCampeonato;
 		this.nome = nome;
+		this.circuitos = new HashMap<String,Circuito>();
+
 	}
 
 	public Campeonato(String idCampeonato, String nome, HashMap<String, Circuito> circuitos) {
@@ -93,6 +95,10 @@ public class Campeonato {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public void addCircuito(String id, Circuito c){
+		this.circuitos.put(id, c);
 	}
 
 	public String getIdCampeonato() {

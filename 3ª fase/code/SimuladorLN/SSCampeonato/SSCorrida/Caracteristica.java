@@ -4,15 +4,15 @@ public class Caracteristica {
 
 	private Integer idCaracteristica;
 	private String nomeCaracteristica;
-	private float gdu;
+	private int gdu;
 
 	/* Construtores */
 	public Caracteristica() {
 		this.idCaracteristica = 0;
-		this.gdu = 0.0f;
+		this.gdu = 0;
 	}
 
-	public Caracteristica(Integer idCaracteristica, String nome, float gdu) {
+	public Caracteristica(Integer idCaracteristica, String nome, int gdu) {
 		this.idCaracteristica = idCaracteristica;
 		this.nomeCaracteristica = nome;
 		this.gdu = gdu;
@@ -33,7 +33,7 @@ public class Caracteristica {
 		return this.nomeCaracteristica;
 	}
 
-	public float getGDU() {
+	public int getGDU() {
 		return this.gdu;
 	}
 
@@ -41,7 +41,7 @@ public class Caracteristica {
 	 * 
 	 * @param gdu
 	 */
-	public void setGDU(float gdu) {
+	public void setGDU(int gdu) {
 		this.gdu = gdu;
 	}
 

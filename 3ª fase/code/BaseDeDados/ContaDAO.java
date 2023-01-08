@@ -17,6 +17,7 @@ public class ContaDAO implements Map<String, Conta> {
                     "Password VARCHAR(15) NOT NULL," +
                     "VersaoPremium BOOLEAN DEFAULT false)";
             stm.executeUpdate(sql);
+
             sql = "INSERT INTO conta (Username, Password, VersaoPremium) VALUES " +
                     "('robert', '123', 0), ('marta', '123', 0), ('ines', '123', 0), ('joana', '123', 0), ('rafael', '123', 0)";
         } catch (SQLException e) {

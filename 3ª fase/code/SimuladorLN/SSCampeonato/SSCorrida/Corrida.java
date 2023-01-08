@@ -143,7 +143,7 @@ public class Corrida {
 	 * 
 	 * @param participantes
 	 */
-	public void calcularUltrapassagem(Participante participante, float gdu) {
+	public void calcularUltrapassagem(Participante participante, int gdu) {
 		Carro c = participante.getCarro();
 		int potencia = c.getPotenciaC();
 		float pac = c.getPac();
@@ -194,7 +194,7 @@ public class Corrida {
 		List<Caracteristica> caracteristicas = this.circuito.getCaracteristicas();
 
 		for (Caracteristica c : caracteristicas) {
-			float gdu = c.getGDU();
+			int gdu = c.getGDU();
 			for (Participante participante : participantes.values()) {
 				calcularUltrapassagem(participante, gdu);
 			}

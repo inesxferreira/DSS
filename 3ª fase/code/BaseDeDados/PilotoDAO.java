@@ -22,12 +22,14 @@ public class PilotoDAO implements Map<String, Piloto> {
                     "Nome varchar(20) DEFAULT NULL," +
                     "CTS float(15) DEFAULT 0.0," +
                     "SVA float(15) DEFAULT 0.0)";
-
             stm.executeUpdate(sql);
-
-            if (con != null)
-                con.close();
-
+            sql = "INSERT INTO piloto (Nome, CTS, SVA) " +
+                    "VALUES ('Lewis Hamilton', 0.93, 0.78), " +
+                    "('Max Verstappen', 0.35, 0.72), " +
+                    "('Charles Leclerc', 0.72, 0.34), " +
+                    "('Sebastian Vettel', 0.84, 0.62), " +
+                    "('Valtteri Bottas', 0.76, 0.72);";
+            //stm.executeUpdate(sql);
         } catch (SQLException e) {
             // Erro a criar tabela...
             e.printStackTrace();
@@ -69,7 +71,7 @@ public class PilotoDAO implements Map<String, Piloto> {
 
     @Override
     public Piloto get(Object key) {
-        Integer idPiloto = (int) key;
+        Integer idPiloto = Integer.valueOf((String) key);
         Piloto piloto = null;
         String sql = "SELECT * FROM piloto WHERE IdPiloto = ?";
 

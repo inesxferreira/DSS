@@ -43,10 +43,9 @@ public class SSCampeonatoFacade implements ICampeonato {
 		Campeonato camp = todos_campeonatos.get(idCampeonato);
 		System.out.println("Nome: " + camp.getNome() + "\n" +
 				"Circuitos:" + camp.getCircuitos().values().toString());
-
 	}
 
-	// dar print de listar campeaonato
+	// Print da lista de campeaonatos
 	public void listarCampeonatos() {
 
 		for (String campId : todos_campeonatos.keySet()) {
@@ -72,8 +71,6 @@ public class SSCampeonatoFacade implements ICampeonato {
 	public void simularCampeonato(String idCampeonato) {
 		Campeonato camp = todos_campeonatos.get(idCampeonato);
 
-		// Map<String,Corrida> corridas = camp.getCorridas();
-		// simularCorrida(camp.getParticipantes(), camp.getCorridas().values());
 		for (Corrida c : camp.getCorridas().values()) {
 			SSCorridaFacade.simularCorrida(camp.getParticipantes(), c);
 		}

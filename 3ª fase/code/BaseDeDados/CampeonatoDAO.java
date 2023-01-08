@@ -22,8 +22,11 @@ public class CampeonatoDAO implements Map<String, Campeonato> {
                     "nome VARCHAR(30) NOT NULL);";
             stm.executeUpdate(sql);
 
-            sql = "INSERT INTO campeonato (nome) VALUES ('Campeonato de Teste');";
-            stm.executeUpdate(sql);
+            // sql = "INSERT INTO campeonato (nome) VALUES ('Campeonato de Teste');";
+            // stm.executeUpdate(sql);
+
+            //sql = "INSERT INTO circuito_campeonato (idCampeonato, idCircuito) VALUES (1, 1), (1, 2);";
+            //stm.executeUpdate(sql);
 
             sql = "CREATE TABLE IF NOT EXISTS circuito_campeonato (" +
                     "idCampeonato INTEGER NOT NULL," +

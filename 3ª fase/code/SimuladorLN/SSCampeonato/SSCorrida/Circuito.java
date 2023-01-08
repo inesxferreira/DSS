@@ -21,7 +21,7 @@ public class Circuito {
 		this.nCurvas = 0;
 		this.nChicanes = 0;
 		this.nRetas = 0;
-		this.caracteristicas = new ArrayList<>();
+		this.caracteristicas = new ArrayList<Caracteristica>();
 	}
 
 	public Circuito(Integer idCircuito, String nomeCircuito, float distancia, int nCurvas, int nChicanes,
@@ -43,6 +43,7 @@ public class Circuito {
 		this.nCurvas = nCurvas;
 		this.nChicanes = nChicanes;
 		this.nRetas = nRetas;
+		this.caracteristicas = new ArrayList<Caracteristica>();
 	}
 
 	public Circuito(Circuito c) {
@@ -168,6 +169,10 @@ public class Circuito {
 		nChicanes = getnChicanes();
 		nRetas = (nCurvas + nChicanes) * 2;
 		setnRetas(nRetas);
+	}
+
+	public void addCaracteristica(Caracteristica c){
+		this.caracteristicas.add(c);
 	}
 
 	/**

@@ -21,6 +21,17 @@ public class CarroDAO implements Map<String, Carro> {
                     "PotenciaC int(4) DEFAULT 0)";
 
             stm.executeUpdate(sql);
+            /*
+             * sql = "INSERT INTO carro (Categoria, Marca, Modelo, Cilindrada, PotenciaC)" +
+             * "VALUES ('C1', 'Mercedes', 'AMG GT3', 6000, 710)," +
+             * "('C1', 'Porsche', '911 GT3 R', 6000, 690)," +
+             * "('C2', 'Audi', 'R8 LMS GT3', 4800, 630)," +
+             * "('C2', 'McLaren', '720S GT3', 4200, 600)," +
+             * "('GT', 'Ford', 'Mustang GT', 3000, 500)," +
+             * "('GT', 'Nissan', 'GT-R Nismo GT3', 3600, 550)," +
+             * "('SC', 'Toyota', 'Supra', 2500, 400);";
+             */
+            // stm.executeUpdate(sql);
         } catch (SQLException e) {
             // Erro a criar tabela...
             e.printStackTrace();
@@ -66,7 +77,7 @@ public class CarroDAO implements Map<String, Carro> {
 
     @Override
     public Carro get(Object key) {
-        Integer idCarro = (Integer) key;
+        Integer idCarro = Integer.valueOf((String) key);
         Carro carro = null;
         String sql = "SELECT * FROM carro WHERE IdCarro = ?";
 
@@ -80,7 +91,7 @@ public class CarroDAO implements Map<String, Carro> {
                     String marca = rs.getString("Marca");
                     String modelo = rs.getString("Modelo");
                     int cilindrada = rs.getInt("Cilindrada");
-                    int potencia = rs.getInt("Potencia");
+                    int potencia = rs.getInt("PotenciaC");
                     switch (categoria) {
                         case "C1":
                             carro = new C1(idCarro, marca, modelo, categoria, potencia, cilindrada);
@@ -193,7 +204,7 @@ public class CarroDAO implements Map<String, Carro> {
                 String marca = rs.getString("Marca");
                 String modelo = rs.getString("Modelo");
                 int cilindrada = rs.getInt("Cilindrada");
-                int potencia = rs.getInt("Potencia");
+                int potencia = rs.getInt("PotenciaC");
                 switch (categoria) {
                     case "C1":
                         carro = new C1(idCarro, marca, modelo, categoria, potencia, cilindrada);
@@ -264,7 +275,7 @@ public class CarroDAO implements Map<String, Carro> {
                 String marca = rs.getString("Marca");
                 String modelo = rs.getString("Modelo");
                 int cilindrada = rs.getInt("Cilindrada");
-                int potencia = rs.getInt("Potencia");
+                int potencia = rs.getInt("PotenciaC");
                 Carro carro = null;
                 switch (categoria) {
                     case "C1":

@@ -29,6 +29,42 @@ public class SSCarroFacade implements ICarro {
         this.todos_pilotos = PilotoDAO.getInstance();
     }
 
+    // Print da lista de carros
+	public void listarCarros() {
+
+		for (String carroId : todos_carros.keySet()) {
+			System.out.println("\n[" + carroId + "]");
+			detalhesCarro(carroId);
+		}
+
+	}
+
+    private void detalhesCarro(String carroId) {
+        Carro c = todos_carros.get(carroId);
+        System.out.println("\tCategoria: " + c.getCategoria());
+        System.out.print("\t" + c.getMarca());
+        System.out.println(" " + c.getModelo());
+        System.out.print("\t" + c.getCilindrada() + " cm³ - ");
+        System.out.println(c.getPotenciaC() + " CV");
+    }
+
+    // Print da lista de pilotos
+	public void listarPilotos() {
+
+		for (String pilotoId : todos_pilotos.keySet()) {
+			System.out.println("[" + pilotoId + "]\n");
+			detalhesPiloto(pilotoId);
+		}
+
+	}
+
+    private void detalhesPiloto(String pilotoId) {
+        Piloto p = todos_pilotos.get(pilotoId);
+        System.out.println("\t" + p.getNome());
+        System.out.println("\tCTS: " + p.getCTS());
+        System.out.println("\tSVA: " + p.getSVA());
+    }
+
     /**
      * Método que devolve um carro dado o seu identificador.
      *

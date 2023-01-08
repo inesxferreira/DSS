@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -28,6 +29,9 @@ public class CircuitoDAO implements Map<String, Circuito> {
                     "NRetas int DEFAULT 0)";
             stm.executeUpdate(sql);
 
+            //insereCircuito();
+            //insereCaracteristicas();
+
             sql = "CREATE TABLE IF NOT EXISTS caracteristicas ( " +
                     "IdCaracteristica INT NOT NULL PRIMARY KEY AUTO_INCREMENT, " +
                     "NomeCaracteristica VARCHAR(15) DEFAULT NULL, " +
@@ -38,6 +42,93 @@ public class CircuitoDAO implements Map<String, Circuito> {
 
         } catch (SQLException e) {
             // Erro a criar tabela...
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
+        }
+    }
+
+    private void insereCircuito() {
+        String sql = "INSERT INTO circuito (IdCircuito, NomeCircuito, Distancia, NCurvas, NChicanes, NRetas) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection con = DAOconfig.getConnection();
+                PreparedStatement stm = con.prepareStatement(sql)) {
+            stm.setInt(1, 1);
+            stm.setString(2, "");
+            stm.setFloat(3, 5.5f);
+            stm.setInt(4, 3);
+            stm.setInt(5, 2);
+            stm.setInt(6, 4);
+            stm.executeUpdate();
+
+            /*
+            stm.setInt(1, 2);
+            stm.setString(2, "B");
+            stm.setFloat(3, 7.0f);
+            stm.setInt(4, 4);
+            stm.setInt(5, 3);
+            stm.setInt(6, 3);
+            stm.executeUpdate();
+            */
+        } catch (SQLException e) {
+            // Erro ao inserir circuitos...
+            e.printStackTrace();
+            throw new NullPointerException(e.getMessage());
+        }
+    }
+
+    private void insereCaracteristicas() {
+        String sql = "INSERT INTO caracteristicas (IdCaracteristica, NomeCaracteristica, GDU, IdCircuito) VALUES (?, ?, ?, ?)";
+        try (Connection con = DAOconfig.getConnection();
+                PreparedStatement stm = con.prepareStatement(sql)) {
+            Random rand = new Random();
+            // Circuito 1
+            stm.setInt(4, 1); // IdCircuito do Circuito 1
+            for (int id = 0; id < 3 + 2 + 5; id++) {
+                for (int i = 1; i <= 3; i++) {
+                    stm.setInt(1, id);
+                    stm.setString(2, "Curva");
+                    stm.setInt(3, rand.nextInt(3) + 1); // GDU aleatório entre 1 e 3
+                    stm.executeUpdate();
+                }
+                for (int i = 1; i <= 2; i++) {
+                    stm.setInt(1, id);
+                    stm.setString(2, "Chicane");
+                    stm.setInt(3, rand.nextInt(3) + 1); // GDU aleatório entre 1 e 3
+                    stm.executeUpdate();
+                }
+                for (int i = 1; i <= 5; i++) {
+                    stm.setInt(1, id);
+                    stm.setString(2, "Reta");
+                    stm.setInt(3, rand.nextInt(3) + 1); // GDU aleatório entre 1 e 3
+                    stm.executeUpdate();
+                }
+            }
+            /*
+             * Insere caracteristicas para o Circuito 2
+             * stm.setInt(4, 2); // IdCircuito do Circuito 2
+             * for (int id = 0; id < 4 + 3 + 3; id++) {
+             * for (int i = 1; i <= 4; i++) {
+             * stm.setInt(1, id);
+             * stm.setString(2, "Curva");
+             * stm.setInt(3, rand.nextInt(3) + 1); // GDU aleatório entre 1 e 3
+             * stm.executeUpdate();
+             * }
+             * for (int i = 1; i <= 3; i++) {
+             * stm.setInt(1, id);
+             * stm.setString(2, "Chicane");
+             * stm.setInt(3, rand.nextInt(3) + 1); // GDU aleatório entre 1 e 3
+             * stm.executeUpdate();
+             * }
+             * for (int i = 1; i <= 3; i++) {
+             * stm.setInt(1, id);
+             * stm.setString(2, "Reta");
+             * stm.setInt(3, rand.nextInt(3) + 1); // GDU aleatório entre 1 e 3
+             * stm.executeUpdate();
+             * }
+             */
+            } catch (
+
+        SQLException e) {
+            // Erro ao inserir caracteristicas...
             e.printStackTrace();
             throw new NullPointerException(e.getMessage());
         }
@@ -139,9 +230,9 @@ public class CircuitoDAO implements Map<String, Circuito> {
                     while (rs2.next()) {
                         Integer idCaracteristica = rs2.getInt("IdCaracteristica");
                         String nomeCaracteristica = rs2.getString("NomeCaracteristica");
-                        float GDU = rs2.getFloat("GDU");
+                        int GDU = rs2.getInt("GDU");
                         Caracteristica caracteristica = new Caracteristica(idCaracteristica, nomeCaracteristica, GDU);
-                        circuito.getCaracteristicas().add(caracteristica);
+                        circuito.addCaracteristica(caracteristica);
                     }
                 }
             }

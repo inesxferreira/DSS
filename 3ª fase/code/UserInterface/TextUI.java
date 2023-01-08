@@ -153,13 +153,14 @@ public class TextUI {
     }
 
     public void showRankingG() {
+        // mostrar ranking global para o campeonato em causa
 
     }
 
     public void showCamp() {
         // mostrar lista de campeonatos disponiveis
         this.model.getCampeonatoFacade().listarCampeonatos();
-        System.out.println("Insira o numero do campeonato desejado: \n");
+        System.out.println("Escolha campeonato desejado:");
         String id = scan.nextLine();
         flagCamp = true;
 
@@ -169,14 +170,17 @@ public class TextUI {
 
     public void showCarro() {
         // mostrar lista de carros disponiveis
-
+        this.model.getCarroFacade().listarCarros();
+        System.out.println("\nEscolha o carro desejado:");
+        String id = scan.nextLine();
         flagCarro = true;
-
     }
 
     public void showPiloto() {
-
+        // mostrar lista de carros disponiveis
+        this.model.getCarroFacade().listarPilotos();
+        System.out.println("\nEscolha o piloto desejado:");
+        String id = scan.nextLine();
         flagPiloto = true;
-
     }
 }
