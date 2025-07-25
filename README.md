@@ -1,2 +1,1 @@
-# DSS
-Repositótio no âmbito de Desenvolvimento de Sistemas de Software
+#Repositótio no âmbito de Desenvolvimento de Sistemas de Software
